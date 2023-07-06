@@ -1,0 +1,67 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="restaurantWallet">
+      <h2 data-cy="restaurantWalletDetailsHeading"><span>Restaurant Wallet</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ restaurantWallet.id }}</span>
+        </dd>
+        <dt><span>Transaction No</span></dt>
+        <dd>
+          <span>{{ restaurantWallet.transactionNo }}</span>
+        </dd>
+        <dt><span>Amount</span></dt>
+        <dd>
+          <span>{{ restaurantWallet.amount }}</span>
+        </dd>
+        <dt><span>Wallet Action</span></dt>
+        <dd>
+          <span>{{ restaurantWallet.walletAction }}</span>
+        </dd>
+        <dt><span>Total Before Action</span></dt>
+        <dd>
+          <span>{{ restaurantWallet.totalBeforeAction }}</span>
+        </dd>
+        <dt><span>Total After Action</span></dt>
+        <dd>
+          <span>{{ restaurantWallet.totalAfterAction }}</span>
+        </dd>
+        <dt><span>Payment Type</span></dt>
+        <dd>
+          <span>{{ restaurantWallet.paymentType }}</span>
+        </dd>
+        <dt><span>Payment Reference</span></dt>
+        <dd>
+          <span>{{ restaurantWallet.paymentReference }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ restaurantWallet.notes }}</span>
+        </dd>
+        <dt><span>Restaurant</span></dt>
+        <dd>
+          <div *ngIf="restaurantWallet.restaurant">
+            <a
+              [routerLink]="['/restaurant', restaurantWallet.restaurant.id, 'view']">{{ restaurantWallet.restaurant.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/restaurant-wallet', restaurantWallet.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

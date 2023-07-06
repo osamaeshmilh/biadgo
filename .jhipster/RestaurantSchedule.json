@@ -1,0 +1,37 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033440",
+  "dto": "mapstruct",
+  "entityTableName": "restaurant_schedule",
+  "fields": [
+    {
+      "fieldName": "dayOfWeek",
+      "fieldType": "DayOfWeek",
+      "fieldValues": "SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY"
+    },
+    {
+      "fieldName": "openingTime",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "closingTime",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "RestaurantSchedule",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "restaurant",
+      "relationshipName": "restaurant",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="referral">
+      <h2 data-cy="referralDetailsHeading"><span>Referral</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ referral.id }}</span>
+        </dd>
+        <dt><span>Referral Code</span></dt>
+        <dd>
+          <span>{{ referral.referralCode }}</span>
+        </dd>
+        <dt><span>Referrer Amount</span></dt>
+        <dd>
+          <span>{{ referral.referrerAmount }}</span>
+        </dd>
+        <dt><span>Referred Customer Amount</span></dt>
+        <dd>
+          <span>{{ referral.referredCustomerAmount }}</span>
+        </dd>
+        <dt><span>Expiry Date</span></dt>
+        <dd>
+          <span>{{ referral.expiryDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span>Is Used</span></dt>
+        <dd>
+          <span>{{ referral.isUsed }}</span>
+        </dd>
+        <dt><span>Used Date Time</span></dt>
+        <dd>
+          <span>{{ referral.usedDateTime | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ referral.notes }}</span>
+        </dd>
+        <dt><span>Referred Customer</span></dt>
+        <dd>
+          <div *ngIf="referral.referredCustomer">
+            <a [routerLink]="['/customer', referral.referredCustomer.id, 'view']">{{ referral.referredCustomer.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Referrer Customer</span></dt>
+        <dd>
+          <div *ngIf="referral.referrerCustomer">
+            <a [routerLink]="['/customer', referral.referrerCustomer.id, 'view']">{{ referral.referrerCustomer.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/referral', referral.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

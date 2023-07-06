@@ -1,0 +1,138 @@
+<div>
+  <h2 id="page-heading" data-cy="DriverReviewHeading">
+    <span>Driver Reviews</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-driver-review"
+        [routerLink]="['/driver-review/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Driver Review </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="driverReviews?.length === 0">
+    <span>No Driver Reviews found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="driverReviews && driverReviews.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+        <th scope="col" jhiSortBy="id">
+          <div class="d-flex">
+            <span>ID</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="details">
+          <div class="d-flex">
+            <span>Details</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="rate">
+          <div class="d-flex">
+            <span>Rate</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="customer.name">
+          <div class="d-flex">
+            <span>Customer</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="driver.name">
+          <div class="d-flex">
+            <span>Driver</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let driverReview of driverReviews; trackBy: trackId" data-cy="entityTable">
+        <td>
+          <a [routerLink]="['/driver-review', driverReview.id, 'view']">{{ driverReview.id }}</a>
+        </td>
+        <td>{{ driverReview.details }}</td>
+        <td>{{ driverReview.rate }}</td>
+        <td>
+          <div *ngIf="driverReview.customer">
+            <a [routerLink]="['/customer', driverReview.customer.id, 'view']">{{ driverReview.customer.name }}</a>
+          </div>
+        </td>
+        <td>
+          <div *ngIf="driverReview.driver">
+            <a [routerLink]="['/driver', driverReview.driver.id, 'view']">{{ driverReview.driver.name }}</a>
+          </div>
+        </td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button
+              type="submit"
+              [routerLink]="['/driver-review', driverReview.id, 'view']"
+              class="btn btn-info btn-sm"
+              data-cy="entityDetailsButton"
+            >
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline">View</span>
+            </button>
+
+            <button
+              type="submit"
+              [routerLink]="['/driver-review', driverReview.id, 'edit']"
+              class="btn btn-primary btn-sm"
+              data-cy="entityEditButton"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline">Edit</span>
+            </button>
+
+            <button type="submit" (click)="delete(driverReview)" class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline">Delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="driverReviews && driverReviews.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

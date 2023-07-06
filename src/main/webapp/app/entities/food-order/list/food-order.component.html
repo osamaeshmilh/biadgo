@@ -1,0 +1,162 @@
+<div>
+  <h2 id="page-heading" data-cy="FoodOrderHeading">
+    <span>Food Orders</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-food-order"
+        [routerLink]="['/food-order/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Food Order </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="foodOrders?.length === 0">
+    <span>No Food Orders found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="foodOrders && foodOrders.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+        <th scope="col" jhiSortBy="id">
+          <div class="d-flex">
+            <span>ID</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="price">
+          <div class="d-flex">
+            <span>Price</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="quantity">
+          <div class="d-flex">
+            <span>Quantity</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="total">
+          <div class="d-flex">
+            <span>Total</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="specialNotes">
+          <div class="d-flex">
+            <span>Special Notes</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="foodExtraIdsList">
+          <div class="d-flex">
+            <span>Food Extra Ids List</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="foodIngredientIds">
+          <div class="d-flex">
+            <span>Food Ingredient Ids</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="foodIngredientRemovedIds">
+          <div class="d-flex">
+            <span>Food Ingredient Removed Ids</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="order.orderNo">
+          <div class="d-flex">
+            <span>Order</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let foodOrder of foodOrders; trackBy: trackId" data-cy="entityTable">
+        <td>
+          <a [routerLink]="['/food-order', foodOrder.id, 'view']">{{ foodOrder.id }}</a>
+        </td>
+        <td>{{ foodOrder.price }}</td>
+        <td>{{ foodOrder.quantity }}</td>
+        <td>{{ foodOrder.total }}</td>
+        <td>{{ foodOrder.specialNotes }}</td>
+        <td>{{ foodOrder.foodExtraIdsList }}</td>
+        <td>{{ foodOrder.foodIngredientIds }}</td>
+        <td>{{ foodOrder.foodIngredientRemovedIds }}</td>
+        <td>
+          <div *ngIf="foodOrder.order">
+            <a [routerLink]="['/order', foodOrder.order.id, 'view']">{{ foodOrder.order.orderNo }}</a>
+          </div>
+        </td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button
+              type="submit"
+              [routerLink]="['/food-order', foodOrder.id, 'view']"
+              class="btn btn-info btn-sm"
+              data-cy="entityDetailsButton"
+            >
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline">View</span>
+            </button>
+
+            <button
+              type="submit"
+              [routerLink]="['/food-order', foodOrder.id, 'edit']"
+              class="btn btn-primary btn-sm"
+              data-cy="entityEditButton"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline">Edit</span>
+            </button>
+
+            <button type="submit" (click)="delete(foodOrder)" class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline">Delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="foodOrders && foodOrders.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

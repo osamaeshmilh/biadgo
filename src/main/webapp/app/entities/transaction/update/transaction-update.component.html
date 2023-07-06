@@ -1,0 +1,133 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-transaction-heading" data-cy="TransactionCreateUpdateHeading">Create or edit a Transaction</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_transactionReference">Transaction Reference</label>
+          <input
+            type="text"
+            class="form-control"
+            name="transactionReference"
+            id="field_transactionReference"
+            data-cy="transactionReference"
+            formControlName="transactionReference"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_paymentType">Payment Type</label>
+          <select class="form-control" name="paymentType" formControlName="paymentType" id="field_paymentType"
+                  data-cy="paymentType">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let paymentType of paymentTypeValues" [value]="paymentType">{{ paymentType }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_transactionStatus">Transaction Status</label>
+          <select
+            class="form-control"
+            name="transactionStatus"
+            formControlName="transactionStatus"
+            id="field_transactionStatus"
+            data-cy="transactionStatus"
+          >
+            <option [ngValue]="null"></option>
+            <option *ngFor="let transactionStatus of transactionStatusValues"
+                    [value]="transactionStatus">{{ transactionStatus }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_vendorReference">Vendor Reference</label>
+          <input
+            type="text"
+            class="form-control"
+            name="vendorReference"
+            id="field_vendorReference"
+            data-cy="vendorReference"
+            formControlName="vendorReference"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_vendorMessage">Vendor Message</label>
+          <input
+            type="text"
+            class="form-control"
+            name="vendorMessage"
+            id="field_vendorMessage"
+            data-cy="vendorMessage"
+            formControlName="vendorMessage"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_amount">Amount</label>
+          <input type="number" class="form-control" name="amount" id="field_amount" data-cy="amount"
+                 formControlName="amount"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_fees">Fees</label>
+          <input type="number" class="form-control" name="fees" id="field_fees" data-cy="fees" formControlName="fees"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_total">Total</label>
+          <input type="number" class="form-control" name="total" id="field_total" data-cy="total"
+                 formControlName="total"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes"
+                 formControlName="notes"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customer">Customer</label>
+          <select
+            class="form-control"
+            id="field_customer"
+            data-cy="customer"
+            name="customer"
+            formControlName="customer"
+            [compareWith]="compareCustomer"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="customerOption"
+                    *ngFor="let customerOption of customersSharedCollection">{{ customerOption.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

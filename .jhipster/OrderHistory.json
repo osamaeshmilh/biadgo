@@ -1,0 +1,38 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033432",
+  "dto": "mapstruct",
+  "entityTableName": "order_history",
+  "fields": [
+    {
+      "fieldName": "orderStatusFrom",
+      "fieldType": "OrderStatus",
+      "fieldValues": "PLACED,ACCEPTED,READY_FOR_PICKUP,OUT_FOR_DELIVERY,DELIVERED,CANCELLED,FAILED"
+    },
+    {
+      "fieldName": "orderStatusTo",
+      "fieldType": "OrderStatus",
+      "fieldValues": "PLACED,ACCEPTED,READY_FOR_PICKUP,OUT_FOR_DELIVERY,DELIVERED,CANCELLED,FAILED"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "OrderHistory",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "orderNo",
+      "otherEntityName": "order",
+      "relationshipName": "order",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

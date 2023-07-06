@@ -1,0 +1,222 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-food-heading" data-cy="FoodCreateUpdateHeading">Create or edit a Food</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nameAr">Name Ar</label>
+          <input type="text" class="form-control" name="nameAr" id="field_nameAr" data-cy="nameAr"
+                 formControlName="nameAr"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nameEn">Name En</label>
+          <input type="text" class="form-control" name="nameEn" id="field_nameEn" data-cy="nameEn"
+                 formControlName="nameEn"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_price">Price</label>
+          <input type="number" class="form-control" name="price" id="field_price" data-cy="price"
+                 formControlName="price"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_discountPrice">Discount Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="discountPrice"
+            id="field_discountPrice"
+            data-cy="discountPrice"
+            formControlName="discountPrice"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_descriptionAr">Description Ar</label>
+          <input
+            type="text"
+            class="form-control"
+            name="descriptionAr"
+            id="field_descriptionAr"
+            data-cy="descriptionAr"
+            formControlName="descriptionAr"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_descriptionEn">Description En</label>
+          <input
+            type="text"
+            class="form-control"
+            name="descriptionEn"
+            id="field_descriptionEn"
+            data-cy="descriptionEn"
+            formControlName="descriptionEn"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_packageItemsCount">Package Items Count</label>
+          <input
+            type="number"
+            class="form-control"
+            name="packageItemsCount"
+            id="field_packageItemsCount"
+            data-cy="packageItemsCount"
+            formControlName="packageItemsCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dailyQuantity">Daily Quantity</label>
+          <input
+            type="number"
+            class="form-control"
+            name="dailyQuantity"
+            id="field_dailyQuantity"
+            data-cy="dailyQuantity"
+            formControlName="dailyQuantity"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isAvailable">Is Available</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isAvailable"
+            id="field_isAvailable"
+            data-cy="isAvailable"
+            formControlName="isAvailable"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isDiscount">Is Discount</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isDiscount"
+            id="field_isDiscount"
+            data-cy="isDiscount"
+            formControlName="isDiscount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isFeatured">Is Featured</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isFeatured"
+            id="field_isFeatured"
+            data-cy="isFeatured"
+            formControlName="isFeatured"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isActive">Is Active</label>
+          <input type="checkbox" class="form-check" name="isActive" id="field_isActive" data-cy="isActive"
+                 formControlName="isActive"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_viewCounter">View Counter</label>
+          <input
+            type="number"
+            class="form-control"
+            name="viewCounter"
+            id="field_viewCounter"
+            data-cy="viewCounter"
+            formControlName="viewCounter"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes"
+                 formControlName="notes"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_restaurant">Restaurant</label>
+          <select
+            class="form-control"
+            id="field_restaurant"
+            data-cy="restaurant"
+            name="restaurant"
+            formControlName="restaurant"
+            [compareWith]="compareRestaurant"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="restaurantOption" *ngFor="let restaurantOption of restaurantsSharedCollection">
+              {{ restaurantOption.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_category">Category</label>
+          <select
+            class="form-control"
+            id="field_category"
+            data-cy="category"
+            name="category"
+            formControlName="category"
+            [compareWith]="compareCategory"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="categoryOption"
+                    *ngFor="let categoryOption of categoriesSharedCollection">{{ categoryOption.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

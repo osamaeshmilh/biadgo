@@ -1,0 +1,121 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-delivery-address-heading" data-cy="DeliveryAddressCreateUpdateHeading">Create or edit a Delivery
+        Address</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_title">Title</label>
+          <input type="text" class="form-control" name="title" id="field_title" data-cy="title"
+                 formControlName="title"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_address">Address</label>
+          <input type="text" class="form-control" name="address" id="field_address" data-cy="address"
+                 formControlName="address"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_details">Details</label>
+          <input type="text" class="form-control" name="details" id="field_details" data-cy="details"
+                 formControlName="details"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_phone">Phone</label>
+          <input type="text" class="form-control" name="phone" id="field_phone" data-cy="phone"
+                 formControlName="phone"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isDefault">Is Default</label>
+          <input type="checkbox" class="form-check" name="isDefault" id="field_isDefault" data-cy="isDefault"
+                 formControlName="isDefault"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_latitude">Latitude</label>
+          <input type="number" class="form-control" name="latitude" id="field_latitude" data-cy="latitude"
+                 formControlName="latitude"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_longitude">Longitude</label>
+          <input type="number" class="form-control" name="longitude" id="field_longitude" data-cy="longitude"
+                 formControlName="longitude"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_plusCode">Plus Code</label>
+          <input type="text" class="form-control" name="plusCode" id="field_plusCode" data-cy="plusCode"
+                 formControlName="plusCode"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isActive">Is Active</label>
+          <input type="checkbox" class="form-check" name="isActive" id="field_isActive" data-cy="isActive"
+                 formControlName="isActive"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes"
+                 formControlName="notes"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customer">Customer</label>
+          <select
+            class="form-control"
+            id="field_customer"
+            data-cy="customer"
+            name="customer"
+            formControlName="customer"
+            [compareWith]="compareCustomer"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="customerOption"
+                    *ngFor="let customerOption of customersSharedCollection">{{ customerOption.name }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_zone">Zone</label>
+          <select class="form-control" id="field_zone" data-cy="zone" name="zone" formControlName="zone"
+                  [compareWith]="compareZone">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="zoneOption"
+                    *ngFor="let zoneOption of zonesSharedCollection">{{ zoneOption.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

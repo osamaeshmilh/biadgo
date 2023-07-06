@@ -1,0 +1,149 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="restaurant">
+      <h2 data-cy="restaurantDetailsHeading"><span>Restaurant</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ restaurant.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ restaurant.name }}</span>
+        </dd>
+        <dt><span>Name Ar</span></dt>
+        <dd>
+          <span>{{ restaurant.nameAr }}</span>
+        </dd>
+        <dt><span>Name En</span></dt>
+        <dd>
+          <span>{{ restaurant.nameEn }}</span>
+        </dd>
+        <dt><span>Description</span></dt>
+        <dd>
+          <span>{{ restaurant.description }}</span>
+        </dd>
+        <dt><span>Address</span></dt>
+        <dd>
+          <span>{{ restaurant.address }}</span>
+        </dd>
+        <dt><span>Latitude</span></dt>
+        <dd>
+          <span>{{ restaurant.latitude }}</span>
+        </dd>
+        <dt><span>Longitude</span></dt>
+        <dd>
+          <span>{{ restaurant.longitude }}</span>
+        </dd>
+        <dt><span>Plus Code</span></dt>
+        <dd>
+          <span>{{ restaurant.plusCode }}</span>
+        </dd>
+        <dt><span>Mobile</span></dt>
+        <dd>
+          <span>{{ restaurant.mobile }}</span>
+        </dd>
+        <dt><span>Estimited Time Mins</span></dt>
+        <dd>
+          <span>{{ restaurant.estimitedTimeMins }}</span>
+        </dd>
+        <dt><span>Delivery Fee</span></dt>
+        <dd>
+          <span>{{ restaurant.deliveryFee }}</span>
+        </dd>
+        <dt><span>Delivery Range</span></dt>
+        <dd>
+          <span>{{ restaurant.deliveryRange }}</span>
+        </dd>
+        <dt><span>Available For Delivery</span></dt>
+        <dd>
+          <span>{{ restaurant.availableForDelivery }}</span>
+        </dd>
+        <dt><span>Available For Pickup</span></dt>
+        <dd>
+          <span>{{ restaurant.availableForPickup }}</span>
+        </dd>
+        <dt><span>Minimum Order Total For Delivery</span></dt>
+        <dd>
+          <span>{{ restaurant.minimumOrderTotalForDelivery }}</span>
+        </dd>
+        <dt><span>Delivery Price Type</span></dt>
+        <dd>
+          <span>{{ restaurant.deliveryPriceType }}</span>
+        </dd>
+        <dt><span>Is Open</span></dt>
+        <dd>
+          <span>{{ restaurant.isOpen }}</span>
+        </dd>
+        <dt><span>Is Featured</span></dt>
+        <dd>
+          <span>{{ restaurant.isFeatured }}</span>
+        </dd>
+        <dt><span>Is Listed In Offers</span></dt>
+        <dd>
+          <span>{{ restaurant.isListedInOffers }}</span>
+        </dd>
+        <dt><span>Is Active</span></dt>
+        <dd>
+          <span>{{ restaurant.isActive }}</span>
+        </dd>
+        <dt><span>Offer Banner</span></dt>
+        <dd>
+          <span>{{ restaurant.offerBanner }}</span>
+        </dd>
+        <dt><span>Priority</span></dt>
+        <dd>
+          <span>{{ restaurant.priority }}</span>
+        </dd>
+        <dt><span>View Counter</span></dt>
+        <dd>
+          <span>{{ restaurant.viewCounter }}</span>
+        </dd>
+        <dt><span>Scheduled Closing Time</span></dt>
+        <dd>
+          <span>{{ restaurant.scheduledClosingTime }}</span>
+        </dd>
+        <dt><span>Facebook Page Url</span></dt>
+        <dd>
+          <span>{{ restaurant.facebookPageUrl }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ restaurant.notes }}</span>
+        </dd>
+        <dt><span>User</span></dt>
+        <dd>
+          <span>{{ restaurant.user?.id }}</span>
+        </dd>
+        <dt><span>Cuisine</span></dt>
+        <dd>
+          <div *ngIf="restaurant.cuisine">
+            <a [routerLink]="['/cuisine', restaurant.cuisine.id, 'view']">{{ restaurant.cuisine.name }}</a>
+          </div>
+        </dd>
+        <dt><span>Categories</span></dt>
+        <dd>
+          <span *ngFor="let categories of restaurant.categories; let last = last">
+            <a [routerLink]="['/category', categories.id, 'view']">{{ categories.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/restaurant', restaurant.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

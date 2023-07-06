@@ -1,0 +1,30 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033424",
+  "dto": "mapstruct",
+  "entityTableName": "favorite_restaurant",
+  "fields": [],
+  "jpaMetamodelFiltering": true,
+  "name": "FavoriteRestaurant",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "customer",
+      "relationshipName": "customer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "restaurant",
+      "relationshipName": "restaurant",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

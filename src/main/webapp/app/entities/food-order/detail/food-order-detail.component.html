@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="foodOrder">
+      <h2 data-cy="foodOrderDetailsHeading"><span>Food Order</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ foodOrder.id }}</span>
+        </dd>
+        <dt><span>Price</span></dt>
+        <dd>
+          <span>{{ foodOrder.price }}</span>
+        </dd>
+        <dt><span>Quantity</span></dt>
+        <dd>
+          <span>{{ foodOrder.quantity }}</span>
+        </dd>
+        <dt><span>Total</span></dt>
+        <dd>
+          <span>{{ foodOrder.total }}</span>
+        </dd>
+        <dt><span>Special Notes</span></dt>
+        <dd>
+          <span>{{ foodOrder.specialNotes }}</span>
+        </dd>
+        <dt><span>Food Extra Ids List</span></dt>
+        <dd>
+          <span>{{ foodOrder.foodExtraIdsList }}</span>
+        </dd>
+        <dt><span>Food Ingredient Ids</span></dt>
+        <dd>
+          <span>{{ foodOrder.foodIngredientIds }}</span>
+        </dd>
+        <dt><span>Food Ingredient Removed Ids</span></dt>
+        <dd>
+          <span>{{ foodOrder.foodIngredientRemovedIds }}</span>
+        </dd>
+        <dt><span>Order</span></dt>
+        <dd>
+          <div *ngIf="foodOrder.order">
+            <a [routerLink]="['/order', foodOrder.order.id, 'view']">{{ foodOrder.order.orderNo }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/food-order', foodOrder.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

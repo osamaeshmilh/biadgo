@@ -1,0 +1,40 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033436",
+  "dto": "mapstruct",
+  "entityTableName": "restaurant_distance_price",
+  "fields": [
+    {
+      "fieldName": "price",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "fromKm",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "toKm",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "isAvailable",
+      "fieldType": "Boolean"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "RestaurantDistancePrice",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "restaurant",
+      "relationshipName": "restaurant",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

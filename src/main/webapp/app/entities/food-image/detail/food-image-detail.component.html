@@ -1,0 +1,67 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="foodImage">
+      <h2 data-cy="foodImageDetailsHeading"><span>Food Image</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ foodImage.id }}</span>
+        </dd>
+        <dt><span>Description</span></dt>
+        <dd>
+          <span>{{ foodImage.description }}</span>
+        </dd>
+        <dt><span>Description Ar</span></dt>
+        <dd>
+          <span>{{ foodImage.descriptionAr }}</span>
+        </dd>
+        <dt><span>Description En</span></dt>
+        <dd>
+          <span>{{ foodImage.descriptionEn }}</span>
+        </dd>
+        <dt><span>Menu Order</span></dt>
+        <dd>
+          <span>{{ foodImage.menuOrder }}</span>
+        </dd>
+        <dt><span>Image Url</span></dt>
+        <dd>
+          <span>{{ foodImage.imageUrl }}</span>
+        </dd>
+        <dt><span>Image</span></dt>
+        <dd>
+          <div *ngIf="foodImage.image">
+            <a (click)="openFile(foodImage.image, foodImage.imageContentType)">
+              <img
+                [src]="'data:' + foodImage.imageContentType + ';base64,' + foodImage.image"
+                style="max-width: 100%"
+                alt="foodImage image"
+              />
+            </a>
+            {{ foodImage.imageContentType }}, {{ byteSize(foodImage.image) }}
+          </div>
+        </dd>
+        <dt><span>Food</span></dt>
+        <dd>
+          <div *ngIf="foodImage.food">
+            <a [routerLink]="['/food', foodImage.food.id, 'view']">{{ foodImage.food.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/food-image', foodImage.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

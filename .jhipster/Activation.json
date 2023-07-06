@@ -1,0 +1,40 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033411",
+  "dto": "mapstruct",
+  "entityTableName": "activation",
+  "fields": [
+    {
+      "fieldName": "mobileNo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "sentOn",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "validUntil",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "isUsed",
+      "fieldType": "Boolean"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Activation",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -1,0 +1,53 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033417",
+  "dto": "mapstruct",
+  "entityTableName": "coupon",
+  "fields": [
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "couponType",
+      "fieldType": "CouponType",
+      "fieldValues": "FIXED,PERCENT"
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "minimumAmount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "useLimit",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "useCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "expiryDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "isActive",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Coupon",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

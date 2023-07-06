@@ -1,0 +1,200 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-customer-heading" data-cy="CustomerCreateUpdateHeading">Create or edit a Customer</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name"/>
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required"> This field is
+              required. </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email"
+                 formControlName="email"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_mobileNo">Mobile No</label>
+          <input type="text" class="form-control" name="mobileNo" id="field_mobileNo" data-cy="mobileNo"
+                 formControlName="mobileNo"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_googleId">Google Id</label>
+          <input type="text" class="form-control" name="googleId" id="field_googleId" data-cy="googleId"
+                 formControlName="googleId"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_facebookId">Facebook Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="facebookId"
+            id="field_facebookId"
+            data-cy="facebookId"
+            formControlName="facebookId"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_appleId">Apple Id</label>
+          <input type="text" class="form-control" name="appleId" id="field_appleId" data-cy="appleId"
+                 formControlName="appleId"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isBanned">Is Banned</label>
+          <input type="checkbox" class="form-check" name="isBanned" id="field_isBanned" data-cy="isBanned"
+                 formControlName="isBanned"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isVerified">Is Verified</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isVerified"
+            id="field_isVerified"
+            data-cy="isVerified"
+            formControlName="isVerified"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_verifiedByEmail">Verified By Email</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="verifiedByEmail"
+            id="field_verifiedByEmail"
+            data-cy="verifiedByEmail"
+            formControlName="verifiedByEmail"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_verifiedByMobileNo">Verified By Mobile No</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="verifiedByMobileNo"
+            id="field_verifiedByMobileNo"
+            data-cy="verifiedByMobileNo"
+            formControlName="verifiedByMobileNo"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_walletPublicKey">Wallet Public Key</label>
+          <input
+            type="text"
+            class="form-control"
+            name="walletPublicKey"
+            id="field_walletPublicKey"
+            data-cy="walletPublicKey"
+            formControlName="walletPublicKey"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_image">Image</label>
+          <div>
+            <img
+              [src]="'data:' + editForm.get('imageContentType')!.value + ';base64,' + editForm.get('image')!.value"
+              style="max-height: 100px"
+              *ngIf="editForm.get('image')!.value"
+              alt="customer image"
+            />
+            <div *ngIf="editForm.get('image')!.value" class="form-text text-danger clearfix">
+              <span class="pull-start">{{ editForm.get('imageContentType')!.value }}
+                , {{ byteSize(editForm.get('image')!.value!) }}</span>
+              <button
+                type="button"
+                (click)="clearInputImage('image', 'imageContentType', 'file_image')"
+                class="btn btn-secondary btn-xs pull-end"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input type="file" id="file_image" data-cy="image" (change)="setFileData($event, 'image', true)"
+                   accept="image/*"/>
+          </div>
+          <input type="hidden" class="form-control" name="image" id="field_image" data-cy="image"
+                 formControlName="image"/>
+          <input
+            type="hidden"
+            class="form-control"
+            name="imageContentType"
+            id="field_imageContentType"
+            formControlName="imageContentType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_imageUrl">Image Url</label>
+          <input type="text" class="form-control" name="imageUrl" id="field_imageUrl" data-cy="imageUrl"
+                 formControlName="imageUrl"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_languageCode">Language Code</label>
+          <input
+            type="text"
+            class="form-control"
+            name="languageCode"
+            id="field_languageCode"
+            data-cy="languageCode"
+            formControlName="languageCode"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes"
+                 formControlName="notes"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user"
+                  [compareWith]="compareUser">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection">{{ userOption.id }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

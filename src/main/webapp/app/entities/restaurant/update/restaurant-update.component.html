@@ -1,0 +1,317 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-restaurant-heading" data-cy="RestaurantCreateUpdateHeading">Create or edit a Restaurant</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nameAr">Name Ar</label>
+          <input type="text" class="form-control" name="nameAr" id="field_nameAr" data-cy="nameAr"
+                 formControlName="nameAr"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nameEn">Name En</label>
+          <input type="text" class="form-control" name="nameEn" id="field_nameEn" data-cy="nameEn"
+                 formControlName="nameEn"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_address">Address</label>
+          <input type="text" class="form-control" name="address" id="field_address" data-cy="address"
+                 formControlName="address"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_latitude">Latitude</label>
+          <input type="number" class="form-control" name="latitude" id="field_latitude" data-cy="latitude"
+                 formControlName="latitude"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_longitude">Longitude</label>
+          <input type="number" class="form-control" name="longitude" id="field_longitude" data-cy="longitude"
+                 formControlName="longitude"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_plusCode">Plus Code</label>
+          <input type="text" class="form-control" name="plusCode" id="field_plusCode" data-cy="plusCode"
+                 formControlName="plusCode"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_mobile">Mobile</label>
+          <input type="text" class="form-control" name="mobile" id="field_mobile" data-cy="mobile"
+                 formControlName="mobile"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_estimitedTimeMins">Estimited Time Mins</label>
+          <input
+            type="number"
+            class="form-control"
+            name="estimitedTimeMins"
+            id="field_estimitedTimeMins"
+            data-cy="estimitedTimeMins"
+            formControlName="estimitedTimeMins"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_deliveryFee">Delivery Fee</label>
+          <input
+            type="number"
+            class="form-control"
+            name="deliveryFee"
+            id="field_deliveryFee"
+            data-cy="deliveryFee"
+            formControlName="deliveryFee"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_deliveryRange">Delivery Range</label>
+          <input
+            type="number"
+            class="form-control"
+            name="deliveryRange"
+            id="field_deliveryRange"
+            data-cy="deliveryRange"
+            formControlName="deliveryRange"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_availableForDelivery">Available For Delivery</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="availableForDelivery"
+            id="field_availableForDelivery"
+            data-cy="availableForDelivery"
+            formControlName="availableForDelivery"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_availableForPickup">Available For Pickup</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="availableForPickup"
+            id="field_availableForPickup"
+            data-cy="availableForPickup"
+            formControlName="availableForPickup"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_minimumOrderTotalForDelivery">Minimum Order Total For Delivery</label>
+          <input
+            type="number"
+            class="form-control"
+            name="minimumOrderTotalForDelivery"
+            id="field_minimumOrderTotalForDelivery"
+            data-cy="minimumOrderTotalForDelivery"
+            formControlName="minimumOrderTotalForDelivery"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_deliveryPriceType">Delivery Price Type</label>
+          <select
+            class="form-control"
+            name="deliveryPriceType"
+            formControlName="deliveryPriceType"
+            id="field_deliveryPriceType"
+            data-cy="deliveryPriceType"
+          >
+            <option [ngValue]="null"></option>
+            <option *ngFor="let deliveryPriceType of deliveryPriceTypeValues"
+                    [value]="deliveryPriceType">{{ deliveryPriceType }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isOpen">Is Open</label>
+          <input type="checkbox" class="form-check" name="isOpen" id="field_isOpen" data-cy="isOpen"
+                 formControlName="isOpen"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isFeatured">Is Featured</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isFeatured"
+            id="field_isFeatured"
+            data-cy="isFeatured"
+            formControlName="isFeatured"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isListedInOffers">Is Listed In Offers</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isListedInOffers"
+            id="field_isListedInOffers"
+            data-cy="isListedInOffers"
+            formControlName="isListedInOffers"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isActive">Is Active</label>
+          <input type="checkbox" class="form-check" name="isActive" id="field_isActive" data-cy="isActive"
+                 formControlName="isActive"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_offerBanner">Offer Banner</label>
+          <input
+            type="text"
+            class="form-control"
+            name="offerBanner"
+            id="field_offerBanner"
+            data-cy="offerBanner"
+            formControlName="offerBanner"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_priority">Priority</label>
+          <input type="number" class="form-control" name="priority" id="field_priority" data-cy="priority"
+                 formControlName="priority"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_viewCounter">View Counter</label>
+          <input
+            type="number"
+            class="form-control"
+            name="viewCounter"
+            id="field_viewCounter"
+            data-cy="viewCounter"
+            formControlName="viewCounter"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_scheduledClosingTime">Scheduled Closing Time</label>
+          <input
+            type="text"
+            class="form-control"
+            name="scheduledClosingTime"
+            id="field_scheduledClosingTime"
+            data-cy="scheduledClosingTime"
+            formControlName="scheduledClosingTime"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_facebookPageUrl">Facebook Page Url</label>
+          <input
+            type="text"
+            class="form-control"
+            name="facebookPageUrl"
+            id="field_facebookPageUrl"
+            data-cy="facebookPageUrl"
+            formControlName="facebookPageUrl"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes"
+                 formControlName="notes"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user"
+                  [compareWith]="compareUser">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection">{{ userOption.id }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_cuisine">Cuisine</label>
+          <select
+            class="form-control"
+            id="field_cuisine"
+            data-cy="cuisine"
+            name="cuisine"
+            formControlName="cuisine"
+            [compareWith]="compareCuisine"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="cuisineOption"
+                    *ngFor="let cuisineOption of cuisinesSharedCollection">{{ cuisineOption.name }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_categories">Categories</label>
+          <select
+            class="form-control"
+            id="field_categories"
+            data-cy="categories"
+            multiple
+            name="categories"
+            formControlName="categories"
+            [compareWith]="compareCategory"
+          >
+            <option [ngValue]="categoryOption"
+                    *ngFor="let categoryOption of categoriesSharedCollection">{{ categoryOption.id }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

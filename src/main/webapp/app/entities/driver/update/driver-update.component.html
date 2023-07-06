@@ -1,0 +1,243 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-driver-heading" data-cy="DriverCreateUpdateHeading">Create or edit a Driver</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name"/>
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required"> This field is
+              required. </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nameAr">Name Ar</label>
+          <input type="text" class="form-control" name="nameAr" id="field_nameAr" data-cy="nameAr"
+                 formControlName="nameAr"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nameEn">Name En</label>
+          <input type="text" class="form-control" name="nameEn" id="field_nameEn" data-cy="nameEn"
+                 formControlName="nameEn"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_mobileNo">Mobile No</label>
+          <input type="text" class="form-control" name="mobileNo" id="field_mobileNo" data-cy="mobileNo"
+                 formControlName="mobileNo"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email"
+                 formControlName="email"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_imageUrl">Image Url</label>
+          <input type="text" class="form-control" name="imageUrl" id="field_imageUrl" data-cy="imageUrl"
+                 formControlName="imageUrl"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_image">Image</label>
+          <div>
+            <img
+              [src]="'data:' + editForm.get('imageContentType')!.value + ';base64,' + editForm.get('image')!.value"
+              style="max-height: 100px"
+              *ngIf="editForm.get('image')!.value"
+              alt="driver image"
+            />
+            <div *ngIf="editForm.get('image')!.value" class="form-text text-danger clearfix">
+              <span class="pull-start">{{ editForm.get('imageContentType')!.value }}
+                , {{ byteSize(editForm.get('image')!.value!) }}</span>
+              <button
+                type="button"
+                (click)="clearInputImage('image', 'imageContentType', 'file_image')"
+                class="btn btn-secondary btn-xs pull-end"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input type="file" id="file_image" data-cy="image" (change)="setFileData($event, 'image', true)"
+                   accept="image/*"/>
+          </div>
+          <input type="hidden" class="form-control" name="image" id="field_image" data-cy="image"
+                 formControlName="image"/>
+          <input
+            type="hidden"
+            class="form-control"
+            name="imageContentType"
+            id="field_imageContentType"
+            formControlName="imageContentType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_driverType">Driver Type</label>
+          <select class="form-control" name="driverType" formControlName="driverType" id="field_driverType"
+                  data-cy="driverType">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let driverType of driverTypeValues" [value]="driverType">{{ driverType }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_driverPaymentType">Driver Payment Type</label>
+          <select
+            class="form-control"
+            name="driverPaymentType"
+            formControlName="driverPaymentType"
+            id="field_driverPaymentType"
+            data-cy="driverPaymentType"
+          >
+            <option [ngValue]="null"></option>
+            <option *ngFor="let driverPaymentType of driverPaymentTypeValues"
+                    [value]="driverPaymentType">{{ driverPaymentType }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_vehicleType">Vehicle Type</label>
+          <select class="form-control" name="vehicleType" formControlName="vehicleType" id="field_vehicleType"
+                  data-cy="vehicleType">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let vehicleType of vehicleTypeValues" [value]="vehicleType">{{ vehicleType }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_driverStatus">Driver Status</label>
+          <select class="form-control" name="driverStatus" formControlName="driverStatus" id="field_driverStatus"
+                  data-cy="driverStatus">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let driverStatus of driverStatusValues" [value]="driverStatus">{{ driverStatus }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_commissionAmount">Commission Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="commissionAmount"
+            id="field_commissionAmount"
+            data-cy="commissionAmount"
+            formControlName="commissionAmount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_salaryAmount">Salary Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="salaryAmount"
+            id="field_salaryAmount"
+            data-cy="salaryAmount"
+            formControlName="salaryAmount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_latitude">Latitude</label>
+          <input type="number" class="form-control" name="latitude" id="field_latitude" data-cy="latitude"
+                 formControlName="latitude"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_longitude">Longitude</label>
+          <input type="number" class="form-control" name="longitude" id="field_longitude" data-cy="longitude"
+                 formControlName="longitude"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_plusCode">Plus Code</label>
+          <input type="text" class="form-control" name="plusCode" id="field_plusCode" data-cy="plusCode"
+                 formControlName="plusCode"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastLocationDateTime">Last Location Date Time</label>
+          <div class="d-flex">
+            <input
+              id="field_lastLocationDateTime"
+              data-cy="lastLocationDateTime"
+              type="datetime-local"
+              class="form-control"
+              name="lastLocationDateTime"
+              formControlName="lastLocationDateTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isAvailable">Is Available</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isAvailable"
+            id="field_isAvailable"
+            data-cy="isAvailable"
+            formControlName="isAvailable"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes"
+                 formControlName="notes"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user"
+                  [compareWith]="compareUser">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection">{{ userOption.id }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_zone">Zone</label>
+          <select class="form-control" id="field_zone" data-cy="zone" name="zone" formControlName="zone"
+                  [compareWith]="compareZone">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="zoneOption"
+                    *ngFor="let zoneOption of zonesSharedCollection">{{ zoneOption.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033431",
+  "dto": "mapstruct",
+  "entityTableName": "jhi_order",
+  "fields": [
+    {
+      "fieldName": "orderNo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "companyAmount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "restaurantAmount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "deliveryFee",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "itemsPrice",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "discount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "total",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "latitude",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "longitude",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "plusCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "paymentType",
+      "fieldType": "PaymentType",
+      "fieldValues": "CASH,SADAD,TADAWUL,MOBICASH,MOAMALAT,ADFALI,WALLET,MASTERCARD"
+    },
+    {
+      "fieldName": "isApprovedByDriver",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isApprovedByRestaurant",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isPayed",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "amountRecived",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "amountRemaining",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "customerNotes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "restaurantNotes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "driverNotes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "orderStatus",
+      "fieldType": "OrderStatus",
+      "fieldValues": "PLACED,ACCEPTED,READY_FOR_PICKUP,OUT_FOR_DELIVERY,DELIVERED,CANCELLED,FAILED"
+    },
+    {
+      "fieldName": "orderType",
+      "fieldType": "OrderType",
+      "fieldValues": "DELIVERY,PICKUP"
+    },
+    {
+      "fieldName": "deliveredAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Order",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "customer",
+      "relationshipName": "customer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "code",
+      "otherEntityName": "coupon",
+      "relationshipName": "coupon",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "driver",
+      "relationshipName": "driver",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "address",
+      "otherEntityName": "deliveryAddress",
+      "relationshipName": "deliveryAddress",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "restaurant",
+      "relationshipName": "restaurant",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -1,0 +1,51 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033414",
+  "dto": "mapstruct",
+  "entityTableName": "cart",
+  "fields": [
+    {
+      "fieldName": "quantity",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "customerNotes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "foodExtraIdsList",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "foodIngredientIds",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "foodIngredientRemovedIds",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Cart",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "customer",
+      "relationshipName": "customer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "food",
+      "relationshipName": "food",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

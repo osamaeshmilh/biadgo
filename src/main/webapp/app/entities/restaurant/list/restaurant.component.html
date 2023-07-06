@@ -1,0 +1,304 @@
+<div>
+  <h2 id="page-heading" data-cy="RestaurantHeading">
+    <span>Restaurants</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-restaurant"
+        [routerLink]="['/restaurant/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Restaurant </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="restaurants?.length === 0">
+    <span>No Restaurants found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="restaurants && restaurants.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+        <th scope="col" jhiSortBy="id">
+          <div class="d-flex">
+            <span>ID</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="name">
+          <div class="d-flex">
+            <span>Name</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="nameAr">
+          <div class="d-flex">
+            <span>Name Ar</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="nameEn">
+          <div class="d-flex">
+            <span>Name En</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="description">
+          <div class="d-flex">
+            <span>Description</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="address">
+          <div class="d-flex">
+            <span>Address</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="latitude">
+          <div class="d-flex">
+            <span>Latitude</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="longitude">
+          <div class="d-flex">
+            <span>Longitude</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="plusCode">
+          <div class="d-flex">
+            <span>Plus Code</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="mobile">
+          <div class="d-flex">
+            <span>Mobile</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="estimitedTimeMins">
+          <div class="d-flex">
+            <span>Estimited Time Mins</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="deliveryFee">
+          <div class="d-flex">
+            <span>Delivery Fee</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="deliveryRange">
+          <div class="d-flex">
+            <span>Delivery Range</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="availableForDelivery">
+          <div class="d-flex">
+            <span>Available For Delivery</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="availableForPickup">
+          <div class="d-flex">
+            <span>Available For Pickup</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="minimumOrderTotalForDelivery">
+          <div class="d-flex">
+            <span>Minimum Order Total For Delivery</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="deliveryPriceType">
+          <div class="d-flex">
+            <span>Delivery Price Type</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="isOpen">
+          <div class="d-flex">
+            <span>Is Open</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="isFeatured">
+          <div class="d-flex">
+            <span>Is Featured</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="isListedInOffers">
+          <div class="d-flex">
+            <span>Is Listed In Offers</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="isActive">
+          <div class="d-flex">
+            <span>Is Active</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="offerBanner">
+          <div class="d-flex">
+            <span>Offer Banner</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="priority">
+          <div class="d-flex">
+            <span>Priority</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="viewCounter">
+          <div class="d-flex">
+            <span>View Counter</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="scheduledClosingTime">
+          <div class="d-flex">
+            <span>Scheduled Closing Time</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="facebookPageUrl">
+          <div class="d-flex">
+            <span>Facebook Page Url</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="notes">
+          <div class="d-flex">
+            <span>Notes</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="user.id">
+          <div class="d-flex">
+            <span>User</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="cuisine.name">
+          <div class="d-flex">
+            <span>Cuisine</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let restaurant of restaurants; trackBy: trackId" data-cy="entityTable">
+        <td>
+          <a [routerLink]="['/restaurant', restaurant.id, 'view']">{{ restaurant.id }}</a>
+        </td>
+        <td>{{ restaurant.name }}</td>
+        <td>{{ restaurant.nameAr }}</td>
+        <td>{{ restaurant.nameEn }}</td>
+        <td>{{ restaurant.description }}</td>
+        <td>{{ restaurant.address }}</td>
+        <td>{{ restaurant.latitude }}</td>
+        <td>{{ restaurant.longitude }}</td>
+        <td>{{ restaurant.plusCode }}</td>
+        <td>{{ restaurant.mobile }}</td>
+        <td>{{ restaurant.estimitedTimeMins }}</td>
+        <td>{{ restaurant.deliveryFee }}</td>
+        <td>{{ restaurant.deliveryRange }}</td>
+        <td>{{ restaurant.availableForDelivery }}</td>
+        <td>{{ restaurant.availableForPickup }}</td>
+        <td>{{ restaurant.minimumOrderTotalForDelivery }}</td>
+        <td>{{ restaurant.deliveryPriceType }}</td>
+        <td>{{ restaurant.isOpen }}</td>
+        <td>{{ restaurant.isFeatured }}</td>
+        <td>{{ restaurant.isListedInOffers }}</td>
+        <td>{{ restaurant.isActive }}</td>
+        <td>{{ restaurant.offerBanner }}</td>
+        <td>{{ restaurant.priority }}</td>
+        <td>{{ restaurant.viewCounter }}</td>
+        <td>{{ restaurant.scheduledClosingTime }}</td>
+        <td>{{ restaurant.facebookPageUrl }}</td>
+        <td>{{ restaurant.notes }}</td>
+        <td>
+          {{ restaurant.user?.id }}
+        </td>
+        <td>
+          <div *ngIf="restaurant.cuisine">
+            <a [routerLink]="['/cuisine', restaurant.cuisine.id, 'view']">{{ restaurant.cuisine.name }}</a>
+          </div>
+        </td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button
+              type="submit"
+              [routerLink]="['/restaurant', restaurant.id, 'view']"
+              class="btn btn-info btn-sm"
+              data-cy="entityDetailsButton"
+            >
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline">View</span>
+            </button>
+
+            <button
+              type="submit"
+              [routerLink]="['/restaurant', restaurant.id, 'edit']"
+              class="btn btn-primary btn-sm"
+              data-cy="entityEditButton"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline">Edit</span>
+            </button>
+
+            <button type="submit" (click)="delete(restaurant)" class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline">Delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="restaurants && restaurants.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

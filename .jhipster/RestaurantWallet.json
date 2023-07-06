@@ -1,0 +1,58 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033438",
+  "dto": "mapstruct",
+  "entityTableName": "restaurant_wallet",
+  "fields": [
+    {
+      "fieldName": "transactionNo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "walletAction",
+      "fieldType": "WalletAction",
+      "fieldValues": "DEPOSIT,WITHDRAW"
+    },
+    {
+      "fieldName": "totalBeforeAction",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "totalAfterAction",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "paymentType",
+      "fieldType": "PaymentType",
+      "fieldValues": "CASH,SADAD,TADAWUL,MOBICASH,MOAMALAT,ADFALI,WALLET,MASTERCARD"
+    },
+    {
+      "fieldName": "paymentReference",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "RestaurantWallet",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "restaurant",
+      "relationshipName": "restaurant",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

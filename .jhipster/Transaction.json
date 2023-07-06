@@ -1,0 +1,62 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033442",
+  "dto": "mapstruct",
+  "entityTableName": "transaction",
+  "fields": [
+    {
+      "fieldName": "transactionReference",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "paymentType",
+      "fieldType": "PaymentType",
+      "fieldValues": "CASH,SADAD,TADAWUL,MOBICASH,MOAMALAT,ADFALI,WALLET,MASTERCARD"
+    },
+    {
+      "fieldName": "transactionStatus",
+      "fieldType": "TransactionStatus",
+      "fieldValues": "PENDING_PAYMENT,ERROR,CANCELLED"
+    },
+    {
+      "fieldName": "vendorReference",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "vendorMessage",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "fees",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "total",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Transaction",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "customer",
+      "relationshipName": "customer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

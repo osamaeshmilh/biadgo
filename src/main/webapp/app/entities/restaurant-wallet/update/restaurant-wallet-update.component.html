@@ -1,0 +1,130 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-restaurant-wallet-heading" data-cy="RestaurantWalletCreateUpdateHeading">Create or edit a Restaurant
+        Wallet</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_transactionNo">Transaction No</label>
+          <input
+            type="text"
+            class="form-control"
+            name="transactionNo"
+            id="field_transactionNo"
+            data-cy="transactionNo"
+            formControlName="transactionNo"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_amount">Amount</label>
+          <input type="number" class="form-control" name="amount" id="field_amount" data-cy="amount"
+                 formControlName="amount"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_walletAction">Wallet Action</label>
+          <select class="form-control" name="walletAction" formControlName="walletAction" id="field_walletAction"
+                  data-cy="walletAction">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let walletAction of walletActionValues" [value]="walletAction">{{ walletAction }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_totalBeforeAction">Total Before Action</label>
+          <input
+            type="number"
+            class="form-control"
+            name="totalBeforeAction"
+            id="field_totalBeforeAction"
+            data-cy="totalBeforeAction"
+            formControlName="totalBeforeAction"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_totalAfterAction">Total After Action</label>
+          <input
+            type="number"
+            class="form-control"
+            name="totalAfterAction"
+            id="field_totalAfterAction"
+            data-cy="totalAfterAction"
+            formControlName="totalAfterAction"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_paymentType">Payment Type</label>
+          <select class="form-control" name="paymentType" formControlName="paymentType" id="field_paymentType"
+                  data-cy="paymentType">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let paymentType of paymentTypeValues" [value]="paymentType">{{ paymentType }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_paymentReference">Payment Reference</label>
+          <input
+            type="text"
+            class="form-control"
+            name="paymentReference"
+            id="field_paymentReference"
+            data-cy="paymentReference"
+            formControlName="paymentReference"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes"
+                 formControlName="notes"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_restaurant">Restaurant</label>
+          <select
+            class="form-control"
+            id="field_restaurant"
+            data-cy="restaurant"
+            name="restaurant"
+            formControlName="restaurant"
+            [compareWith]="compareRestaurant"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="restaurantOption" *ngFor="let restaurantOption of restaurantsSharedCollection">
+              {{ restaurantOption.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

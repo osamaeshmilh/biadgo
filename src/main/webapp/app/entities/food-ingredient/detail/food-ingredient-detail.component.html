@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="foodIngredient">
+      <h2 data-cy="foodIngredientDetailsHeading"><span>Food Ingredient</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ foodIngredient.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ foodIngredient.name }}</span>
+        </dd>
+        <dt><span>Name Ar</span></dt>
+        <dd>
+          <span>{{ foodIngredient.nameAr }}</span>
+        </dd>
+        <dt><span>Name En</span></dt>
+        <dd>
+          <span>{{ foodIngredient.nameEn }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ foodIngredient.notes }}</span>
+        </dd>
+        <dt><span>Food</span></dt>
+        <dd>
+          <div *ngIf="foodIngredient.food">
+            <a [routerLink]="['/food', foodIngredient.food.id, 'view']">{{ foodIngredient.food.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/food-ingredient', foodIngredient.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="driver">
+      <h2 data-cy="driverDetailsHeading"><span>Driver</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ driver.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ driver.name }}</span>
+        </dd>
+        <dt><span>Name Ar</span></dt>
+        <dd>
+          <span>{{ driver.nameAr }}</span>
+        </dd>
+        <dt><span>Name En</span></dt>
+        <dd>
+          <span>{{ driver.nameEn }}</span>
+        </dd>
+        <dt><span>Mobile No</span></dt>
+        <dd>
+          <span>{{ driver.mobileNo }}</span>
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+          <span>{{ driver.email }}</span>
+        </dd>
+        <dt><span>Image Url</span></dt>
+        <dd>
+          <span>{{ driver.imageUrl }}</span>
+        </dd>
+        <dt><span>Image</span></dt>
+        <dd>
+          <div *ngIf="driver.image">
+            <a (click)="openFile(driver.image, driver.imageContentType)">
+              <img [src]="'data:' + driver.imageContentType + ';base64,' + driver.image" style="max-width: 100%"
+                   alt="driver image"/>
+            </a>
+            {{ driver.imageContentType }}, {{ byteSize(driver.image) }}
+          </div>
+        </dd>
+        <dt><span>Driver Type</span></dt>
+        <dd>
+          <span>{{ driver.driverType }}</span>
+        </dd>
+        <dt><span>Driver Payment Type</span></dt>
+        <dd>
+          <span>{{ driver.driverPaymentType }}</span>
+        </dd>
+        <dt><span>Vehicle Type</span></dt>
+        <dd>
+          <span>{{ driver.vehicleType }}</span>
+        </dd>
+        <dt><span>Driver Status</span></dt>
+        <dd>
+          <span>{{ driver.driverStatus }}</span>
+        </dd>
+        <dt><span>Commission Amount</span></dt>
+        <dd>
+          <span>{{ driver.commissionAmount }}</span>
+        </dd>
+        <dt><span>Salary Amount</span></dt>
+        <dd>
+          <span>{{ driver.salaryAmount }}</span>
+        </dd>
+        <dt><span>Latitude</span></dt>
+        <dd>
+          <span>{{ driver.latitude }}</span>
+        </dd>
+        <dt><span>Longitude</span></dt>
+        <dd>
+          <span>{{ driver.longitude }}</span>
+        </dd>
+        <dt><span>Plus Code</span></dt>
+        <dd>
+          <span>{{ driver.plusCode }}</span>
+        </dd>
+        <dt><span>Last Location Date Time</span></dt>
+        <dd>
+          <span>{{ driver.lastLocationDateTime | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Is Available</span></dt>
+        <dd>
+          <span>{{ driver.isAvailable }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ driver.notes }}</span>
+        </dd>
+        <dt><span>User</span></dt>
+        <dd>
+          <span>{{ driver.user?.id }}</span>
+        </dd>
+        <dt><span>Zone</span></dt>
+        <dd>
+          <div *ngIf="driver.zone">
+            <a [routerLink]="['/zone', driver.zone.id, 'view']">{{ driver.zone.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/driver', driver.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

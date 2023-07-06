@@ -1,0 +1,144 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033435",
+  "dto": "mapstruct",
+  "entityTableName": "restaurant",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nameAr",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nameEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "latitude",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "longitude",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "plusCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mobile",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "estimitedTimeMins",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "deliveryFee",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "deliveryRange",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "availableForDelivery",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "availableForPickup",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "minimumOrderTotalForDelivery",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "deliveryPriceType",
+      "fieldType": "DeliveryPriceType",
+      "fieldValues": "FIXED,ZONE,DISTANCE"
+    },
+    {
+      "fieldName": "isOpen",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isFeatured",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isListedInOffers",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isActive",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "offerBanner",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "priority",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "viewCounter",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "scheduledClosingTime",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "facebookPageUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Restaurant",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "restaurant",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "cuisine",
+      "relationshipName": "cuisine",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "category",
+      "otherEntityRelationshipName": "restaurant",
+      "relationshipName": "categories",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

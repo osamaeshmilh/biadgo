@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="transaction">
+      <h2 data-cy="transactionDetailsHeading"><span>Transaction</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ transaction.id }}</span>
+        </dd>
+        <dt><span>Transaction Reference</span></dt>
+        <dd>
+          <span>{{ transaction.transactionReference }}</span>
+        </dd>
+        <dt><span>Payment Type</span></dt>
+        <dd>
+          <span>{{ transaction.paymentType }}</span>
+        </dd>
+        <dt><span>Transaction Status</span></dt>
+        <dd>
+          <span>{{ transaction.transactionStatus }}</span>
+        </dd>
+        <dt><span>Vendor Reference</span></dt>
+        <dd>
+          <span>{{ transaction.vendorReference }}</span>
+        </dd>
+        <dt><span>Vendor Message</span></dt>
+        <dd>
+          <span>{{ transaction.vendorMessage }}</span>
+        </dd>
+        <dt><span>Amount</span></dt>
+        <dd>
+          <span>{{ transaction.amount }}</span>
+        </dd>
+        <dt><span>Fees</span></dt>
+        <dd>
+          <span>{{ transaction.fees }}</span>
+        </dd>
+        <dt><span>Total</span></dt>
+        <dd>
+          <span>{{ transaction.total }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ transaction.notes }}</span>
+        </dd>
+        <dt><span>Customer</span></dt>
+        <dd>
+          <div *ngIf="transaction.customer">
+            <a [routerLink]="['/customer', transaction.customer.id, 'view']">{{ transaction.customer.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/transaction', transaction.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

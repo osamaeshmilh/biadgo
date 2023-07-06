@@ -1,0 +1,98 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="customer">
+      <h2 data-cy="customerDetailsHeading"><span>Customer</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ customer.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ customer.name }}</span>
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+          <span>{{ customer.email }}</span>
+        </dd>
+        <dt><span>Mobile No</span></dt>
+        <dd>
+          <span>{{ customer.mobileNo }}</span>
+        </dd>
+        <dt><span>Google Id</span></dt>
+        <dd>
+          <span>{{ customer.googleId }}</span>
+        </dd>
+        <dt><span>Facebook Id</span></dt>
+        <dd>
+          <span>{{ customer.facebookId }}</span>
+        </dd>
+        <dt><span>Apple Id</span></dt>
+        <dd>
+          <span>{{ customer.appleId }}</span>
+        </dd>
+        <dt><span>Is Banned</span></dt>
+        <dd>
+          <span>{{ customer.isBanned }}</span>
+        </dd>
+        <dt><span>Is Verified</span></dt>
+        <dd>
+          <span>{{ customer.isVerified }}</span>
+        </dd>
+        <dt><span>Verified By Email</span></dt>
+        <dd>
+          <span>{{ customer.verifiedByEmail }}</span>
+        </dd>
+        <dt><span>Verified By Mobile No</span></dt>
+        <dd>
+          <span>{{ customer.verifiedByMobileNo }}</span>
+        </dd>
+        <dt><span>Wallet Public Key</span></dt>
+        <dd>
+          <span>{{ customer.walletPublicKey }}</span>
+        </dd>
+        <dt><span>Image</span></dt>
+        <dd>
+          <div *ngIf="customer.image">
+            <a (click)="openFile(customer.image, customer.imageContentType)">
+              <img [src]="'data:' + customer.imageContentType + ';base64,' + customer.image" style="max-width: 100%"
+                   alt="customer image"/>
+            </a>
+            {{ customer.imageContentType }}, {{ byteSize(customer.image) }}
+          </div>
+        </dd>
+        <dt><span>Image Url</span></dt>
+        <dd>
+          <span>{{ customer.imageUrl }}</span>
+        </dd>
+        <dt><span>Language Code</span></dt>
+        <dd>
+          <span>{{ customer.languageCode }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ customer.notes }}</span>
+        </dd>
+        <dt><span>User</span></dt>
+        <dd>
+          <span>{{ customer.user?.id }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/customer', customer.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

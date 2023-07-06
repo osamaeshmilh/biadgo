@@ -1,0 +1,43 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033439",
+  "dto": "mapstruct",
+  "entityTableName": "restaurant_review",
+  "fields": [
+    {
+      "fieldName": "review",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "rate",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "isEdited",
+      "fieldType": "Boolean"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "RestaurantReview",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "customer",
+      "relationshipName": "customer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "restaurant",
+      "relationshipName": "restaurant",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

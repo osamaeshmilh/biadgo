@@ -1,0 +1,62 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033413",
+  "dto": "mapstruct",
+  "entityTableName": "customer_wallet",
+  "fields": [
+    {
+      "fieldName": "transactionNo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "walletAction",
+      "fieldType": "WalletAction",
+      "fieldValues": "DEPOSIT,WITHDRAW"
+    },
+    {
+      "fieldName": "totalBeforeAction",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "totalAfterAction",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "paymentType",
+      "fieldType": "PaymentType",
+      "fieldValues": "CASH,SADAD,TADAWUL,MOBICASH,MOAMALAT,ADFALI,WALLET,MASTERCARD"
+    },
+    {
+      "fieldName": "paymentReference",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "orderId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "CustomerWallet",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "customer",
+      "relationshipName": "customer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

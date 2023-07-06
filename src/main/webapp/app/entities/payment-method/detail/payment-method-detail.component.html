@@ -1,0 +1,81 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="paymentMethod">
+      <h2 data-cy="paymentMethodDetailsHeading"><span>Payment Method</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ paymentMethod.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ paymentMethod.name }}</span>
+        </dd>
+        <dt><span>Name Ar</span></dt>
+        <dd>
+          <span>{{ paymentMethod.nameAr }}</span>
+        </dd>
+        <dt><span>Name En</span></dt>
+        <dd>
+          <span>{{ paymentMethod.nameEn }}</span>
+        </dd>
+        <dt><span>Menu Order</span></dt>
+        <dd>
+          <span>{{ paymentMethod.menuOrder }}</span>
+        </dd>
+        <dt><span>Image Url</span></dt>
+        <dd>
+          <span>{{ paymentMethod.imageUrl }}</span>
+        </dd>
+        <dt><span>Image</span></dt>
+        <dd>
+          <div *ngIf="paymentMethod.image">
+            <a (click)="openFile(paymentMethod.image, paymentMethod.imageContentType)">
+              <img
+                [src]="'data:' + paymentMethod.imageContentType + ';base64,' + paymentMethod.image"
+                style="max-width: 100%"
+                alt="paymentMethod image"
+              />
+            </a>
+            {{ paymentMethod.imageContentType }}, {{ byteSize(paymentMethod.image) }}
+          </div>
+        </dd>
+        <dt><span>Details</span></dt>
+        <dd>
+          <span>{{ paymentMethod.details }}</span>
+        </dd>
+        <dt><span>Fee Percentage</span></dt>
+        <dd>
+          <span>{{ paymentMethod.feePercentage }}</span>
+        </dd>
+        <dt><span>Payment Type</span></dt>
+        <dd>
+          <span>{{ paymentMethod.paymentType }}</span>
+        </dd>
+        <dt><span>Is Active</span></dt>
+        <dd>
+          <span>{{ paymentMethod.isActive }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ paymentMethod.notes }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/payment-method', paymentMethod.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

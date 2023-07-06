@@ -32,7 +32,7 @@ public class BiadjoApp {
     }
 
     /**
-     * Initializes Biadjo.
+     * Initializes biadjo.
      * <p>
      * Spring profiles can be configured with a program argument --spring.profiles.active=your-active-profile
      * <p>

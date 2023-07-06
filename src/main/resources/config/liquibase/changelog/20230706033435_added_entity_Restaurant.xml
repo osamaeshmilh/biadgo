@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity Restaurant.
+    -->
+    <changeSet id="20230706033435-1" author="jhipster">
+        <createTable tableName="restaurant">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="name_ar" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="name_en" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="address" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="latitude" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="longitude" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="plus_code" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="mobile" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="estimited_time_mins" type="integer">
+                <constraints nullable="true"/>
+            </column>
+            <column name="delivery_fee" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="delivery_range" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="available_for_delivery" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="available_for_pickup" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="minimum_order_total_for_delivery" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="delivery_price_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_open" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_featured" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_listed_in_offers" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_active" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="offer_banner" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="priority" type="integer">
+                <constraints nullable="true"/>
+            </column>
+            <column name="view_counter" type="integer">
+                <constraints nullable="true"/>
+            </column>
+            <column name="scheduled_closing_time" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="facebook_page_url" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="notes" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_restaurant__user_id"/>
+            </column>
+            <column name="cuisine_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20230706033435-1-relations" author="jhipster">
+
+        <createTable tableName="rel_restaurant__categories">
+            <column name="categories_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="restaurant_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="restaurant_id, categories_id" tableName="rel_restaurant__categories"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20230706033435-1-data" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/restaurant.csv"
+            separator=";"
+            tableName="restaurant"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="name" type="string"/>
+            <column name="name_ar" type="string"/>
+            <column name="name_en" type="string"/>
+            <column name="description" type="string"/>
+            <column name="address" type="string"/>
+            <column name="latitude" type="numeric"/>
+            <column name="longitude" type="numeric"/>
+            <column name="plus_code" type="string"/>
+            <column name="mobile" type="string"/>
+            <column name="estimited_time_mins" type="numeric"/>
+            <column name="delivery_fee" type="numeric"/>
+            <column name="delivery_range" type="numeric"/>
+            <column name="available_for_delivery" type="boolean"/>
+            <column name="available_for_pickup" type="boolean"/>
+            <column name="minimum_order_total_for_delivery" type="numeric"/>
+            <column name="delivery_price_type" type="string"/>
+            <column name="is_open" type="boolean"/>
+            <column name="is_featured" type="boolean"/>
+            <column name="is_listed_in_offers" type="boolean"/>
+            <column name="is_active" type="boolean"/>
+            <column name="offer_banner" type="string"/>
+            <column name="priority" type="numeric"/>
+            <column name="view_counter" type="numeric"/>
+            <column name="scheduled_closing_time" type="string"/>
+            <column name="facebook_page_url" type="string"/>
+            <column name="notes" type="string"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

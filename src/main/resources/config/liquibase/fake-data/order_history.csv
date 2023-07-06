@@ -1,0 +1,11 @@
+id;order_status_from;order_status_to;notes
+1;PLACED;ACCEPTED;South Bedfordshire Shoes
+2;READY_FOR_PICKUP;PLACED;Mandatory radian plum
+3;ACCEPTED;CANCELLED;indigo XSS
+4;CANCELLED;DELIVERED;digital deliver
+5;ACCEPTED;READY_FOR_PICKUP;gosh female Sao
+6;FAILED;PLACED;content Bicycle male
+7;READY_FOR_PICKUP;PLACED;Jazz
+8;READY_FOR_PICKUP;OUT_FOR_DELIVERY;Mini
+9;ACCEPTED;FAILED;Clothing
+10;CANCELLED;PLACED;Refined to

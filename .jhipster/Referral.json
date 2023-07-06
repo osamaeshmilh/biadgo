@@ -1,0 +1,57 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033434",
+  "dto": "mapstruct",
+  "entityTableName": "referral",
+  "fields": [
+    {
+      "fieldName": "referralCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "referrerAmount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "referredCustomerAmount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "expiryDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "isUsed",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "usedDateTime",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Referral",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "customer",
+      "relationshipName": "referredCustomer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "customer",
+      "relationshipName": "referrerCustomer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

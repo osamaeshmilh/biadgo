@@ -1,0 +1,172 @@
+<div>
+  <h2 id="page-heading" data-cy="ReferralHeading">
+    <span>Referrals</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-referral"
+        [routerLink]="['/referral/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Referral </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="referrals?.length === 0">
+    <span>No Referrals found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="referrals && referrals.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+        <th scope="col" jhiSortBy="id">
+          <div class="d-flex">
+            <span>ID</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="referralCode">
+          <div class="d-flex">
+            <span>Referral Code</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="referrerAmount">
+          <div class="d-flex">
+            <span>Referrer Amount</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="referredCustomerAmount">
+          <div class="d-flex">
+            <span>Referred Customer Amount</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="expiryDate">
+          <div class="d-flex">
+            <span>Expiry Date</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="isUsed">
+          <div class="d-flex">
+            <span>Is Used</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="usedDateTime">
+          <div class="d-flex">
+            <span>Used Date Time</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="notes">
+          <div class="d-flex">
+            <span>Notes</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="referredCustomer.id">
+          <div class="d-flex">
+            <span>Referred Customer</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="referrerCustomer.id">
+          <div class="d-flex">
+            <span>Referrer Customer</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let referral of referrals; trackBy: trackId" data-cy="entityTable">
+        <td>
+          <a [routerLink]="['/referral', referral.id, 'view']">{{ referral.id }}</a>
+        </td>
+        <td>{{ referral.referralCode }}</td>
+        <td>{{ referral.referrerAmount }}</td>
+        <td>{{ referral.referredCustomerAmount }}</td>
+        <td>{{ referral.expiryDate | formatMediumDate }}</td>
+        <td>{{ referral.isUsed }}</td>
+        <td>{{ referral.usedDateTime | formatMediumDatetime }}</td>
+        <td>{{ referral.notes }}</td>
+        <td>
+          <div *ngIf="referral.referredCustomer">
+            <a [routerLink]="['/customer', referral.referredCustomer.id, 'view']">{{ referral.referredCustomer.id }}</a>
+          </div>
+        </td>
+        <td>
+          <div *ngIf="referral.referrerCustomer">
+            <a [routerLink]="['/customer', referral.referrerCustomer.id, 'view']">{{ referral.referrerCustomer.id }}</a>
+          </div>
+        </td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button
+              type="submit"
+              [routerLink]="['/referral', referral.id, 'view']"
+              class="btn btn-info btn-sm"
+              data-cy="entityDetailsButton"
+            >
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline">View</span>
+            </button>
+
+            <button
+              type="submit"
+              [routerLink]="['/referral', referral.id, 'edit']"
+              class="btn btn-primary btn-sm"
+              data-cy="entityEditButton"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline">Edit</span>
+            </button>
+
+            <button type="submit" (click)="delete(referral)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline">Delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="referrals && referrals.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

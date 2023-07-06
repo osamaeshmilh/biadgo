@@ -1,0 +1,52 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033429",
+  "dto": "mapstruct",
+  "entityTableName": "food_order",
+  "fields": [
+    {
+      "fieldName": "price",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "quantity",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "total",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "specialNotes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "foodExtraIdsList",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "foodIngredientIds",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "foodIngredientRemovedIds",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "FoodOrder",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "orderNo",
+      "otherEntityName": "order",
+      "relationshipName": "order",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

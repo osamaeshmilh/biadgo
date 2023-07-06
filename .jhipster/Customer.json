@@ -1,0 +1,89 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033412",
+  "dto": "mapstruct",
+  "entityTableName": "customer",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mobileNo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "googleId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "facebookId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "appleId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isBanned",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isVerified",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "verifiedByEmail",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "verifiedByMobileNo",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "walletPublicKey",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "imageUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "languageCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Customer",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "customer",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

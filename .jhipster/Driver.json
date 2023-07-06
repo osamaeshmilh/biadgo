@@ -1,0 +1,116 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033420",
+  "dto": "mapstruct",
+  "entityTableName": "driver",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "nameAr",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nameEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mobileNo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "imageUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "driverType",
+      "fieldType": "DriverType",
+      "fieldValues": "INDEPENDENT,COMPANY"
+    },
+    {
+      "fieldName": "driverPaymentType",
+      "fieldType": "DriverPaymentType",
+      "fieldValues": "FIXED,PERCENT"
+    },
+    {
+      "fieldName": "vehicleType",
+      "fieldType": "VehicleType",
+      "fieldValues": "CAR,MOTORBIKE,BICYCLE,TRUCK"
+    },
+    {
+      "fieldName": "driverStatus",
+      "fieldType": "DriverStatus",
+      "fieldValues": "OFFLINE,ONLINE,ON_ROUTE_TO_PICKUP,AT_RESTAURANT,ON_ROUTE_TO_DELIVERY,AT_CUSTOMER,ORDER_DELIVERED,BREAK"
+    },
+    {
+      "fieldName": "commissionAmount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "salaryAmount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "latitude",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "longitude",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "plusCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastLocationDateTime",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "isAvailable",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Driver",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "driver",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "zone",
+      "relationshipName": "zone",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -1,0 +1,151 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="order">
+      <h2 data-cy="orderDetailsHeading"><span>Order</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ order.id }}</span>
+        </dd>
+        <dt><span>Order No</span></dt>
+        <dd>
+          <span>{{ order.orderNo }}</span>
+        </dd>
+        <dt><span>Company Amount</span></dt>
+        <dd>
+          <span>{{ order.companyAmount }}</span>
+        </dd>
+        <dt><span>Restaurant Amount</span></dt>
+        <dd>
+          <span>{{ order.restaurantAmount }}</span>
+        </dd>
+        <dt><span>Delivery Fee</span></dt>
+        <dd>
+          <span>{{ order.deliveryFee }}</span>
+        </dd>
+        <dt><span>Items Price</span></dt>
+        <dd>
+          <span>{{ order.itemsPrice }}</span>
+        </dd>
+        <dt><span>Discount</span></dt>
+        <dd>
+          <span>{{ order.discount }}</span>
+        </dd>
+        <dt><span>Total</span></dt>
+        <dd>
+          <span>{{ order.total }}</span>
+        </dd>
+        <dt><span>Latitude</span></dt>
+        <dd>
+          <span>{{ order.latitude }}</span>
+        </dd>
+        <dt><span>Longitude</span></dt>
+        <dd>
+          <span>{{ order.longitude }}</span>
+        </dd>
+        <dt><span>Plus Code</span></dt>
+        <dd>
+          <span>{{ order.plusCode }}</span>
+        </dd>
+        <dt><span>Payment Type</span></dt>
+        <dd>
+          <span>{{ order.paymentType }}</span>
+        </dd>
+        <dt><span>Is Approved By Driver</span></dt>
+        <dd>
+          <span>{{ order.isApprovedByDriver }}</span>
+        </dd>
+        <dt><span>Is Approved By Restaurant</span></dt>
+        <dd>
+          <span>{{ order.isApprovedByRestaurant }}</span>
+        </dd>
+        <dt><span>Is Payed</span></dt>
+        <dd>
+          <span>{{ order.isPayed }}</span>
+        </dd>
+        <dt><span>Amount Recived</span></dt>
+        <dd>
+          <span>{{ order.amountRecived }}</span>
+        </dd>
+        <dt><span>Amount Remaining</span></dt>
+        <dd>
+          <span>{{ order.amountRemaining }}</span>
+        </dd>
+        <dt><span>Customer Notes</span></dt>
+        <dd>
+          <span>{{ order.customerNotes }}</span>
+        </dd>
+        <dt><span>Restaurant Notes</span></dt>
+        <dd>
+          <span>{{ order.restaurantNotes }}</span>
+        </dd>
+        <dt><span>Driver Notes</span></dt>
+        <dd>
+          <span>{{ order.driverNotes }}</span>
+        </dd>
+        <dt><span>Order Status</span></dt>
+        <dd>
+          <span>{{ order.orderStatus }}</span>
+        </dd>
+        <dt><span>Order Type</span></dt>
+        <dd>
+          <span>{{ order.orderType }}</span>
+        </dd>
+        <dt><span>Delivered At</span></dt>
+        <dd>
+          <span>{{ order.deliveredAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ order.notes }}</span>
+        </dd>
+        <dt><span>Customer</span></dt>
+        <dd>
+          <div *ngIf="order.customer">
+            <a [routerLink]="['/customer', order.customer.id, 'view']">{{ order.customer.name }}</a>
+          </div>
+        </dd>
+        <dt><span>Coupon</span></dt>
+        <dd>
+          <div *ngIf="order.coupon">
+            <a [routerLink]="['/coupon', order.coupon.id, 'view']">{{ order.coupon.code }}</a>
+          </div>
+        </dd>
+        <dt><span>Driver</span></dt>
+        <dd>
+          <div *ngIf="order.driver">
+            <a [routerLink]="['/driver', order.driver.id, 'view']">{{ order.driver.name }}</a>
+          </div>
+        </dd>
+        <dt><span>Delivery Address</span></dt>
+        <dd>
+          <div *ngIf="order.deliveryAddress">
+            <a
+              [routerLink]="['/delivery-address', order.deliveryAddress.id, 'view']">{{ order.deliveryAddress.address }}</a>
+          </div>
+        </dd>
+        <dt><span>Restaurant</span></dt>
+        <dd>
+          <div *ngIf="order.restaurant">
+            <a [routerLink]="['/restaurant', order.restaurant.id, 'view']">{{ order.restaurant.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/order', order.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

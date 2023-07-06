@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="cart">
+      <h2 data-cy="cartDetailsHeading"><span>Cart</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ cart.id }}</span>
+        </dd>
+        <dt><span>Quantity</span></dt>
+        <dd>
+          <span>{{ cart.quantity }}</span>
+        </dd>
+        <dt><span>Customer Notes</span></dt>
+        <dd>
+          <span>{{ cart.customerNotes }}</span>
+        </dd>
+        <dt><span>Food Extra Ids List</span></dt>
+        <dd>
+          <span>{{ cart.foodExtraIdsList }}</span>
+        </dd>
+        <dt><span>Food Ingredient Ids</span></dt>
+        <dd>
+          <span>{{ cart.foodIngredientIds }}</span>
+        </dd>
+        <dt><span>Food Ingredient Removed Ids</span></dt>
+        <dd>
+          <span>{{ cart.foodIngredientRemovedIds }}</span>
+        </dd>
+        <dt><span>Customer</span></dt>
+        <dd>
+          <div *ngIf="cart.customer">
+            <a [routerLink]="['/customer', cart.customer.id, 'view']">{{ cart.customer.name }}</a>
+          </div>
+        </dd>
+        <dt><span>Food</span></dt>
+        <dd>
+          <div *ngIf="cart.food">
+            <a [routerLink]="['/food', cart.food.id, 'view']">{{ cart.food.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/cart', cart.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

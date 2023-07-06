@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="driverReview">
+      <h2 data-cy="driverReviewDetailsHeading"><span>Driver Review</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ driverReview.id }}</span>
+        </dd>
+        <dt><span>Details</span></dt>
+        <dd>
+          <span>{{ driverReview.details }}</span>
+        </dd>
+        <dt><span>Rate</span></dt>
+        <dd>
+          <span>{{ driverReview.rate }}</span>
+        </dd>
+        <dt><span>Customer</span></dt>
+        <dd>
+          <div *ngIf="driverReview.customer">
+            <a [routerLink]="['/customer', driverReview.customer.id, 'view']">{{ driverReview.customer.name }}</a>
+          </div>
+        </dd>
+        <dt><span>Driver</span></dt>
+        <dd>
+          <div *ngIf="driverReview.driver">
+            <a [routerLink]="['/driver', driverReview.driver.id, 'view']">{{ driverReview.driver.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/driver-review', driverReview.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

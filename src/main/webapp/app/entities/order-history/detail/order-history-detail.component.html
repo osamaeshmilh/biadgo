@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="orderHistory">
+      <h2 data-cy="orderHistoryDetailsHeading"><span>Order History</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ orderHistory.id }}</span>
+        </dd>
+        <dt><span>Order Status From</span></dt>
+        <dd>
+          <span>{{ orderHistory.orderStatusFrom }}</span>
+        </dd>
+        <dt><span>Order Status To</span></dt>
+        <dd>
+          <span>{{ orderHistory.orderStatusTo }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ orderHistory.notes }}</span>
+        </dd>
+        <dt><span>Order</span></dt>
+        <dd>
+          <div *ngIf="orderHistory.order">
+            <a [routerLink]="['/order', orderHistory.order.id, 'view']">{{ orderHistory.order.orderNo }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/order-history', orderHistory.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

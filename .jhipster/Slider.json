@@ -1,0 +1,61 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230706033441",
+  "dto": "mapstruct",
+  "entityTableName": "slider",
+  "fields": [
+    {
+      "fieldName": "details",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "detailsAr",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "detailsEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "menuOrder",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "imageUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "url",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "restaurantId",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "categoryId",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "foodId",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Slider",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

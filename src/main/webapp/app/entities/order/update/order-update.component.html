@@ -1,0 +1,339 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-order-heading" data-cy="OrderCreateUpdateHeading">Create or edit a Order</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_orderNo">Order No</label>
+          <input type="text" class="form-control" name="orderNo" id="field_orderNo" data-cy="orderNo"
+                 formControlName="orderNo"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_companyAmount">Company Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="companyAmount"
+            id="field_companyAmount"
+            data-cy="companyAmount"
+            formControlName="companyAmount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_restaurantAmount">Restaurant Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="restaurantAmount"
+            id="field_restaurantAmount"
+            data-cy="restaurantAmount"
+            formControlName="restaurantAmount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_deliveryFee">Delivery Fee</label>
+          <input
+            type="number"
+            class="form-control"
+            name="deliveryFee"
+            id="field_deliveryFee"
+            data-cy="deliveryFee"
+            formControlName="deliveryFee"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_itemsPrice">Items Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="itemsPrice"
+            id="field_itemsPrice"
+            data-cy="itemsPrice"
+            formControlName="itemsPrice"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_discount">Discount</label>
+          <input type="number" class="form-control" name="discount" id="field_discount" data-cy="discount"
+                 formControlName="discount"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_total">Total</label>
+          <input type="number" class="form-control" name="total" id="field_total" data-cy="total"
+                 formControlName="total"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_latitude">Latitude</label>
+          <input type="number" class="form-control" name="latitude" id="field_latitude" data-cy="latitude"
+                 formControlName="latitude"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_longitude">Longitude</label>
+          <input type="number" class="form-control" name="longitude" id="field_longitude" data-cy="longitude"
+                 formControlName="longitude"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_plusCode">Plus Code</label>
+          <input type="text" class="form-control" name="plusCode" id="field_plusCode" data-cy="plusCode"
+                 formControlName="plusCode"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_paymentType">Payment Type</label>
+          <select class="form-control" name="paymentType" formControlName="paymentType" id="field_paymentType"
+                  data-cy="paymentType">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let paymentType of paymentTypeValues" [value]="paymentType">{{ paymentType }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isApprovedByDriver">Is Approved By Driver</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isApprovedByDriver"
+            id="field_isApprovedByDriver"
+            data-cy="isApprovedByDriver"
+            formControlName="isApprovedByDriver"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isApprovedByRestaurant">Is Approved By Restaurant</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isApprovedByRestaurant"
+            id="field_isApprovedByRestaurant"
+            data-cy="isApprovedByRestaurant"
+            formControlName="isApprovedByRestaurant"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isPayed">Is Payed</label>
+          <input type="checkbox" class="form-check" name="isPayed" id="field_isPayed" data-cy="isPayed"
+                 formControlName="isPayed"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_amountRecived">Amount Recived</label>
+          <input
+            type="number"
+            class="form-control"
+            name="amountRecived"
+            id="field_amountRecived"
+            data-cy="amountRecived"
+            formControlName="amountRecived"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_amountRemaining">Amount Remaining</label>
+          <input
+            type="number"
+            class="form-control"
+            name="amountRemaining"
+            id="field_amountRemaining"
+            data-cy="amountRemaining"
+            formControlName="amountRemaining"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customerNotes">Customer Notes</label>
+          <input
+            type="text"
+            class="form-control"
+            name="customerNotes"
+            id="field_customerNotes"
+            data-cy="customerNotes"
+            formControlName="customerNotes"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_restaurantNotes">Restaurant Notes</label>
+          <input
+            type="text"
+            class="form-control"
+            name="restaurantNotes"
+            id="field_restaurantNotes"
+            data-cy="restaurantNotes"
+            formControlName="restaurantNotes"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_driverNotes">Driver Notes</label>
+          <input
+            type="text"
+            class="form-control"
+            name="driverNotes"
+            id="field_driverNotes"
+            data-cy="driverNotes"
+            formControlName="driverNotes"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_orderStatus">Order Status</label>
+          <select class="form-control" name="orderStatus" formControlName="orderStatus" id="field_orderStatus"
+                  data-cy="orderStatus">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let orderStatus of orderStatusValues" [value]="orderStatus">{{ orderStatus }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_orderType">Order Type</label>
+          <select class="form-control" name="orderType" formControlName="orderType" id="field_orderType"
+                  data-cy="orderType">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let orderType of orderTypeValues" [value]="orderType">{{ orderType }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_deliveredAt">Delivered At</label>
+          <div class="d-flex">
+            <input
+              id="field_deliveredAt"
+              data-cy="deliveredAt"
+              type="datetime-local"
+              class="form-control"
+              name="deliveredAt"
+              formControlName="deliveredAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes"
+                 formControlName="notes"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customer">Customer</label>
+          <select
+            class="form-control"
+            id="field_customer"
+            data-cy="customer"
+            name="customer"
+            formControlName="customer"
+            [compareWith]="compareCustomer"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="customerOption"
+                    *ngFor="let customerOption of customersSharedCollection">{{ customerOption.name }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_coupon">Coupon</label>
+          <select
+            class="form-control"
+            id="field_coupon"
+            data-cy="coupon"
+            name="coupon"
+            formControlName="coupon"
+            [compareWith]="compareCoupon"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="couponOption"
+                    *ngFor="let couponOption of couponsSharedCollection">{{ couponOption.code }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_driver">Driver</label>
+          <select
+            class="form-control"
+            id="field_driver"
+            data-cy="driver"
+            name="driver"
+            formControlName="driver"
+            [compareWith]="compareDriver"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="driverOption"
+                    *ngFor="let driverOption of driversSharedCollection">{{ driverOption.name }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_deliveryAddress">Delivery Address</label>
+          <select
+            class="form-control"
+            id="field_deliveryAddress"
+            data-cy="deliveryAddress"
+            name="deliveryAddress"
+            formControlName="deliveryAddress"
+            [compareWith]="compareDeliveryAddress"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="deliveryAddressOption"
+                    *ngFor="let deliveryAddressOption of deliveryAddressesSharedCollection">
+              {{ deliveryAddressOption.address }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_restaurant">Restaurant</label>
+          <select
+            class="form-control"
+            id="field_restaurant"
+            data-cy="restaurant"
+            name="restaurant"
+            formControlName="restaurant"
+            [compareWith]="compareRestaurant"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="restaurantOption" *ngFor="let restaurantOption of restaurantsSharedCollection">
+              {{ restaurantOption.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

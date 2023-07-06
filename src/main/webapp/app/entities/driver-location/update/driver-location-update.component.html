@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-driver-location-heading" data-cy="DriverLocationCreateUpdateHeading">Create or edit a Driver
+        Location</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_latitude">Latitude</label>
+          <input type="number" class="form-control" name="latitude" id="field_latitude" data-cy="latitude"
+                 formControlName="latitude"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_longitude">Longitude</label>
+          <input type="number" class="form-control" name="longitude" id="field_longitude" data-cy="longitude"
+                 formControlName="longitude"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_plusCode">Plus Code</label>
+          <input type="text" class="form-control" name="plusCode" id="field_plusCode" data-cy="plusCode"
+                 formControlName="plusCode"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_locationDateTime">Location Date Time</label>
+          <div class="d-flex">
+            <input
+              id="field_locationDateTime"
+              data-cy="locationDateTime"
+              type="datetime-local"
+              class="form-control"
+              name="locationDateTime"
+              formControlName="locationDateTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_driver">Driver</label>
+          <select
+            class="form-control"
+            id="field_driver"
+            data-cy="driver"
+            name="driver"
+            formControlName="driver"
+            [compareWith]="compareDriver"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="driverOption"
+                    *ngFor="let driverOption of driversSharedCollection">{{ driverOption.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

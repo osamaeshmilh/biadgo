@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="slider">
+      <h2 data-cy="sliderDetailsHeading"><span>Slider</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ slider.id }}</span>
+        </dd>
+        <dt><span>Details</span></dt>
+        <dd>
+          <span>{{ slider.details }}</span>
+        </dd>
+        <dt><span>Details Ar</span></dt>
+        <dd>
+          <span>{{ slider.detailsAr }}</span>
+        </dd>
+        <dt><span>Details En</span></dt>
+        <dd>
+          <span>{{ slider.detailsEn }}</span>
+        </dd>
+        <dt><span>Menu Order</span></dt>
+        <dd>
+          <span>{{ slider.menuOrder }}</span>
+        </dd>
+        <dt><span>Image Url</span></dt>
+        <dd>
+          <span>{{ slider.imageUrl }}</span>
+        </dd>
+        <dt><span>Image</span></dt>
+        <dd>
+          <div *ngIf="slider.image">
+            <a (click)="openFile(slider.image, slider.imageContentType)">
+              <img [src]="'data:' + slider.imageContentType + ';base64,' + slider.image" style="max-width: 100%"
+                   alt="slider image"/>
+            </a>
+            {{ slider.imageContentType }}, {{ byteSize(slider.image) }}
+          </div>
+        </dd>
+        <dt><span>Url</span></dt>
+        <dd>
+          <span>{{ slider.url }}</span>
+        </dd>
+        <dt><span>Restaurant Id</span></dt>
+        <dd>
+          <span>{{ slider.restaurantId }}</span>
+        </dd>
+        <dt><span>Category Id</span></dt>
+        <dd>
+          <span>{{ slider.categoryId }}</span>
+        </dd>
+        <dt><span>Food Id</span></dt>
+        <dd>
+          <span>{{ slider.foodId }}</span>
+        </dd>
+        <dt><span>Notes</span></dt>
+        <dd>
+          <span>{{ slider.notes }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/slider', slider.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

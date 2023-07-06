@@ -1,0 +1,30 @@
+import {Component} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+
+import SharedModule from 'app/shared/shared.module';
+import {IFavoriteRestaurant} from '../favorite-restaurant.model';
+import {FavoriteRestaurantService} from '../service/favorite-restaurant.service';
+import {ITEM_DELETED_EVENT} from 'app/config/navigation.constants';
+
+@Component({
+  standalone: true,
+  templateUrl: './favorite-restaurant-delete-dialog.component.html',
+  imports: [SharedModule, FormsModule],
+})
+export class FavoriteRestaurantDeleteDialogComponent {
+  favoriteRestaurant?: IFavoriteRestaurant;
+
+  constructor(protected favoriteRestaurantService: FavoriteRestaurantService, protected activeModal: NgbActiveModal) {
+  }
+
+  cancel(): void {
+    this.activeModal.dismiss();
+  }
+
+  confirmDelete(id: number): void {
+    this.favoriteRestaurantService.delete(id).subscribe(() => {
+      this.activeModal.close(ITEM_DELETED_EVENT);
+    });
+  }
+}

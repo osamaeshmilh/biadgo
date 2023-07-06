@@ -1,0 +1,148 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-referral-heading" data-cy="ReferralCreateUpdateHeading">Create or edit a Referral</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_referralCode">Referral Code</label>
+          <input
+            type="text"
+            class="form-control"
+            name="referralCode"
+            id="field_referralCode"
+            data-cy="referralCode"
+            formControlName="referralCode"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_referrerAmount">Referrer Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="referrerAmount"
+            id="field_referrerAmount"
+            data-cy="referrerAmount"
+            formControlName="referrerAmount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_referredCustomerAmount">Referred Customer Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="referredCustomerAmount"
+            id="field_referredCustomerAmount"
+            data-cy="referredCustomerAmount"
+            formControlName="referredCustomerAmount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_expiryDate">Expiry Date</label>
+          <div class="input-group">
+            <input
+              id="field_expiryDate"
+              data-cy="expiryDate"
+              type="text"
+              class="form-control"
+              name="expiryDate"
+              ngbDatepicker
+              #expiryDateDp="ngbDatepicker"
+              formControlName="expiryDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="expiryDateDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isUsed">Is Used</label>
+          <input type="checkbox" class="form-check" name="isUsed" id="field_isUsed" data-cy="isUsed"
+                 formControlName="isUsed"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_usedDateTime">Used Date Time</label>
+          <div class="d-flex">
+            <input
+              id="field_usedDateTime"
+              data-cy="usedDateTime"
+              type="datetime-local"
+              class="form-control"
+              name="usedDateTime"
+              formControlName="usedDateTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes"
+                 formControlName="notes"/>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_referredCustomer">Referred Customer</label>
+          <select
+            class="form-control"
+            id="field_referredCustomer"
+            data-cy="referredCustomer"
+            name="referredCustomer"
+            formControlName="referredCustomer"
+            [compareWith]="compareCustomer"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="customerOption"
+                    *ngFor="let customerOption of customersSharedCollection">{{ customerOption.id }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_referrerCustomer">Referrer Customer</label>
+          <select
+            class="form-control"
+            id="field_referrerCustomer"
+            data-cy="referrerCustomer"
+            name="referrerCustomer"
+            formControlName="referrerCustomer"
+            [compareWith]="compareCustomer"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="customerOption"
+                    *ngFor="let customerOption of customersSharedCollection">{{ customerOption.id }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

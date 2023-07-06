@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="activation">
+      <h2 data-cy="activationDetailsHeading"><span>Activation</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ activation.id }}</span>
+        </dd>
+        <dt><span>Mobile No</span></dt>
+        <dd>
+          <span>{{ activation.mobileNo }}</span>
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+          <span>{{ activation.email }}</span>
+        </dd>
+        <dt><span>Code</span></dt>
+        <dd>
+          <span>{{ activation.code }}</span>
+        </dd>
+        <dt><span>Sent On</span></dt>
+        <dd>
+          <span>{{ activation.sentOn | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Valid Until</span></dt>
+        <dd>
+          <span>{{ activation.validUntil | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Is Used</span></dt>
+        <dd>
+          <span>{{ activation.isUsed }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/activation', activation.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

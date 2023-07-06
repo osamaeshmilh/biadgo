@@ -1,0 +1,252 @@
+<div>
+  <h2 id="page-heading" data-cy="DriverHeading">
+    <span>Drivers</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-driver"
+        [routerLink]="['/driver/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Driver </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="drivers?.length === 0">
+    <span>No Drivers found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="drivers && drivers.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+        <th scope="col" jhiSortBy="id">
+          <div class="d-flex">
+            <span>ID</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="name">
+          <div class="d-flex">
+            <span>Name</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="nameAr">
+          <div class="d-flex">
+            <span>Name Ar</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="nameEn">
+          <div class="d-flex">
+            <span>Name En</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="mobileNo">
+          <div class="d-flex">
+            <span>Mobile No</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="email">
+          <div class="d-flex">
+            <span>Email</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="imageUrl">
+          <div class="d-flex">
+            <span>Image Url</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="image">
+          <div class="d-flex">
+            <span>Image</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="driverType">
+          <div class="d-flex">
+            <span>Driver Type</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="driverPaymentType">
+          <div class="d-flex">
+            <span>Driver Payment Type</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="vehicleType">
+          <div class="d-flex">
+            <span>Vehicle Type</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="driverStatus">
+          <div class="d-flex">
+            <span>Driver Status</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="commissionAmount">
+          <div class="d-flex">
+            <span>Commission Amount</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="salaryAmount">
+          <div class="d-flex">
+            <span>Salary Amount</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="latitude">
+          <div class="d-flex">
+            <span>Latitude</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="longitude">
+          <div class="d-flex">
+            <span>Longitude</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="plusCode">
+          <div class="d-flex">
+            <span>Plus Code</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="lastLocationDateTime">
+          <div class="d-flex">
+            <span>Last Location Date Time</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="isAvailable">
+          <div class="d-flex">
+            <span>Is Available</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="notes">
+          <div class="d-flex">
+            <span>Notes</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="user.id">
+          <div class="d-flex">
+            <span>User</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="zone.name">
+          <div class="d-flex">
+            <span>Zone</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let driver of drivers; trackBy: trackId" data-cy="entityTable">
+        <td>
+          <a [routerLink]="['/driver', driver.id, 'view']">{{ driver.id }}</a>
+        </td>
+        <td>{{ driver.name }}</td>
+        <td>{{ driver.nameAr }}</td>
+        <td>{{ driver.nameEn }}</td>
+        <td>{{ driver.mobileNo }}</td>
+        <td>{{ driver.email }}</td>
+        <td>{{ driver.imageUrl }}</td>
+        <td>
+          <a *ngIf="driver.image" (click)="openFile(driver.image, driver.imageContentType)">
+            <img [src]="'data:' + driver.imageContentType + ';base64,' + driver.image" style="max-height: 30px"
+                 alt="driver image"/>
+          </a>
+          <span *ngIf="driver.image">{{ driver.imageContentType }}, {{ byteSize(driver.image) }}</span>
+        </td>
+        <td>{{ driver.driverType }}</td>
+        <td>{{ driver.driverPaymentType }}</td>
+        <td>{{ driver.vehicleType }}</td>
+        <td>{{ driver.driverStatus }}</td>
+        <td>{{ driver.commissionAmount }}</td>
+        <td>{{ driver.salaryAmount }}</td>
+        <td>{{ driver.latitude }}</td>
+        <td>{{ driver.longitude }}</td>
+        <td>{{ driver.plusCode }}</td>
+        <td>{{ driver.lastLocationDateTime | formatMediumDatetime }}</td>
+        <td>{{ driver.isAvailable }}</td>
+        <td>{{ driver.notes }}</td>
+        <td>
+          {{ driver.user?.id }}
+        </td>
+        <td>
+          <div *ngIf="driver.zone">
+            <a [routerLink]="['/zone', driver.zone.id, 'view']">{{ driver.zone.name }}</a>
+          </div>
+        </td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button type="submit" [routerLink]="['/driver', driver.id, 'view']" class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton">
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline">View</span>
+            </button>
+
+            <button type="submit" [routerLink]="['/driver', driver.id, 'edit']" class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton">
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline">Edit</span>
+            </button>
+
+            <button type="submit" (click)="delete(driver)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline">Delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="drivers && drivers.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>
