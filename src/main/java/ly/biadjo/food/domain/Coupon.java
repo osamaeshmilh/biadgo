@@ -16,7 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "coupon")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Coupon implements Serializable {
+public class Coupon extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

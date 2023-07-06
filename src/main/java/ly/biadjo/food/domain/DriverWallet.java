@@ -17,7 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "driver_wallet")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class DriverWallet implements Serializable {
+public class DriverWallet extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

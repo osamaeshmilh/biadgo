@@ -32,6 +32,15 @@
             <column name="is_used" type="boolean">
                 <constraints nullable="true"/>
             </column>
+            <column name="created_by" type="varchar(50)" defaultValue="system">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="activation" columnName="sent_on" columnDataType="${datetimeType}"/>

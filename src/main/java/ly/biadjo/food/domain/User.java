@@ -57,6 +57,12 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     private String email;
 
     @NotNull
+    private String phone;
+
+    @NotNull
+    private String firebaseId;
+
+    @NotNull
     @Column(nullable = false)
     private boolean activated = false;
 
@@ -139,6 +145,22 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
     }
 
     public String getImageUrl() {

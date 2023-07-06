@@ -63,6 +63,7 @@ public class SecurityConfiguration {
                     .requestMatchers(HttpMethod.GET, "/api/authenticate").permitAll()
                     .requestMatchers("/api/register").permitAll()
                     .requestMatchers("/api/activate").permitAll()
+                    .requestMatchers("/api/public/**").permitAll()
                     .requestMatchers("/api/account/reset-password/init").permitAll()
                     .requestMatchers("/api/account/reset-password/finish").permitAll()
                     .requestMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
