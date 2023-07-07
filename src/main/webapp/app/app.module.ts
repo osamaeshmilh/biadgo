@@ -9,25 +9,27 @@ import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
 import './config/dayjs';
-import { AppRoutingModule } from './app-routing.module';
+import {AppRoutingModule} from './app-routing.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
-import { fontAwesomeIcons } from './config/font-awesome-icons';
-import { httpInterceptorProviders } from 'app/core/interceptor/index';
-import MainComponent from './layouts/main/main.component';
+import {NgbDateDayjsAdapter} from './config/datepicker-adapter';
+import {fontAwesomeIcons} from './config/font-awesome-icons';
+import {httpInterceptorProviders} from 'app/core/interceptor/index';
 import MainModule from './layouts/main/main.module';
-import { AppPageTitleStrategy } from './app-page-title-strategy';
-import { TrackerService } from './core/tracker/tracker.service';
+import {AppPageTitleStrategy} from './app-page-title-strategy';
+import {TrackerService} from './core/tracker/tracker.service';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MainComponent} from "./layouts/main/main.component";
 
 @NgModule({
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: false}),
     HttpClientModule,
     MainModule,
   ],

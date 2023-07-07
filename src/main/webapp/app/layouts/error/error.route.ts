@@ -6,23 +6,25 @@ export const errorRoute: Routes = [
   {
     path: 'error',
     component: ErrorComponent,
-    title: 'Error page!',
+    data: {
+      pageTitle: 'error.title',
+    },
   },
   {
     path: 'accessdenied',
     component: ErrorComponent,
     data: {
-      errorMessage: 'You are not authorized to access this page.',
+      pageTitle: 'error.title',
+      errorMessage: 'error.http.403',
     },
-    title: 'Error page!',
   },
   {
     path: '404',
     component: ErrorComponent,
     data: {
-      errorMessage: 'The page does not exist.',
+      pageTitle: 'error.title',
+      errorMessage: 'error.http.404',
     },
-    title: 'Error page!',
   },
   {
     path: '**',

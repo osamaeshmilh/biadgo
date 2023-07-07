@@ -5,6 +5,11 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule.forChild([
       {
+        path: 'dashboard',
+        data: {pageTitle: 'Dashboard'},
+        loadChildren: () => import('./dashboard/dashboard.routes'),
+      },
+      {
         path: 'app-setting',
         data: {pageTitle: 'AppSettings'},
         loadChildren: () => import('./app-setting/app-setting.routes'),

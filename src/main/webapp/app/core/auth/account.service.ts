@@ -78,4 +78,8 @@ export class AccountService {
       this.router.navigateByUrl(previousUrl);
     }
   }
+
+  getFirstName() {
+    return "ss";
+  }
 }

@@ -19,10 +19,11 @@ export default class LoginComponent implements OnInit, AfterViewInit {
   authenticationError = false;
 
   loginForm = new FormGroup({
-    username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    rememberMe: new FormControl(false, { nonNullable: true, validators: [Validators.required] }),
+    username: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
+    password: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
+    rememberMe: new FormControl(false, {nonNullable: true, validators: [Validators.required]}),
   });
+  isAuthenticating!: boolean;
 
   constructor(private accountService: AccountService, private loginService: LoginService, private router: Router) {}
 
@@ -30,7 +31,7 @@ export default class LoginComponent implements OnInit, AfterViewInit {
     // if already authenticated then navigate to home page
     this.accountService.identity().subscribe(() => {
       if (this.accountService.isAuthenticated()) {
-        this.router.navigate(['']);
+        this.router.navigate(['/dashboard']);
       }
     });
   }
@@ -40,12 +41,14 @@ export default class LoginComponent implements OnInit, AfterViewInit {
   }
 
   login(): void {
+    this.isAuthenticating = true;
     this.loginService.login(this.loginForm.getRawValue()).subscribe({
       next: () => {
         this.authenticationError = false;
         if (!this.router.getCurrentNavigation()) {
           // There were no routing during login (eg from navigationToStoredUrl)
-          this.router.navigate(['']);
+          this.isAuthenticating = false;
+          this.router.navigate(['/dashboard']);
         }
       },
       error: () => (this.authenticationError = true),
