@@ -6,6 +6,7 @@ import ly.biadjo.food.domain.Customer;
 import ly.biadjo.food.repository.CustomerRepository;
 import ly.biadjo.food.service.dto.CustomerDTO;
 import ly.biadjo.food.service.mapper.CustomerMapper;
+import ly.biadjo.food.service.utils.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,14 @@ public class CustomerService {
     public CustomerDTO save(CustomerDTO customerDTO) {
         log.debug("Request to save Customer : {}", customerDTO);
         Customer customer = customerMapper.toEntity(customerDTO);
+
+        if (customerDTO.getImage() != null) {
+            String filePath = FileTools.upload(customer.getImage(), customer.getImageContentType(), "customer");
+            customer.setImage(null);
+            customer.setImageContentType(customerDTO.getImageContentType());
+            customer.setImageUrl(filePath);
+        }
+
         customer = customerRepository.save(customer);
         return customerMapper.toDto(customer);
     }

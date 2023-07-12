@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -79,6 +81,27 @@ public class Food extends AbstractAuditingEntity<Long> implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"restaurants"}, allowSetters = true)
     private Category category;
+
+    @OneToMany(mappedBy = "food")
+    @JsonIgnoreProperties(
+        value = {"food", "foodImages", "foodExtras", "foodIngredients"},
+        allowSetters = true
+    )
+    private Set<FoodImage> foodImages = new HashSet<>();
+
+    @OneToMany(mappedBy = "food")
+    @JsonIgnoreProperties(
+        value = {"food", "foodImages", "foodExtras", "foodIngredients"},
+        allowSetters = true
+    )
+    private Set<FoodExtra> foodExtras = new HashSet<>();
+
+    @OneToMany(mappedBy = "food")
+    @JsonIgnoreProperties(
+        value = {"food", "foodImages", "foodExtras", "foodIngredients"},
+        allowSetters = true
+    )
+    private Set<FoodIngredient> foodIngredients = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -370,5 +393,29 @@ public class Food extends AbstractAuditingEntity<Long> implements Serializable {
             ", viewCounter=" + getViewCounter() +
             ", notes='" + getNotes() + "'" +
             "}";
+    }
+
+    public Set<FoodImage> getFoodImages() {
+        return foodImages;
+    }
+
+    public void setFoodImages(Set<FoodImage> foodImages) {
+        this.foodImages = foodImages;
+    }
+
+    public Set<FoodExtra> getFoodExtras() {
+        return foodExtras;
+    }
+
+    public void setFoodExtras(Set<FoodExtra> foodExtras) {
+        this.foodExtras = foodExtras;
+    }
+
+    public Set<FoodIngredient> getFoodIngredients() {
+        return foodIngredients;
+    }
+
+    public void setFoodIngredients(Set<FoodIngredient> foodIngredients) {
+        this.foodIngredients = foodIngredients;
     }
 }

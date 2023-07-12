@@ -198,4 +198,23 @@ public class FoodResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @GetMapping("/public/foods")
+    public ResponseEntity<List<FoodDTO>> getAllFoodsPublic(
+        FoodCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Foods by criteria: {}", criteria);
+
+        Page<FoodDTO> page = foodQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/public/foods/{id}")
+    public ResponseEntity<FoodDTO> getFoodPublic(@PathVariable Long id) {
+        log.debug("REST request to get Food : {}", id);
+        Optional<FoodDTO> foodDTO = foodService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(foodDTO);
+    }
 }

@@ -47,7 +47,7 @@ public class FoodImage extends AbstractAuditingEntity<Long> implements Serializa
     private String imageContentType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"restaurant", "category"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"restaurant", "category", "foodImages", "foodExtras", "foodIngredients"}, allowSetters = true)
     private Food food;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

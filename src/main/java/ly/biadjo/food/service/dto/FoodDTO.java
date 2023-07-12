@@ -1,7 +1,13 @@
 package ly.biadjo.food.service.dto;
 
+import ly.biadjo.food.domain.FoodExtra;
+import ly.biadjo.food.domain.FoodImage;
+import ly.biadjo.food.domain.FoodIngredient;
+
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link ly.biadjo.food.domain.Food} entity.
@@ -46,6 +52,12 @@ public class FoodDTO implements Serializable {
     private RestaurantDTO restaurant;
 
     private CategoryDTO category;
+
+    private Set<FoodImage> foodImages = new HashSet<>();
+
+    private Set<FoodExtra> foodExtras = new HashSet<>();
+
+    private Set<FoodIngredient> foodIngredients = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -197,6 +209,30 @@ public class FoodDTO implements Serializable {
 
     public void setCategory(CategoryDTO category) {
         this.category = category;
+    }
+
+    public Set<FoodImage> getFoodImages() {
+        return foodImages;
+    }
+
+    public void setFoodImages(Set<FoodImage> foodImages) {
+        this.foodImages = foodImages;
+    }
+
+    public Set<FoodExtra> getFoodExtras() {
+        return foodExtras;
+    }
+
+    public void setFoodExtras(Set<FoodExtra> foodExtras) {
+        this.foodExtras = foodExtras;
+    }
+
+    public Set<FoodIngredient> getFoodIngredients() {
+        return foodIngredients;
+    }
+
+    public void setFoodIngredients(Set<FoodIngredient> foodIngredients) {
+        this.foodIngredients = foodIngredients;
     }
 
     @Override

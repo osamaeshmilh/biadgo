@@ -40,7 +40,7 @@ public class FoodExtra extends AbstractAuditingEntity<Long> implements Serializa
     private String notes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"restaurant", "category"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"restaurant", "category", "foodImages", "foodExtras", "foodIngredients"}, allowSetters = true)
     private Food food;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

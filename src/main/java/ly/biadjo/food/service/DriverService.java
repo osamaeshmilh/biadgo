@@ -6,6 +6,7 @@ import ly.biadjo.food.domain.Driver;
 import ly.biadjo.food.repository.DriverRepository;
 import ly.biadjo.food.service.dto.DriverDTO;
 import ly.biadjo.food.service.mapper.DriverMapper;
+import ly.biadjo.food.service.utils.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,14 @@ public class DriverService {
     public DriverDTO save(DriverDTO driverDTO) {
         log.debug("Request to save Driver : {}", driverDTO);
         Driver driver = driverMapper.toEntity(driverDTO);
+
+        if (driverDTO.getImage() != null) {
+            String filePath = FileTools.upload(driver.getImage(), driver.getImageContentType(), "driver");
+            driver.setImage(null);
+            driver.setImageContentType(driverDTO.getImageContentType());
+            driver.setImageUrl(filePath);
+        }
+
         driver = driverRepository.save(driver);
         return driverMapper.toDto(driver);
     }

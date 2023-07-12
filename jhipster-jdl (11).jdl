@@ -1,0 +1,579 @@
+
+
+application {
+  config {
+    baseName biadjo
+  }
+  
+	entities *
+}
+
+enum CouponType {
+  FIXED
+  PERCENT
+}
+
+enum DayOfWeek {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+enum DeliveryPriceType {
+  FIXED
+  ZONE
+  DISTANCE
+}
+
+enum DriverPaymentType {
+  FIXED
+  PERCENT
+}
+
+enum DriverStatus {
+    OFFLINE, // The driver is not currently working
+    ONLINE, // The driver is online and ready to accept orders
+    ON_ROUTE_TO_PICKUP, // The driver is on the way to pick up an order
+    AT_RESTAURANT, // The driver is at the restaurant to pick up the order
+    ON_ROUTE_TO_DELIVERY, // The driver is on the way to deliver an order
+    AT_CUSTOMER, // The driver is at the customer's location for order delivery
+    ORDER_DELIVERED, // The order has been successfully delivered
+    BREAK // The driver is on a break
+}
+
+enum DriverType {
+  INDEPENDENT
+  COMPANY
+}
+
+enum OrderStatus {
+    PLACED, // The order has been placed by the customer
+    ACCEPTED, // The restaurant has accepted and started preparing the order
+    READY_FOR_PICKUP, // The restaurant has prepared the order and it's ready for pickup
+    OUT_FOR_DELIVERY, // The order is in transit with the delivery person
+    DELIVERED, // The order has been delivered to the customer
+    CANCELLED, // The order has been cancelled by the customer or restaurant
+    FAILED // The delivery or payment process has failed for some reason
+}
+
+enum OrderType {
+  DELIVERY
+  PICKUP
+}
+
+enum PaymentType {
+  CASH
+  SADAD
+  TADAWUL
+  MOBICASH
+  MOAMALAT
+  ADFALI
+  WALLET
+  MASTERCARD
+}
+
+enum TransactionStatus {
+  PENDING_PAYMENT
+  ERROR
+  CANCELLED
+}
+
+enum VehicleType {
+    CAR,
+    MOTORBIKE,
+    BICYCLE,
+    TRUCK
+}
+
+enum WalletAction {
+  DEPOSIT
+  WITHDRAW
+}
+
+entity AppSetting {
+	name String,
+	key String,
+	type String,
+	value String
+}
+
+entity Activation {
+	mobileNo String,
+	email String,
+	code String,
+	sentOn Instant,
+	validUntil Instant,
+	isUsed Boolean
+}
+
+entity Customer {
+    name String required,
+    email String,
+    mobileNo String,
+    googleId String,
+    facebookId String,
+    appleId String,
+    isBanned Boolean,
+    isVerified Boolean,
+    verifiedByEmail Boolean,
+    verifiedByMobileNo Boolean,
+    walletPublicKey String,
+    image ImageBlob,
+    imageUrl String,
+    languageCode String
+    notes String
+    //User
+}
+entity CustomerWallet {
+    transactionNo String,
+  	amount Double,
+  	walletAction WalletAction,
+  	totalBeforeAction Double,
+  	totalAfterAction Double,
+  	paymentType PaymentType,
+  	paymentReference String,
+    orderId String,
+  	notes String,
+    //Customer 
+}
+entity Cart {
+    quantity Integer
+    customerNotes String
+    foodExtraIdsList String
+    foodIngredientIds String
+    foodIngredientRemovedIds String
+    //Food
+    //Customer
+}
+
+entity Category {
+  name String required,
+  nameAr String,
+  nameEn String,
+  menuOrder Integer,
+  imageUrl String,
+  image ImageBlob,
+  notes String,
+  isActive Boolean
+  //Resturant [ ]
+}
+
+entity City {
+  name String required,
+  nameAr String,
+  nameEn String,
+  latitude Double,
+  longitude Double,
+  plusCode String,
+  radius Double,
+  isActive Boolean
+  // Zone [ ]
+}
+
+entity Coupon {
+  code String,
+  couponType CouponType,
+  amount Integer,
+  minimumAmount Integer,
+  useLimit Integer,
+  useCount Integer,
+  expiryDate LocalDate,
+  isActive Boolean
+    notes String
+  // Orders [ ]
+}
+
+entity Cuisine {
+  name String required,
+  nameAr String,
+  nameEn String,
+  isActive Boolean
+}
+
+entity DeliveryAddress {
+  title String,
+  address String,
+  details String,
+  phone String,
+  isDefault Boolean,
+  latitude Double,
+  longitude Double,
+  plusCode String,
+  isActive Boolean
+    notes String
+  //Customer
+  //Zone ?
+}
+
+entity Driver {
+  name String required,
+  nameAr String,
+  nameEn String,
+  mobileNo String,
+  email String,
+  imageUrl String,
+  image ImageBlob,
+  driverType DriverType
+  driverPaymentType DriverPaymentType,
+  vehicleType VehicleType,
+  driverStatus DriverStatus,
+  commissionAmount Double,
+  salaryAmount Double,
+  latitude Double,
+  longitude Double,
+  plusCode String,
+  lastLocationDateTime Instant,
+  isAvailable Boolean,
+    notes String
+  //Current Zone
+  //User
+}
+
+entity DriverLocation {
+  latitude Double,
+  longitude Double,
+  plusCode String,
+  locationDateTime Instant,
+  //Driver
+}
+
+entity DriverReview {
+  details String,
+  rate Integer,
+  //Driver
+  //Customer
+}
+
+entity DriverWallet {
+	transactionNo String,
+  	amount Double,
+  	walletAction WalletAction,
+  	totalBeforeAction Double,
+  	totalAfterAction Double,
+  	paymentType PaymentType,
+  	paymentReference String,
+    orderId String,
+  	notes String,
+    //Driver 
+}
+
+entity FavoriteRestaurant {
+	//Resturant
+    //Customer
+}
+
+entity Food {
+  name String,
+  nameAr String,
+  nameEn String,
+  price Double,
+  discountPrice Double,
+  description String,
+  descriptionAr String,
+  descriptionEn String,
+  packageItemsCount Double,
+  dailyQuantity Integer,
+  isAvailable Boolean,
+  isDiscount Boolean,
+  isFeatured Boolean,
+  isActive Boolean,
+  viewCounter Integer,
+    notes String
+  //Restaurant,
+  //Category
+  //FoodExtra [ ]
+  //FoodIngredient [ ]
+  //FoodImage [ ]
+}
+
+entity FoodExtra {
+	name String,
+  	nameAr String,
+  	nameEn String,
+    price Double,
+      notes String
+    //Food
+}
+
+entity FoodIngredient {
+	name String,
+  	nameAr String,
+  	nameEn String,
+      notes String
+    //Food
+}
+
+entity FoodImage {
+  description String,
+  descriptionAr String,
+  descriptionEn String,
+  menuOrder Integer,
+  imageUrl String,
+  image ImageBlob,
+  //Food
+}
+
+entity FoodOrder {
+  price Double,
+  quantity Integer,
+  total Double,
+  specialNotes String,
+    foodExtraIdsList String
+    foodIngredientIds String
+    foodIngredientRemovedIds String
+  // Food
+  // Order
+}
+
+entity Notification {
+	title String,
+  	details String,
+	isRead Boolean,
+    customerId Long,
+}
+
+entity Order {
+  orderNo String,
+  companyAmount Double,
+  restaurantAmount Double,
+  deliveryFee Double,
+  itemsPrice Double,
+  discount Double,
+  total Double,
+  latitude Double,
+  longitude Double,
+  plusCode String,
+  paymentType PaymentType,
+  isApprovedByDriver Boolean,
+  isApprovedByRestaurant Boolean,
+  isPayed Boolean,
+  amountRecived Double,
+  amountRemaining Double,
+  customerNotes String,
+  restaurantNotes String,
+  driverNotes String,
+  orderStatus OrderStatus,
+  orderType OrderType,
+  deliveredAt Instant,
+  notes String
+  // Driver
+  // DeliveryAddress
+  // Restaurant
+  // Customer
+  // Coupon
+}
+
+entity OrderHistory {
+	orderStatusFrom OrderStatus
+	orderStatusTo OrderStatus
+    notes String
+    //Order
+}
+
+entity PaymentMethod {
+  name String,
+  nameAr String,
+  nameEn String,
+  menuOrder Integer,
+  imageUrl String,
+  image ImageBlob,
+  details String,
+  feePercentage Double,
+  paymentType PaymentType,
+  isActive Boolean,
+  notes String
+}
+
+entity Referral {
+  referralCode String,
+  referrerAmount Double,
+  referredCustomerAmount Double,
+  expiryDate LocalDate,
+  isUsed Boolean,
+  usedDateTime Instant,
+  notes String
+  // referrer Customer,
+  // referredCustomer Customer
+}
+
+entity Restaurant {
+  name String,
+  nameAr String,
+  nameEn String,
+  description String,
+  address String,
+  latitude Double,
+  longitude Double,
+  plusCode String,
+  mobile String,
+  estimitedTimeMins Integer,
+  deliveryFee Double,
+  deliveryRange Double,
+  availableForDelivery Boolean,
+  availableForPickup Boolean,
+  minimumOrderTotalForDelivery Double,
+  deliveryPriceType DeliveryPriceType,
+  isOpen Boolean,
+  isFeatured Boolean,
+  isListedInOffers Boolean,
+  isActive Boolean,
+  offerBanner String,
+  priority Integer,
+  viewCounter Integer,
+  scheduledClosingTime String,
+  facebookPageUrl String,
+  notes String
+  // cusisin
+  // Zone,
+  // Category ?? [ ]
+}
+
+entity RestaurantDistancePrice {
+  price Double,
+  fromKm Double,
+  toKm Double,
+  isAvailable Boolean,
+  // Restaurant
+}
+
+entity RestaurantZonePrice {
+  price Double,
+  isAvailable Boolean,
+  // Zone,
+  // Restaurant
+}
+
+entity RestaurantWallet {
+	transactionNo String,
+  	amount Double,
+  	walletAction WalletAction,
+  	totalBeforeAction Double,
+  	totalAfterAction Double,
+  	paymentType PaymentType,
+  	paymentReference String,
+  	notes String,
+    //Restaurant 
+}
+
+entity RestaurantReview {
+  review String,
+  rate Integer,
+  isEdited Boolean
+  // Customer,
+  // Restaurant,
+}
+
+entity RestaurantSchedule {
+  dayOfWeek DayOfWeek,
+  openingTime String,
+  closingTime String,
+  // Restaurant
+}
+
+entity Slider {
+  details String,
+  detailsAr String,
+  detailsEn String,
+  menuOrder Integer,
+  imageUrl String,
+  image ImageBlob,
+  url String,
+  restaurantId Integer,
+  categoryId Integer,
+  foodId Integer
+  notes String
+}
+
+entity Transaction {
+  transactionReference String,
+  paymentType PaymentType,
+  transactionStatus TransactionStatus,
+  vendorReference String,
+  vendorMessage String,
+  amount Double,
+  fees Double,
+  total Double,
+  notes String,
+  // Customer
+}
+
+entity Zone {
+  name String,
+  nameAr String,
+  nameEn String,
+  latitude Double,
+  longitude Double,
+  plusCode String,
+  radius Integer,
+  isActive Boolean,
+  notes String
+  // City
+}
+
+relationship ManyToMany {
+  Restaurant{categories} to Category{restaurant}
+}
+
+relationship ManyToOne {
+
+  Cart{customer(name)} to Customer,
+  Cart{food(name)} to Food,
+  
+  CustomerWallet{customer(name)} to Customer,
+  
+  DeliveryAddress{customer(name)} to Customer,
+  DeliveryAddress{zone(name)} to Zone,
+  
+  Driver{zone(name)} to Zone,
+  DriverLocation{driver(name)} to Driver,
+  DriverReview{customer(name)} to Customer,
+  DriverReview{driver(name)} to Driver,
+  DriverWallet{driver(name)} to Driver,
+  
+  FavoriteRestaurant{customer(name)} to Customer,
+  FavoriteRestaurant{restaurant(name)} to Restaurant,
+  
+  Food{restaurant(name)} to Restaurant,
+  Food{category(name)} to Category,
+  FoodExtra{food(name)} to Food,
+  FoodImage{food(name)} to Food,
+  FoodIngredient{food(name)} to Food,
+  FoodOrder{order(orderNo)} to Order,
+
+  Order{customer(name)} to Customer
+  Order{coupon(code)} to Coupon
+  Order{driver(name)} to Driver
+  Order{deliveryAddress(address)} to DeliveryAddress
+  Order{restaurant(name)} to Restaurant,
+  OrderHistory{order(orderNo)} to Order
+  
+  Referral{referredCustomer} to Customer,
+  Referral{referrerCustomer} to Customer,
+  
+  Restaurant{cuisine(name)} to Cuisine,
+  RestaurantDistancePrice{restaurant(name)} to Restaurant,
+  RestaurantReview{customer(name)} to Customer,
+  RestaurantReview{restaurant(name)} to Restaurant,
+  RestaurantSchedule{restaurant(name)} to Restaurant,
+  RestaurantWallet{restaurant(name)} to Restaurant,
+  RestaurantZonePrice{restaurant(name)} to Restaurant,
+  RestaurantZonePrice{zone(name)} to Zone,
+  
+  Transaction{customer(name)} to Customer,
+  Zone{city(name)} to City,
+}
+
+relationship OneToOne{
+  Customer to User with builtInEntity,
+  Driver to User with builtInEntity,
+  Restaurant to User with builtInEntity
+}
+
+paginate * with pagination
+filter *
+service * with serviceClass
+dto * with mapstruct

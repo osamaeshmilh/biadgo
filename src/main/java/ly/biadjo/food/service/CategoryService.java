@@ -6,6 +6,7 @@ import ly.biadjo.food.domain.Category;
 import ly.biadjo.food.repository.CategoryRepository;
 import ly.biadjo.food.service.dto.CategoryDTO;
 import ly.biadjo.food.service.mapper.CategoryMapper;
+import ly.biadjo.food.service.utils.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,14 @@ public class CategoryService {
     public CategoryDTO save(CategoryDTO categoryDTO) {
         log.debug("Request to save Category : {}", categoryDTO);
         Category category = categoryMapper.toEntity(categoryDTO);
+
+        if (categoryDTO.getImage() != null) {
+            String filePath = FileTools.upload(category.getImage(), category.getImageContentType(), "category");
+            category.setImage(null);
+            category.setImageContentType(categoryDTO.getImageContentType());
+            category.setImageUrl(filePath);
+        }
+
         category = categoryRepository.save(category);
         return categoryMapper.toDto(category);
     }

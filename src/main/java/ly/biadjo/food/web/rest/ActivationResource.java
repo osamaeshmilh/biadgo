@@ -7,8 +7,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ly.biadjo.food.repository.ActivationRepository;
+import ly.biadjo.food.security.AuthoritiesConstants;
 import ly.biadjo.food.service.ActivationQueryService;
 import ly.biadjo.food.service.ActivationService;
+import ly.biadjo.food.service.CustomerService;
 import ly.biadjo.food.service.criteria.ActivationCriteria;
 import ly.biadjo.food.service.dto.ActivationDTO;
 import ly.biadjo.food.web.rest.errors.BadRequestAlertException;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -45,14 +48,18 @@ public class ActivationResource {
 
     private final ActivationQueryService activationQueryService;
 
+    private final CustomerService customerService;
+
     public ActivationResource(
         ActivationService activationService,
         ActivationRepository activationRepository,
-        ActivationQueryService activationQueryService
+        ActivationQueryService activationQueryService,
+        CustomerService customerService
     ) {
         this.activationService = activationService;
         this.activationRepository = activationRepository;
         this.activationQueryService = activationQueryService;
+        this.customerService = customerService;
     }
 
     /**
@@ -204,4 +211,32 @@ public class ActivationResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+//    @PostMapping(path = "/public/activation/email-otp")
+//    public void sendEmailOTP(@RequestParam String email) {
+//        if (customerService.findOneByEmail(email).isPresent()) {
+//            throw new BadRequestAlertException("Email Already Used!", ENTITY_NAME, "EMAIL_USED");
+//        }
+//        activationService.sendEmailOTP(email);
+//    }
+//
+//    @PostMapping(path = "/public/activation/sms-otp")
+//    public void sendSmsOTP(@RequestParam String mobileNo) {
+//        if (customerService.findOneByMobileNo(mobileNo).isPresent()) {
+//            throw new BadRequestAlertException("Mobile Number Already Used!", ENTITY_NAME, "MOBILE_USED");
+//        }
+//        activationService.sendSMSOTP(mobileNo);
+//    }
+//
+//    @Secured(AuthoritiesConstants.CUSTOMER)
+//    @PostMapping(path = "/activation/customer/send-otp")
+//    public void sendSmsOTPToCurrentUser() {
+//        if (customerService.findOneDTOByUser().getVerifiedByMobileNo()) activationService.sendSMSOTP(
+//            customerService.findOneDTOByUser().getMobileNo()
+//        );
+//        if (customerService.findOneDTOByUser().getVerifiedByEmail()) activationService.sendEmailOTP(
+//            customerService.findOneDTOByUser().getEmail()
+//        );
+//    }
 }
+
