@@ -36,7 +36,7 @@ public class RestaurantSchedule implements Serializable {
     private String closingTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"user", "cuisine", "categories"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"user", "cuisine", "categories", "restaurantImages", "restaurantSchedules"}, allowSetters = true)
     private Restaurant restaurant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

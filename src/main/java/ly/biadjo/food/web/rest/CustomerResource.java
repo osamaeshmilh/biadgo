@@ -10,8 +10,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ly.biadjo.food.repository.CustomerRepository;
+import ly.biadjo.food.security.AuthoritiesConstants;
+import ly.biadjo.food.security.SecurityUtils;
+import ly.biadjo.food.service.ActivationService;
 import ly.biadjo.food.service.CustomerQueryService;
 import ly.biadjo.food.service.CustomerService;
+import ly.biadjo.food.service.NotificationService;
 import ly.biadjo.food.service.criteria.CustomerCriteria;
 import ly.biadjo.food.service.dto.CustomerDTO;
 import ly.biadjo.food.web.rest.errors.BadRequestAlertException;
@@ -22,6 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -48,14 +53,20 @@ public class CustomerResource {
 
     private final CustomerQueryService customerQueryService;
 
+    private final ActivationService activationService;
+
+    private final NotificationService notificationService;
+
     public CustomerResource(
         CustomerService customerService,
         CustomerRepository customerRepository,
-        CustomerQueryService customerQueryService
-    ) {
+        CustomerQueryService customerQueryService,
+        ActivationService activationService, NotificationService notificationService) {
         this.customerService = customerService;
         this.customerRepository = customerRepository;
         this.customerQueryService = customerQueryService;
+        this.activationService = activationService;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -206,5 +217,116 @@ public class CustomerResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @PostMapping("/public/customers/is-email-registered")
+    public ResponseEntity<String> checkEmailCustomer(@RequestBody CustomerDTO customerDTO) throws URISyntaxException {
+        if (customerService.findOneByEmail(customerDTO.getEmail()).isPresent()) {
+            return ResponseEntity.ok("true");
+        } else {
+            return ResponseEntity.ok("false");
+        }
+    }
+
+    @PostMapping("/public/customers/register")
+    public ResponseEntity<CustomerDTO> registerCustomer(@RequestBody CustomerDTO customerDTO) throws URISyntaxException {
+        log.debug("REST request to register Customer : {}", customerDTO);
+        if (customerDTO.getId() != null) {
+            throw new BadRequestAlertException("A new customer cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (customerService.findOneByMobileNo(customerDTO.getMobileNo()).isPresent()) {
+            throw new BadRequestAlertException("Mobile Number Already Used!", ENTITY_NAME, "MOBILE_USED");
+        }
+
+        if (!customerDTO.getMobileNo().startsWith("+218")) {
+            customerDTO.setVerifiedByEmail(true);
+            customerDTO.setVerifiedByMobileNo(false);
+        }
+
+        if (customerDTO.getVerifiedByEmail()) {
+            activationService.checkCodeWithEmail(customerDTO.getEmail(), customerDTO.getOtp());
+        } else if (customerDTO.getVerifiedByMobileNo()) {
+            activationService.checkCodeWithMobileNo(customerDTO.getMobileNo(), customerDTO.getOtp());
+        }
+//        else if (customerDTO.getVerifiedBySocialId()) {
+//            customerDTO.setVerifiedByEmail(true);
+//        }
+        else {
+            throw new BadRequestAlertException("No Verification!", ENTITY_NAME, "NO_VERIFICATION");
+        }
+
+        CustomerDTO result = customerService.create(customerDTO);
+        return ResponseEntity
+            .created(new URI("/api/customers/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    @PutMapping("/customers/update-profile")
+    public ResponseEntity<CustomerDTO> updateCustomerProfile(@RequestBody CustomerDTO customerDTO) throws URISyntaxException {
+        log.debug("REST request to update Customer : {}", customerDTO);
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            customerDTO.setId(customerService.findOneByUser().getId());
+        } else {
+            throw new BadRequestAlertException("not customer", ENTITY_NAME, "idnull");
+        }
+        if (customerDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        CustomerDTO result = customerService.save(customerDTO);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, customerDTO.getId().toString()))
+            .body(result);
+    }
+
+    @Secured(AuthoritiesConstants.CUSTOMER)
+    @GetMapping("/customers/get-profile")
+    public ResponseEntity<CustomerDTO> getCustomerProfile() throws URISyntaxException {
+        Optional<CustomerDTO> customerDTO = customerService.findOne(customerService.findOneByUser().getId());
+        return ResponseUtil.wrapOrNotFound(customerDTO);
+    }
+
+    @GetMapping("/customers/by-public-key/{walletPublicKey}")
+    public ResponseEntity<CustomerDTO> getCustomerByWalletPublicKey(@PathVariable String walletPublicKey) throws URISyntaxException {
+        Optional<CustomerDTO> customerDTO = customerService.findOneByWalletPublicKey(walletPublicKey);
+        if (!customerDTO.isPresent())
+            throw new BadRequestAlertException("Wallet Key not found!", ENTITY_NAME, "CUSTOMER_NOT_FOUND");
+        return ResponseUtil.wrapOrNotFound(customerDTO);
+    }
+
+    @GetMapping("/customers/by-mobile/{mobileNo}")
+    public ResponseEntity<CustomerDTO> getCustomerByMobileNo(@PathVariable String mobileNo) throws URISyntaxException {
+        Optional<CustomerDTO> customerDTO = customerService.findOneByMobileNo(mobileNo);
+        if (!customerDTO.isPresent()) {
+            throw new BadRequestAlertException("Mobile not found!", ENTITY_NAME, "CUSTOMER_NOT_FOUND");
+        }
+        return ResponseUtil.wrapOrNotFound(customerDTO);
+    }
+
+
+    @Secured(AuthoritiesConstants.CUSTOMER)
+    @GetMapping("/customers/request-delete")
+    public ResponseEntity<CustomerDTO> requestAccountDelete() {
+        CustomerDTO customerDTO = customerService.findOneDTOByUser();
+        if (customerDTO.getAppleId().contains("DELETE")) throw new BadRequestAlertException(
+            "Account delete already requested!",
+            ENTITY_NAME,
+            "ACCOUNT_DELETE_REQUESTED"
+        );
+
+        customerDTO.setAppleId("DELETE");
+
+        CustomerDTO result = customerService.save(customerDTO);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, customerDTO.getId().toString()))
+            .body(result);
+    }
+
+    @PostMapping("/customers/{id}/notify")
+    public ResponseEntity<Void> sendNotification(@PathVariable Long id, @RequestBody String message) {
+        notificationService.sendNotificationToCustomer(id, "Notification", message);
+        return ResponseEntity.ok().build();
     }
 }

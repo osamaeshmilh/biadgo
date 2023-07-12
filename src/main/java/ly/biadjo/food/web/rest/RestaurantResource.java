@@ -204,4 +204,24 @@ public class RestaurantResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @GetMapping("/public/restaurants/{id}")
+    public ResponseEntity<RestaurantDTO> getRestaurantPublic(@PathVariable Long id) {
+        log.debug("REST request to get Restaurant : {}", id);
+        Optional<RestaurantDTO> restaurantDTO = restaurantService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(restaurantDTO);
+    }
+
+    @GetMapping("/public/restaurants")
+    public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsPublic(
+        RestaurantCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Restaurants by criteria: {}", criteria);
+
+        Page<RestaurantDTO> page = restaurantQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
 }

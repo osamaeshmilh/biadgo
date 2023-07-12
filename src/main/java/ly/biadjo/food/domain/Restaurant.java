@@ -123,6 +123,20 @@ public class Restaurant extends AbstractAuditingEntity<Long> implements Serializ
     @JsonIgnoreProperties(value = {"restaurants"}, allowSetters = true)
     private Set<Category> categories = new HashSet<>();
 
+    @OneToMany(mappedBy = "restaurant")
+    @JsonIgnoreProperties(
+        value = {"restaurant", "restaurantImages", "restaurantSchedules"},
+        allowSetters = true
+    )
+    private Set<RestaurantImage> restaurantImages = new HashSet<>();
+
+    @OneToMany(mappedBy = "restaurant")
+    @JsonIgnoreProperties(
+        value = {"restaurant", "restaurantImages", "restaurantSchedules"},
+        allowSetters = true
+    )
+    private Set<RestaurantSchedule> restaurantSchedules = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -578,5 +592,21 @@ public class Restaurant extends AbstractAuditingEntity<Long> implements Serializ
             ", facebookPageUrl='" + getFacebookPageUrl() + "'" +
             ", notes='" + getNotes() + "'" +
             "}";
+    }
+
+    public Set<RestaurantImage> getRestaurantImages() {
+        return restaurantImages;
+    }
+
+    public void setRestaurantImages(Set<RestaurantImage> restaurantImages) {
+        this.restaurantImages = restaurantImages;
+    }
+
+    public Set<RestaurantSchedule> getRestaurantSchedules() {
+        return restaurantSchedules;
+    }
+
+    public void setRestaurantSchedules(Set<RestaurantSchedule> restaurantSchedules) {
+        this.restaurantSchedules = restaurantSchedules;
     }
 }

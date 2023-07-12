@@ -1,12 +1,18 @@
 package ly.biadjo.food.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import ly.biadjo.food.domain.Customer;
+import ly.biadjo.food.domain.User;
 import ly.biadjo.food.repository.CustomerRepository;
+import ly.biadjo.food.security.AuthoritiesConstants;
 import ly.biadjo.food.service.dto.CustomerDTO;
 import ly.biadjo.food.service.mapper.CustomerMapper;
 import ly.biadjo.food.service.utils.FileTools;
+import ly.biadjo.food.web.rest.errors.BadRequestAlertException;
+import ly.biadjo.food.web.rest.vm.ManagedUserVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,9 +33,12 @@ public class CustomerService {
 
     private final CustomerMapper customerMapper;
 
-    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    private final UserService userService;
+
+    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper, UserService userService) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
+        this.userService = userService;
     }
 
     /**
@@ -98,6 +107,12 @@ public class CustomerService {
         return customerRepository.findAll(pageable).map(customerMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public List<CustomerDTO> findAll() {
+        log.debug("Request to get all Customers");
+        return customerMapper.toDto(customerRepository.findAll());
+    }
+
     /**
      * Get one customer by id.
      *
@@ -118,5 +133,70 @@ public class CustomerService {
     public void delete(Long id) {
         log.debug("Request to delete Customer : {}", id);
         customerRepository.deleteById(id);
+    }
+
+    public CustomerDTO create(CustomerDTO customerDTO) {
+        ManagedUserVM managedUserVM = new ManagedUserVM();
+        managedUserVM.setFirstName(customerDTO.getName());
+        managedUserVM.setEmail(customerDTO.getEmail());
+        managedUserVM.setLogin(customerDTO.getEmail());
+        managedUserVM.setPhone(customerDTO.getMobileNo());
+        User user = userService.createAndAssignUserWithPassword(managedUserVM, AuthoritiesConstants.CUSTOMER, customerDTO.getNewPassword());
+
+        Customer customer = customerMapper.toEntity(customerDTO);
+        customer.setUser(user);
+        customer.setWalletPublicKey(UUID.randomUUID().toString());
+        customer.setIsBanned(false);
+        customer.setIsVerified(true);
+
+        if (customerDTO.getImage() != null) {
+            String filePath = FileTools.upload(customer.getImage(), customer.getImageContentType(), "customer");
+            customer.setImage(null);
+            customer.setImageContentType(customerDTO.getImageContentType());
+            customer.setImageUrl(filePath);
+        }
+
+        customer = customerRepository.save(customer);
+        return customerMapper.toDto(customer);
+    }
+
+    public Customer findOneByUser() {
+        if (userService.getUserWithAuthorities().isPresent()) return customerRepository.findByUser(
+            userService.getUserWithAuthorities().get()
+        );
+        else throw new BadRequestAlertException("Customer User Not Found !", "", "CUSTOMER_NOT_FOUND");
+    }
+
+    public CustomerDTO findOneDTOByUser() {
+        if (userService.getUserWithAuthorities().isPresent()) return customerMapper.toDto(
+            customerRepository.findByUser(userService.getUserWithAuthorities().get())
+        );
+        else throw new BadRequestAlertException("Customer User Not Found !", "", "CUSTOMER_NOT_FOUND");
+    }
+
+    public User findOneUser() {
+        if (userService.getUserWithAuthorities().isPresent()) return userService
+            .getUserWithAuthorities()
+            .get();
+        else throw new BadRequestAlertException("Customer User Not Found !", "", "CUSTOMER_NOT_FOUND");
+    }
+
+    public Optional<CustomerDTO> findOneByWalletPublicKey(String walletPublicKey) {
+        return customerRepository.findTopByWalletPublicKey(walletPublicKey).map(customerMapper::toDto);
+    }
+
+    public Optional<CustomerDTO> findOneByMobileNo(String mobileNo) {
+        return customerRepository.findFirstByMobileNoContaining(mobileNo).map(customerMapper::toDto);
+    }
+
+    public Optional<CustomerDTO> findOneByEmail(String email) {
+        return customerRepository.findFirstByEmail(email).map(customerMapper::toDto);
+    }
+
+    public void verifyUser(User user) {
+        CustomerDTO customerDTO = customerMapper.toDto(customerRepository.findByUser(user));
+        customerDTO.setIsVerified(true);
+        System.out.println(customerDTO.getName());
+        save(customerDTO);
     }
 }

@@ -50,7 +50,7 @@ public class RestaurantImage implements Serializable {
     private String imageContentType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"user", "cuisine", "categories"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"user", "cuisine", "categories", "restaurantImages", "restaurantSchedules"}, allowSetters = true)
     private Restaurant restaurant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

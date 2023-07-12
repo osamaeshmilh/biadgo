@@ -30,8 +30,11 @@ public class AdminUserDTO implements Serializable {
     private String lastName;
 
     @Email
-    @Size(min = 5, max = 254)
     private String email;
+
+    private String phone;
+
+    private String firebaseId;
 
     @Size(max = 256)
     private String imageUrl;
@@ -192,5 +195,21 @@ public class AdminUserDTO implements Serializable {
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
             "}";
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
     }
 }
