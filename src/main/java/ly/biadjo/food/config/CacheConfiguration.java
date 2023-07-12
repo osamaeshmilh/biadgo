@@ -84,6 +84,7 @@ public class CacheConfiguration {
             createCache(cm, ly.biadjo.food.domain.Slider.class.getName());
             createCache(cm, ly.biadjo.food.domain.Transaction.class.getName());
             createCache(cm, ly.biadjo.food.domain.Zone.class.getName());
+            createCache(cm, ly.biadjo.food.domain.RestaurantImage.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

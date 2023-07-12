@@ -1,0 +1,173 @@
+<div>
+  <h2 id="page-heading" data-cy="RestaurantImageHeading">
+    <span>Restaurant Images</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-restaurant-image"
+        [routerLink]="['/restaurant-image/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Restaurant Image </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="restaurantImages?.length === 0">
+    <span>No Restaurant Images found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="restaurantImages && restaurantImages.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+        <th scope="col" jhiSortBy="id">
+          <div class="d-flex">
+            <span>ID</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="description">
+          <div class="d-flex">
+            <span>Description</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="descriptionAr">
+          <div class="d-flex">
+            <span>Description Ar</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="descriptionEn">
+          <div class="d-flex">
+            <span>Description En</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="imageType">
+          <div class="d-flex">
+            <span>Image Type</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="menuOrder">
+          <div class="d-flex">
+            <span>Menu Order</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="imageUrl">
+          <div class="d-flex">
+            <span>Image Url</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="image">
+          <div class="d-flex">
+            <span>Image</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="restaurant.name">
+          <div class="d-flex">
+            <span>Restaurant</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let restaurantImage of restaurantImages; trackBy: trackId" data-cy="entityTable">
+        <td>
+          <a [routerLink]="['/restaurant-image', restaurantImage.id, 'view']">{{ restaurantImage.id }}</a>
+        </td>
+        <td>{{ restaurantImage.description }}</td>
+        <td>{{ restaurantImage.descriptionAr }}</td>
+        <td>{{ restaurantImage.descriptionEn }}</td>
+        <td>{{ restaurantImage.imageType }}</td>
+        <td>{{ restaurantImage.menuOrder }}</td>
+        <td>{{ restaurantImage.imageUrl }}</td>
+        <td>
+          <a *ngIf="restaurantImage.image" (click)="openFile(restaurantImage.image, restaurantImage.imageContentType)">
+            <img
+              [src]="'data:' + restaurantImage.imageContentType + ';base64,' + restaurantImage.image"
+              style="max-height: 30px"
+              alt="restaurantImage image"
+            />
+          </a>
+          <span *ngIf="restaurantImage.image">{{ restaurantImage.imageContentType }}
+            , {{ byteSize(restaurantImage.image) }}</span>
+        </td>
+        <td>
+          <div *ngIf="restaurantImage.restaurant">
+            <a
+              [routerLink]="['/restaurant', restaurantImage.restaurant.id, 'view']">{{ restaurantImage.restaurant.name }}</a>
+          </div>
+        </td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button
+              type="submit"
+              [routerLink]="['/restaurant-image', restaurantImage.id, 'view']"
+              class="btn btn-info btn-sm"
+              data-cy="entityDetailsButton"
+            >
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline">View</span>
+            </button>
+
+            <button
+              type="submit"
+              [routerLink]="['/restaurant-image', restaurantImage.id, 'edit']"
+              class="btn btn-primary btn-sm"
+              data-cy="entityEditButton"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline">Edit</span>
+            </button>
+
+            <button type="submit" (click)="delete(restaurantImage)" class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline">Delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="restaurantImages && restaurantImages.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

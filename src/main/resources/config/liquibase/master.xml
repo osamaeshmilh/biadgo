@@ -70,6 +70,8 @@
     <include file="config/liquibase/changelog/20230706033442_added_entity_Transaction.xml"
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230706033443_added_entity_Zone.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230707033528_added_entity_RestaurantImage.xml"
+             relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20230706033412_added_entity_constraints_Customer.xml"
              relativeToChangelogFile="false"/>
@@ -120,6 +122,8 @@
     <include file="config/liquibase/changelog/20230706033442_added_entity_constraints_Transaction.xml"
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230706033443_added_entity_constraints_Zone.xml"
+             relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230707033528_added_entity_constraints_RestaurantImage.xml"
              relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->

@@ -51,7 +51,8 @@
       "RestaurantSchedule",
       "Slider",
       "Transaction",
-      "Zone"
+      "Zone",
+      "RestaurantImage"
     ],
     "entitySuffix": "",
     "gradleEnterpriseHost": null,

@@ -141,4 +141,8 @@ export const EntityNavbarItems: NavbarItem[] = [
     name: 'Zone',
     route: '/zone',
   },
+  {
+    name: 'RestaurantImage',
+    route: '/restaurant-image',
+  },
 ];

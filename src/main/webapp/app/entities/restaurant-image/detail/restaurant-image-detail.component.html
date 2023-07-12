@@ -1,0 +1,72 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="restaurantImage">
+      <h2 data-cy="restaurantImageDetailsHeading"><span>Restaurant Image</span></h2>
+
+      <hr/>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ restaurantImage.id }}</span>
+        </dd>
+        <dt><span>Description</span></dt>
+        <dd>
+          <span>{{ restaurantImage.description }}</span>
+        </dd>
+        <dt><span>Description Ar</span></dt>
+        <dd>
+          <span>{{ restaurantImage.descriptionAr }}</span>
+        </dd>
+        <dt><span>Description En</span></dt>
+        <dd>
+          <span>{{ restaurantImage.descriptionEn }}</span>
+        </dd>
+        <dt><span>Image Type</span></dt>
+        <dd>
+          <span>{{ restaurantImage.imageType }}</span>
+        </dd>
+        <dt><span>Menu Order</span></dt>
+        <dd>
+          <span>{{ restaurantImage.menuOrder }}</span>
+        </dd>
+        <dt><span>Image Url</span></dt>
+        <dd>
+          <span>{{ restaurantImage.imageUrl }}</span>
+        </dd>
+        <dt><span>Image</span></dt>
+        <dd>
+          <div *ngIf="restaurantImage.image">
+            <a (click)="openFile(restaurantImage.image, restaurantImage.imageContentType)">
+              <img
+                [src]="'data:' + restaurantImage.imageContentType + ';base64,' + restaurantImage.image"
+                style="max-width: 100%"
+                alt="restaurantImage image"
+              />
+            </a>
+            {{ restaurantImage.imageContentType }}, {{ byteSize(restaurantImage.image) }}
+          </div>
+        </dd>
+        <dt><span>Restaurant</span></dt>
+        <dd>
+          <div *ngIf="restaurantImage.restaurant">
+            <a
+              [routerLink]="['/restaurant', restaurantImage.restaurant.id, 'view']">{{ restaurantImage.restaurant.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/restaurant-image', restaurantImage.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

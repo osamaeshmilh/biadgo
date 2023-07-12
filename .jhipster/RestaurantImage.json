@@ -1,0 +1,53 @@
+{
+  "applications": [
+    "biadjo"
+  ],
+  "changelogDate": "20230707033528",
+  "dto": "mapstruct",
+  "entityTableName": "restaurant_image",
+  "fields": [
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descriptionAr",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descriptionEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "imageType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "menuOrder",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "imageUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "RestaurantImage",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "restaurant",
+      "relationshipName": "restaurant",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}
