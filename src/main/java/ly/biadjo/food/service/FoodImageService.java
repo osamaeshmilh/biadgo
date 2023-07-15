@@ -43,7 +43,7 @@ public class FoodImageService {
         FoodImage foodImage = foodImageMapper.toEntity(foodImageDTO);
 
         if (foodImageDTO.getImage() != null) {
-            String filePath = FileTools.upload(foodImage.getImage(), foodImage.getImageContentType(), "FoodImage");
+            String filePath = FileTools.upload(foodImage.getImage(), foodImage.getImageContentType(), "foodImage");
             foodImage.setImage(null);
             foodImage.setImageContentType(foodImageDTO.getImageContentType());
             foodImage.setImageUrl(filePath);

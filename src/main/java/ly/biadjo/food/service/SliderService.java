@@ -6,6 +6,7 @@ import ly.biadjo.food.domain.Slider;
 import ly.biadjo.food.repository.SliderRepository;
 import ly.biadjo.food.service.dto.SliderDTO;
 import ly.biadjo.food.service.mapper.SliderMapper;
+import ly.biadjo.food.service.utils.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,14 @@ public class SliderService {
     public SliderDTO save(SliderDTO sliderDTO) {
         log.debug("Request to save Slider : {}", sliderDTO);
         Slider slider = sliderMapper.toEntity(sliderDTO);
+
+        if (sliderDTO.getImage() != null) {
+            String filePath = FileTools.upload(slider.getImage(), slider.getImageContentType(), "slider");
+            slider.setImage(null);
+            slider.setImageContentType(sliderDTO.getImageContentType());
+            slider.setImageUrl(filePath);
+        }
+
         slider = sliderRepository.save(slider);
         return sliderMapper.toDto(slider);
     }

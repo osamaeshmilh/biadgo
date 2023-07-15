@@ -6,6 +6,7 @@ import ly.biadjo.food.domain.PaymentMethod;
 import ly.biadjo.food.repository.PaymentMethodRepository;
 import ly.biadjo.food.service.dto.PaymentMethodDTO;
 import ly.biadjo.food.service.mapper.PaymentMethodMapper;
+import ly.biadjo.food.service.utils.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,14 @@ public class PaymentMethodService {
     public PaymentMethodDTO save(PaymentMethodDTO paymentMethodDTO) {
         log.debug("Request to save PaymentMethod : {}", paymentMethodDTO);
         PaymentMethod paymentMethod = paymentMethodMapper.toEntity(paymentMethodDTO);
+
+        if (paymentMethodDTO.getImage() != null) {
+            String filePath = FileTools.upload(paymentMethod.getImage(), paymentMethod.getImageContentType(), "paymentMethod");
+            paymentMethod.setImage(null);
+            paymentMethod.setImageContentType(paymentMethodDTO.getImageContentType());
+            paymentMethod.setImageUrl(filePath);
+        }
+
         paymentMethod = paymentMethodRepository.save(paymentMethod);
         return paymentMethodMapper.toDto(paymentMethod);
     }

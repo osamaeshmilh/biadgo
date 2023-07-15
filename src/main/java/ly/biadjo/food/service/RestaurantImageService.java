@@ -6,6 +6,7 @@ import ly.biadjo.food.domain.RestaurantImage;
 import ly.biadjo.food.repository.RestaurantImageRepository;
 import ly.biadjo.food.service.dto.RestaurantImageDTO;
 import ly.biadjo.food.service.mapper.RestaurantImageMapper;
+import ly.biadjo.food.service.utils.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,14 @@ public class RestaurantImageService {
     public RestaurantImageDTO save(RestaurantImageDTO restaurantImageDTO) {
         log.debug("Request to save RestaurantImage : {}", restaurantImageDTO);
         RestaurantImage restaurantImage = restaurantImageMapper.toEntity(restaurantImageDTO);
+
+        if (restaurantImageDTO.getImage() != null) {
+            String filePath = FileTools.upload(restaurantImage.getImage(), restaurantImage.getImageContentType(), "restaurantImage");
+            restaurantImage.setImage(null);
+            restaurantImage.setImageContentType(restaurantImageDTO.getImageContentType());
+            restaurantImage.setImageUrl(filePath);
+        }
+
         restaurantImage = restaurantImageRepository.save(restaurantImage);
         return restaurantImageMapper.toDto(restaurantImage);
     }
