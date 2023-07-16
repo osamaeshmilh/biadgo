@@ -74,9 +74,9 @@ public class RestaurantDTO implements Serializable {
 
     private Set<CategoryDTO> categories = new HashSet<>();
 
-    private Set<RestaurantImageDTO> restaurantImages = new HashSet<>();
+    private Set<RestaurantImage> restaurantImages = new HashSet<>();
 
-    private Set<RestaurantScheduleDTO> restaurantSchedules = new HashSet<>();
+    private Set<RestaurantSchedule> restaurantSchedules = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -376,19 +376,19 @@ public class RestaurantDTO implements Serializable {
             "}";
     }
 
-    public Set<RestaurantImageDTO> getRestaurantImages() {
+    public Set<RestaurantImage> getRestaurantImages() {
         return restaurantImages;
     }
 
-    public void setRestaurantImages(Set<RestaurantImageDTO> restaurantImages) {
+    public void setRestaurantImages(Set<RestaurantImage> restaurantImages) {
         this.restaurantImages = restaurantImages;
     }
 
-    public Set<RestaurantScheduleDTO> getRestaurantSchedules() {
+    public Set<RestaurantSchedule> getRestaurantSchedules() {
         return restaurantSchedules;
     }
 
-    public void setRestaurantSchedules(Set<RestaurantScheduleDTO> restaurantSchedules) {
+    public void setRestaurantSchedules(Set<RestaurantSchedule> restaurantSchedules) {
         this.restaurantSchedules = restaurantSchedules;
     }
 }
