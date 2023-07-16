@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import ly.biadjo.food.domain.*;
 import ly.biadjo.food.domain.enumeration.DeliveryPriceType;
 
 /**
@@ -72,6 +73,10 @@ public class RestaurantDTO implements Serializable {
     private CuisineDTO cuisine;
 
     private Set<CategoryDTO> categories = new HashSet<>();
+
+    private Set<RestaurantImageDTO> restaurantImageDTOS = new HashSet<>();
+
+    private Set<RestaurantScheduleDTO> restaurantScheduleDTOS = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -369,5 +374,21 @@ public class RestaurantDTO implements Serializable {
             ", cuisine=" + getCuisine() +
             ", categories=" + getCategories() +
             "}";
+    }
+
+    public Set<RestaurantImageDTO> getRestaurantImageDTOS() {
+        return restaurantImageDTOS;
+    }
+
+    public void setRestaurantImageDTOS(Set<RestaurantImageDTO> restaurantImageDTOS) {
+        this.restaurantImageDTOS = restaurantImageDTOS;
+    }
+
+    public Set<RestaurantScheduleDTO> getRestaurantScheduleDTOS() {
+        return restaurantScheduleDTOS;
+    }
+
+    public void setRestaurantScheduleDTOS(Set<RestaurantScheduleDTO> restaurantScheduleDTOS) {
+        this.restaurantScheduleDTOS = restaurantScheduleDTOS;
     }
 }
