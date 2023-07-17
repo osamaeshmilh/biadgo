@@ -7,9 +7,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ly.biadjo.food.repository.RestaurantRepository;
-import ly.biadjo.food.service.RestaurantQueryService;
-import ly.biadjo.food.service.RestaurantService;
+import ly.biadjo.food.security.AuthoritiesConstants;
+import ly.biadjo.food.security.SecurityUtils;
+import ly.biadjo.food.service.*;
 import ly.biadjo.food.service.criteria.RestaurantCriteria;
+import ly.biadjo.food.service.criteria.RestaurantReviewCriteria;
 import ly.biadjo.food.service.dto.RestaurantDTO;
 import ly.biadjo.food.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -45,14 +48,23 @@ public class RestaurantResource {
 
     private final RestaurantQueryService restaurantQueryService;
 
+    private final RestaurantReviewQueryService restaurantReviewQueryService;
+
+    private final FavoriteRestaurantService favoriteRestaurantService;
+
+    private final CustomerService customerService;
+
     public RestaurantResource(
         RestaurantService restaurantService,
         RestaurantRepository restaurantRepository,
-        RestaurantQueryService restaurantQueryService
-    ) {
+        RestaurantQueryService restaurantQueryService,
+        RestaurantReviewQueryService restaurantReviewQueryService, FavoriteRestaurantService favoriteRestaurantService, CustomerService customerService) {
         this.restaurantService = restaurantService;
         this.restaurantRepository = restaurantRepository;
         this.restaurantQueryService = restaurantQueryService;
+        this.restaurantReviewQueryService = restaurantReviewQueryService;
+        this.favoriteRestaurantService = favoriteRestaurantService;
+        this.customerService = customerService;
     }
 
     /**
@@ -160,6 +172,32 @@ public class RestaurantResource {
         log.debug("REST request to get Restaurants by criteria: {}", criteria);
 
         Page<RestaurantDTO> page = restaurantQueryService.findByCriteria(criteria, pageable);
+
+        page.forEach(restaurantDTO -> {
+            Long restaurantId = restaurantDTO.getId();
+
+            LongFilter productIdFilter = new LongFilter();
+            productIdFilter.setEquals(restaurantId);
+
+            RestaurantReviewCriteria restaurantReviewCriteria = new RestaurantReviewCriteria();
+            restaurantReviewCriteria.setRestaurantId(productIdFilter);
+
+            // Set review count and calculate rating
+            long reviewsCount = restaurantReviewQueryService.countByCriteria(restaurantReviewCriteria);
+            restaurantDTO.setReviewsCount(reviewsCount);
+
+            float rating = reviewsCount > 0
+                ? restaurantReviewQueryService.sumRatingByCriteria(restaurantReviewCriteria) / (float) reviewsCount
+                : 0.0F;
+            restaurantDTO.setRating(rating);
+
+            // If user is authenticated, set favorite
+            if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+                boolean isFavorite = favoriteRestaurantService.isFavorite(customerService.findOneDTOByUser().getId(), restaurantId);
+                restaurantDTO.setFavorite(isFavorite);
+            }
+        });
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -186,6 +224,28 @@ public class RestaurantResource {
     public ResponseEntity<RestaurantDTO> getRestaurant(@PathVariable Long id) {
         log.debug("REST request to get Restaurant : {}", id);
         Optional<RestaurantDTO> restaurantDTO = restaurantService.findOne(id);
+
+        LongFilter productIdFilter = new LongFilter();
+        productIdFilter.setEquals(id);
+
+        RestaurantReviewCriteria restaurantReviewCriteria = new RestaurantReviewCriteria();
+        restaurantReviewCriteria.setRestaurantId(productIdFilter);
+
+        // Set review count and calculate rating
+        long reviewsCount = restaurantReviewQueryService.countByCriteria(restaurantReviewCriteria);
+        restaurantDTO.get().setReviewsCount(reviewsCount);
+
+        float rating = reviewsCount > 0
+            ? restaurantReviewQueryService.sumRatingByCriteria(restaurantReviewCriteria) / (float) reviewsCount
+            : 0.0F;
+        restaurantDTO.get().setRating(rating);
+
+        // If user is authenticated, set favorite
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            boolean isFavorite = favoriteRestaurantService.isFavorite(customerService.findOneDTOByUser().getId(), restaurantDTO.get().getId());
+            restaurantDTO.get().setFavorite(isFavorite);
+        }
+
         return ResponseUtil.wrapOrNotFound(restaurantDTO);
     }
 
@@ -222,6 +282,12 @@ public class RestaurantResource {
         Page<RestaurantDTO> page = restaurantQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/public/restaurants/nearby")
+    public ResponseEntity<List<RestaurantDTO>> getAllNearRestaurantsPublic(Double customerLat, Double customerLng) {
+        List<RestaurantDTO> restaurantDTOList = restaurantService.findByDistance("10", customerLat, customerLng);
+        return ResponseEntity.ok().body(restaurantDTOList);
     }
 
 }

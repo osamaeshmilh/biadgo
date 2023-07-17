@@ -7,10 +7,15 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ly.biadjo.food.repository.FavoriteRestaurantRepository;
+import ly.biadjo.food.security.AuthoritiesConstants;
+import ly.biadjo.food.security.SecurityUtils;
+import ly.biadjo.food.service.CustomerService;
 import ly.biadjo.food.service.FavoriteRestaurantQueryService;
 import ly.biadjo.food.service.FavoriteRestaurantService;
+import ly.biadjo.food.service.RestaurantService;
 import ly.biadjo.food.service.criteria.FavoriteRestaurantCriteria;
 import ly.biadjo.food.service.dto.FavoriteRestaurantDTO;
+import ly.biadjo.food.service.dto.RestaurantDTO;
 import ly.biadjo.food.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,14 +50,20 @@ public class FavoriteRestaurantResource {
 
     private final FavoriteRestaurantQueryService favoriteRestaurantQueryService;
 
+    private final CustomerService customerService;
+
+    private final RestaurantService restaurantService;
+
     public FavoriteRestaurantResource(
         FavoriteRestaurantService favoriteRestaurantService,
         FavoriteRestaurantRepository favoriteRestaurantRepository,
-        FavoriteRestaurantQueryService favoriteRestaurantQueryService
-    ) {
+        FavoriteRestaurantQueryService favoriteRestaurantQueryService,
+        CustomerService customerService, RestaurantService restaurantService) {
         this.favoriteRestaurantService = favoriteRestaurantService;
         this.favoriteRestaurantRepository = favoriteRestaurantRepository;
         this.favoriteRestaurantQueryService = favoriteRestaurantQueryService;
+        this.customerService = customerService;
+        this.restaurantService = restaurantService;
     }
 
     /**
@@ -204,5 +215,27 @@ public class FavoriteRestaurantResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/favorite-restaurants/toggle/{restaurantId}")
+    public ResponseEntity<RestaurantDTO> toggleFavorite(@PathVariable Long restaurantId) {
+
+        RestaurantDTO restaurantDTO = restaurantService.findOne(restaurantId).get();
+
+        if (favoriteRestaurantService.findOneByCustomerIdAndRestaurantId(customerService.findOneByUser().getId(), restaurantDTO.getId()).isPresent()) {
+            favoriteRestaurantService.delete(favoriteRestaurantService.findOneByCustomerIdAndRestaurantId(customerService.findOneByUser().getId(), restaurantDTO.getId()).get().getId());
+            restaurantDTO.setId(restaurantId);
+            restaurantDTO.setFavorite(false);
+        } else {
+            if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+                FavoriteRestaurantDTO favoriteRestaurantDTO = new FavoriteRestaurantDTO();
+                favoriteRestaurantDTO.setCustomer(customerService.findOneDTOByUser());
+                favoriteRestaurantDTO.setRestaurant(restaurantDTO);
+                favoriteRestaurantService.save(favoriteRestaurantDTO);
+                restaurantDTO.setId(restaurantId);
+                restaurantDTO.setFavorite(true);
+            } else throw new BadRequestAlertException("User Is Not A Customer", "403", "");
+        }
+        return ResponseEntity.ok().body(restaurantDTO);
     }
 }

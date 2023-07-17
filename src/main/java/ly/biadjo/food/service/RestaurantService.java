@@ -1,5 +1,6 @@
 package ly.biadjo.food.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import ly.biadjo.food.domain.Restaurant;
@@ -118,5 +119,9 @@ public class RestaurantService {
     public void delete(Long id) {
         log.debug("Request to delete Restaurant : {}", id);
         restaurantRepository.deleteById(id);
+    }
+
+    public List<RestaurantDTO> findByDistance(String distance, Double customerLat, Double customerLng) {
+        return restaurantMapper.toDto(restaurantRepository.findAllOrderByDistance(distance, customerLat, customerLng));
     }
 }

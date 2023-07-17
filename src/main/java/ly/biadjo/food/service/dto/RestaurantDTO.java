@@ -72,6 +72,12 @@ public class RestaurantDTO implements Serializable {
 
     private CuisineDTO cuisine;
 
+    private Boolean isFavorite;
+
+    private long reviewsCount;
+
+    private float rating;
+
     private Set<CategoryDTO> categories = new HashSet<>();
 
     private Set<RestaurantImage> restaurantImages = new HashSet<>();
@@ -390,5 +396,30 @@ public class RestaurantDTO implements Serializable {
 
     public void setRestaurantSchedules(Set<RestaurantSchedule> restaurantSchedules) {
         this.restaurantSchedules = restaurantSchedules;
+    }
+
+    public Boolean getFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        isFavorite = favorite;
+    }
+
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public long getReviewsCount() {
+        return reviewsCount;
+    }
+
+    public void setReviewsCount(long reviewsCount) {
+        this.reviewsCount = reviewsCount;
     }
 }

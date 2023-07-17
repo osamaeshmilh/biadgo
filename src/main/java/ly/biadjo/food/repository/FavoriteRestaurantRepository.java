@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import ly.biadjo.food.domain.FavoriteRestaurant;
+import ly.biadjo.food.service.dto.FavoriteRestaurantDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -43,4 +44,6 @@ public interface FavoriteRestaurantRepository
         "select favoriteRestaurant from FavoriteRestaurant favoriteRestaurant left join fetch favoriteRestaurant.customer left join fetch favoriteRestaurant.restaurant where favoriteRestaurant.id =:id"
     )
     Optional<FavoriteRestaurant> findOneWithToOneRelationships(@Param("id") Long id);
+
+    Optional<FavoriteRestaurant> findOneByCustomerIdAndRestaurantId(Long customerId, Long restaurantId);
 }

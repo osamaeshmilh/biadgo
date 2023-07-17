@@ -21,6 +21,14 @@ import tech.jhipster.service.filter.*;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class RestaurantCriteria implements Serializable, Criteria {
 
+    public Boolean getOr() {
+        return isOr;
+    }
+
+    public void setOr(Boolean or) {
+        isOr = or;
+    }
+
     /**
      * Class for filtering DeliveryPriceType
      */
@@ -102,6 +110,8 @@ public class RestaurantCriteria implements Serializable, Criteria {
     private LongFilter categoriesId;
 
     private Boolean distinct;
+
+    private Boolean isOr;
 
     public RestaurantCriteria() {
     }

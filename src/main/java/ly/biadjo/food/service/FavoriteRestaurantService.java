@@ -122,4 +122,12 @@ public class FavoriteRestaurantService {
         log.debug("Request to delete FavoriteRestaurant : {}", id);
         favoriteRestaurantRepository.deleteById(id);
     }
+
+    public Optional<FavoriteRestaurantDTO> findOneByCustomerIdAndRestaurantId(Long customerId, Long restaurantId) {
+        return favoriteRestaurantRepository.findOneByCustomerIdAndRestaurantId(customerId, restaurantId).map(favoriteRestaurantMapper::toDto);
+    }
+
+    public boolean isFavorite(Long customerId, Long restaurantId) {
+        return favoriteRestaurantRepository.findOneByCustomerIdAndRestaurantId(customerId, restaurantId).map(favoriteRestaurantMapper::toDto).isPresent();
+    }
 }

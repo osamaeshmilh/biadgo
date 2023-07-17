@@ -129,4 +129,17 @@ public class RestaurantReviewQueryService extends QueryService<RestaurantReview>
         }
         return specification;
     }
+
+    @Transactional(readOnly = true)
+    public float sumRatingByCriteria(RestaurantReviewCriteria restaurantReviewCriteria) {
+        log.debug("sum by criteria : {}", restaurantReviewCriteria);
+        final Specification<RestaurantReview> specification = createSpecification(restaurantReviewCriteria);
+        List<RestaurantReview> restaurantReviews = restaurantReviewRepository.findAll(specification);
+        Float total = 0.0F;
+        for (RestaurantReview restaurantReview : restaurantReviews) {
+            total += restaurantReview.getRate();
+        }
+        return total;
+    }
+
 }

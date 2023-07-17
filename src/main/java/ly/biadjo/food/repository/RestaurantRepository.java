@@ -42,4 +42,9 @@ public interface RestaurantRepository
 
     @Query("select restaurant from Restaurant restaurant left join fetch restaurant.cuisine where restaurant.id =:id")
     Optional<Restaurant> findOneWithToOneRelationships(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM restaurant where SQRT(POW(69.1 * (latitude - :customerLat), 2) + POW(69.1 * (:customerLng - longitude) * COS(latitude / 57.3), 2)) <= :distanceFromVendor " +
+        "ORDER BY SQRT(POW(69.1 * (latitude - :customerLat), 2) + POW(69.1 * (:customerLng - longitude) * COS(latitude / 57.3), 2)) asc", nativeQuery = true)
+    List<Restaurant> findAllOrderByDistance(@Param("distanceFromVendor") String distanceFromVendor, @Param("customerLat") Double customerLat, @Param("customerLng") Double customerLng);
+
 }
