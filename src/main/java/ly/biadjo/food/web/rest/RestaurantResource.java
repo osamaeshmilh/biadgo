@@ -269,6 +269,28 @@ public class RestaurantResource {
     public ResponseEntity<RestaurantDTO> getRestaurantPublic(@PathVariable Long id) {
         log.debug("REST request to get Restaurant : {}", id);
         Optional<RestaurantDTO> restaurantDTO = restaurantService.findOne(id);
+
+        LongFilter productIdFilter = new LongFilter();
+        productIdFilter.setEquals(id);
+
+        RestaurantReviewCriteria restaurantReviewCriteria = new RestaurantReviewCriteria();
+        restaurantReviewCriteria.setRestaurantId(productIdFilter);
+
+        // Set review count and calculate rating
+        long reviewsCount = restaurantReviewQueryService.countByCriteria(restaurantReviewCriteria);
+        restaurantDTO.get().setReviewsCount(reviewsCount);
+
+        float rating = reviewsCount > 0
+            ? restaurantReviewQueryService.sumRatingByCriteria(restaurantReviewCriteria) / (float) reviewsCount
+            : 0.0F;
+        restaurantDTO.get().setRating(rating);
+
+        // If user is authenticated, set favorite
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            boolean isFavorite = favoriteRestaurantService.isFavorite(customerService.findOneDTOByUser().getId(), restaurantDTO.get().getId());
+            restaurantDTO.get().setFavorite(isFavorite);
+        }
+
         return ResponseUtil.wrapOrNotFound(restaurantDTO);
     }
 
@@ -280,6 +302,32 @@ public class RestaurantResource {
         log.debug("REST request to get Restaurants by criteria: {}", criteria);
 
         Page<RestaurantDTO> page = restaurantQueryService.findByCriteria(criteria, pageable);
+
+        page.forEach(restaurantDTO -> {
+            Long restaurantId = restaurantDTO.getId();
+
+            LongFilter productIdFilter = new LongFilter();
+            productIdFilter.setEquals(restaurantId);
+
+            RestaurantReviewCriteria restaurantReviewCriteria = new RestaurantReviewCriteria();
+            restaurantReviewCriteria.setRestaurantId(productIdFilter);
+
+            // Set review count and calculate rating
+            long reviewsCount = restaurantReviewQueryService.countByCriteria(restaurantReviewCriteria);
+            restaurantDTO.setReviewsCount(reviewsCount);
+
+            float rating = reviewsCount > 0
+                ? restaurantReviewQueryService.sumRatingByCriteria(restaurantReviewCriteria) / (float) reviewsCount
+                : 0.0F;
+            restaurantDTO.setRating(rating);
+
+            // If user is authenticated, set favorite
+            if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+                boolean isFavorite = favoriteRestaurantService.isFavorite(customerService.findOneDTOByUser().getId(), restaurantId);
+                restaurantDTO.setFavorite(isFavorite);
+            }
+        });
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
