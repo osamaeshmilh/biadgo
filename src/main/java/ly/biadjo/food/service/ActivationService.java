@@ -146,7 +146,8 @@ public class ActivationService {
         Optional<Activation> activationOptional = activationRepository.findFirstByMobileNoContains(mobileNo);
 
         newActivation = activationOptional.orElseGet(Activation::new);
-        String code = RandomStringUtils.randomNumeric(4);
+//        String code = RandomStringUtils.randomNumeric(4);
+        String code = "1111";
         newActivation.setMobileNo(mobileNo);
         newActivation.setCode(code);
         newActivation.setIsUsed(false);

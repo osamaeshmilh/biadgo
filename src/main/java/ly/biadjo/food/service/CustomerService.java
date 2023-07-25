@@ -138,8 +138,8 @@ public class CustomerService {
     public CustomerDTO create(CustomerDTO customerDTO) {
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setFirstName(customerDTO.getName());
-        managedUserVM.setEmail(customerDTO.getEmail());
-        managedUserVM.setLogin(customerDTO.getEmail());
+        managedUserVM.setEmail(customerDTO.getMobileNo() + "@biadjo.ly");
+        managedUserVM.setLogin(customerDTO.getMobileNo());
         managedUserVM.setPhone(customerDTO.getMobileNo());
         User user = userService.createAndAssignUserWithPassword(managedUserVM, AuthoritiesConstants.CUSTOMER, customerDTO.getNewPassword());
 

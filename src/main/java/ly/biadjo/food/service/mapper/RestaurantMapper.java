@@ -40,6 +40,10 @@ public interface RestaurantMapper extends EntityMapper<RestaurantDTO, Restaurant
     @Named("categoryId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "nameEn", source = "nameEn")
+    @Mapping(target = "nameAr", source = "nameAr")
+    @Mapping(target = "imageUrl", source = "imageUrl")
     CategoryDTO toDtoCategoryId(Category category);
 
     @Named("categoryIdSet")

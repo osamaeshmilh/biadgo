@@ -212,31 +212,31 @@ public class ActivationResource {
             .build();
     }
 
-//    @PostMapping(path = "/public/activation/email-otp")
-//    public void sendEmailOTP(@RequestParam String email) {
-//        if (customerService.findOneByEmail(email).isPresent()) {
-//            throw new BadRequestAlertException("Email Already Used!", ENTITY_NAME, "EMAIL_USED");
-//        }
-//        activationService.sendEmailOTP(email);
-//    }
-//
-//    @PostMapping(path = "/public/activation/sms-otp")
-//    public void sendSmsOTP(@RequestParam String mobileNo) {
-//        if (customerService.findOneByMobileNo(mobileNo).isPresent()) {
-//            throw new BadRequestAlertException("Mobile Number Already Used!", ENTITY_NAME, "MOBILE_USED");
-//        }
-//        activationService.sendSMSOTP(mobileNo);
-//    }
-//
-//    @Secured(AuthoritiesConstants.CUSTOMER)
-//    @PostMapping(path = "/activation/customer/send-otp")
-//    public void sendSmsOTPToCurrentUser() {
-//        if (customerService.findOneDTOByUser().getVerifiedByMobileNo()) activationService.sendSMSOTP(
-//            customerService.findOneDTOByUser().getMobileNo()
-//        );
-//        if (customerService.findOneDTOByUser().getVerifiedByEmail()) activationService.sendEmailOTP(
-//            customerService.findOneDTOByUser().getEmail()
-//        );
-//    }
+    @PostMapping(path = "/public/activation/email-otp")
+    public void sendEmailOTP(@RequestParam String email) {
+        if (customerService.findOneByEmail(email).isPresent()) {
+            throw new BadRequestAlertException("Email Already Used!", ENTITY_NAME, "EMAIL_USED");
+        }
+        activationService.sendEmailOTP(email);
+    }
+
+    @PostMapping(path = "/public/activation/sms-otp")
+    public void sendSmsOTP(@RequestParam String mobileNo) {
+        if (customerService.findOneByMobileNo(mobileNo).isPresent()) {
+            throw new BadRequestAlertException("Mobile Number Already Used!", ENTITY_NAME, "MOBILE_USED");
+        }
+        activationService.sendSMSOTP(mobileNo);
+    }
+
+    @Secured(AuthoritiesConstants.CUSTOMER)
+    @PostMapping(path = "/activation/customer/send-otp")
+    public void sendSmsOTPToCurrentUser() {
+        if (customerService.findOneDTOByUser().getVerifiedByMobileNo()) activationService.sendSMSOTP(
+            customerService.findOneDTOByUser().getMobileNo()
+        );
+        if (customerService.findOneDTOByUser().getVerifiedByEmail()) activationService.sendEmailOTP(
+            customerService.findOneDTOByUser().getEmail()
+        );
+    }
 }
 
