@@ -153,7 +153,7 @@ public class ActivationService {
         newActivation.setIsUsed(false);
         newActivation.setValidUntil(Instant.now().plus(1, ChronoUnit.HOURS));
         Activation result = activationRepository.save(newActivation);
-        smsService.sendSMS(result.getMobileNo(), result.getCode());
+        //smsService.sendSMS(result.getMobileNo(), result.getCode());
     }
 
     public Optional<Activation> checkCodeWithEmail(String email, String otp) {
