@@ -246,15 +246,15 @@ public class CustomerResource {
 //        if (customerDTO.getVerifiedByEmail()) {
 //            activationService.checkCodeWithEmail(customerDTO.getEmail(), customerDTO.getOtp());
 //        } else
-        if (customerDTO.getVerifiedByMobileNo()) {
-            activationService.checkCodeWithMobileNo(customerDTO.getMobileNo(), customerDTO.getOtp());
-        }
+//        if (customerDTO.getVerifiedByMobileNo()) {
+        activationService.checkCodeWithMobileNo(customerDTO.getMobileNo(), customerDTO.getOtp());
+//        }
 //        else if (customerDTO.getVerifiedBySocialId()) {
 //            customerDTO.setVerifiedByEmail(true);
 //        }
-        else {
-            throw new BadRequestAlertException("No Verification!", ENTITY_NAME, "NO_VERIFICATION");
-        }
+//        else {
+//            throw new BadRequestAlertException("No Verification!", ENTITY_NAME, "NO_VERIFICATION");
+//        }
 
         CustomerDTO result = customerService.create(customerDTO);
         return ResponseEntity
