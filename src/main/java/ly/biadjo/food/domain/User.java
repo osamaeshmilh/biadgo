@@ -59,7 +59,6 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @NotNull
     private String phone;
 
-    @NotNull
     private String firebaseId;
 
     @NotNull
