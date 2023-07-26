@@ -243,9 +243,10 @@ public class CustomerResource {
             customerDTO.setVerifiedByMobileNo(false);
         }
 
-        if (customerDTO.getVerifiedByEmail()) {
-            activationService.checkCodeWithEmail(customerDTO.getEmail(), customerDTO.getOtp());
-        } else if (customerDTO.getVerifiedByMobileNo()) {
+//        if (customerDTO.getVerifiedByEmail()) {
+//            activationService.checkCodeWithEmail(customerDTO.getEmail(), customerDTO.getOtp());
+//        } else
+        if (customerDTO.getVerifiedByMobileNo()) {
             activationService.checkCodeWithMobileNo(customerDTO.getMobileNo(), customerDTO.getOtp());
         }
 //        else if (customerDTO.getVerifiedBySocialId()) {
