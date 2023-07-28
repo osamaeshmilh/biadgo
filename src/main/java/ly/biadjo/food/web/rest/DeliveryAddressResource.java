@@ -7,6 +7,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ly.biadjo.food.repository.DeliveryAddressRepository;
+import ly.biadjo.food.security.AuthoritiesConstants;
+import ly.biadjo.food.security.SecurityUtils;
+import ly.biadjo.food.service.CustomerService;
 import ly.biadjo.food.service.DeliveryAddressQueryService;
 import ly.biadjo.food.service.DeliveryAddressService;
 import ly.biadjo.food.service.criteria.DeliveryAddressCriteria;
@@ -41,16 +44,19 @@ public class DeliveryAddressResource {
 
     private final DeliveryAddressService deliveryAddressService;
 
+    private final CustomerService customerService;
+
     private final DeliveryAddressRepository deliveryAddressRepository;
 
     private final DeliveryAddressQueryService deliveryAddressQueryService;
 
     public DeliveryAddressResource(
         DeliveryAddressService deliveryAddressService,
-        DeliveryAddressRepository deliveryAddressRepository,
+        CustomerService customerService, DeliveryAddressRepository deliveryAddressRepository,
         DeliveryAddressQueryService deliveryAddressQueryService
     ) {
         this.deliveryAddressService = deliveryAddressService;
+        this.customerService = customerService;
         this.deliveryAddressRepository = deliveryAddressRepository;
         this.deliveryAddressQueryService = deliveryAddressQueryService;
     }
@@ -68,6 +74,9 @@ public class DeliveryAddressResource {
         log.debug("REST request to save DeliveryAddress : {}", deliveryAddressDTO);
         if (deliveryAddressDTO.getId() != null) {
             throw new BadRequestAlertException("A new deliveryAddress cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            deliveryAddressDTO.setCustomer(customerService.findOneDTOByUser());
         }
         DeliveryAddressDTO result = deliveryAddressService.save(deliveryAddressDTO);
         return ResponseEntity

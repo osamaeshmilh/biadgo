@@ -7,8 +7,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ly.biadjo.food.repository.CartRepository;
+import ly.biadjo.food.security.AuthoritiesConstants;
+import ly.biadjo.food.security.SecurityUtils;
 import ly.biadjo.food.service.CartQueryService;
 import ly.biadjo.food.service.CartService;
+import ly.biadjo.food.service.CustomerService;
 import ly.biadjo.food.service.criteria.CartCriteria;
 import ly.biadjo.food.service.dto.CartDTO;
 import ly.biadjo.food.web.rest.errors.BadRequestAlertException;
@@ -41,12 +44,15 @@ public class CartResource {
 
     private final CartService cartService;
 
+    private final CustomerService customerService;
+
     private final CartRepository cartRepository;
 
     private final CartQueryService cartQueryService;
 
-    public CartResource(CartService cartService, CartRepository cartRepository, CartQueryService cartQueryService) {
+    public CartResource(CartService cartService, CustomerService customerService, CartRepository cartRepository, CartQueryService cartQueryService) {
         this.cartService = cartService;
+        this.customerService = customerService;
         this.cartRepository = cartRepository;
         this.cartQueryService = cartQueryService;
     }
@@ -63,6 +69,9 @@ public class CartResource {
         log.debug("REST request to save Cart : {}", cartDTO);
         if (cartDTO.getId() != null) {
             throw new BadRequestAlertException("A new cart cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            cartDTO.setCustomer(customerService.findOneDTOByUser());
         }
         CartDTO result = cartService.save(cartDTO);
         return ResponseEntity

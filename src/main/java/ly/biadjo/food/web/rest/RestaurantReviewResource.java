@@ -7,6 +7,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ly.biadjo.food.repository.RestaurantReviewRepository;
+import ly.biadjo.food.security.AuthoritiesConstants;
+import ly.biadjo.food.security.SecurityUtils;
+import ly.biadjo.food.service.CustomerService;
 import ly.biadjo.food.service.RestaurantReviewQueryService;
 import ly.biadjo.food.service.RestaurantReviewService;
 import ly.biadjo.food.service.criteria.RestaurantReviewCriteria;
@@ -41,16 +44,19 @@ public class RestaurantReviewResource {
 
     private final RestaurantReviewService restaurantReviewService;
 
+    private final CustomerService customerService;
+
     private final RestaurantReviewRepository restaurantReviewRepository;
 
     private final RestaurantReviewQueryService restaurantReviewQueryService;
 
     public RestaurantReviewResource(
         RestaurantReviewService restaurantReviewService,
-        RestaurantReviewRepository restaurantReviewRepository,
+        CustomerService customerService, RestaurantReviewRepository restaurantReviewRepository,
         RestaurantReviewQueryService restaurantReviewQueryService
     ) {
         this.restaurantReviewService = restaurantReviewService;
+        this.customerService = customerService;
         this.restaurantReviewRepository = restaurantReviewRepository;
         this.restaurantReviewQueryService = restaurantReviewQueryService;
     }
@@ -68,6 +74,9 @@ public class RestaurantReviewResource {
         log.debug("REST request to save RestaurantReview : {}", restaurantReviewDTO);
         if (restaurantReviewDTO.getId() != null) {
             throw new BadRequestAlertException("A new restaurantReview cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            restaurantReviewDTO.setCustomer(customerService.findOneDTOByUser());
         }
         RestaurantReviewDTO result = restaurantReviewService.save(restaurantReviewDTO);
         return ResponseEntity

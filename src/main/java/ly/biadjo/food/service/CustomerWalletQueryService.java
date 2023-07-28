@@ -6,6 +6,7 @@ import java.util.List;
 
 import ly.biadjo.food.domain.*; // for static metamodels
 import ly.biadjo.food.domain.CustomerWallet;
+import ly.biadjo.food.domain.enumeration.WalletAction;
 import ly.biadjo.food.repository.CustomerWalletRepository;
 import ly.biadjo.food.service.criteria.CustomerWalletCriteria;
 import ly.biadjo.food.service.dto.CustomerWalletDTO;
@@ -137,5 +138,21 @@ public class CustomerWalletQueryService extends QueryService<CustomerWallet> {
             }
         }
         return specification;
+    }
+
+    @Transactional(readOnly = true)
+    public Double sumAmountByCriteria(CustomerWalletCriteria criteria) {
+        log.debug("sum by criteria : {}", criteria);
+        final Specification<CustomerWallet> specification = createSpecification(criteria);
+        List<CustomerWallet> customerWallets = customerWalletRepository.findAll(specification);
+        Double total = 0.0;
+        for (CustomerWallet customerWallet : customerWallets) {
+            if (customerWallet.getWalletAction() == WalletAction.DEPOSIT) {
+                total += customerWallet.getAmount();
+            } else if (customerWallet.getWalletAction() == WalletAction.WITHDRAW) {
+                total -= customerWallet.getAmount();
+            }
+        }
+        return total;
     }
 }

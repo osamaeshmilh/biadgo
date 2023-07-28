@@ -238,10 +238,13 @@ public class CustomerResource {
             throw new BadRequestAlertException("Mobile Number Already Used!", ENTITY_NAME, "MOBILE_USED");
         }
 
-        if (!customerDTO.getMobileNo().startsWith("+218")) {
-            customerDTO.setVerifiedByEmail(true);
-            customerDTO.setVerifiedByMobileNo(false);
-        }
+//        if (!customerDTO.getMobileNo().startsWith("+218")) {
+//            customerDTO.setVerifiedByEmail(false);
+//            customerDTO.setVerifiedByMobileNo(true);
+//        }
+//
+//        customerDTO.setVerifiedByEmail(false);
+//        customerDTO.setVerifiedByMobileNo(true);
 
 //        if (customerDTO.getVerifiedByEmail()) {
 //            activationService.checkCodeWithEmail(customerDTO.getEmail(), customerDTO.getOtp());

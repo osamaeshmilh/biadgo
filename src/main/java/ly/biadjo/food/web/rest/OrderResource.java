@@ -7,6 +7,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ly.biadjo.food.repository.OrderRepository;
+import ly.biadjo.food.security.AuthoritiesConstants;
+import ly.biadjo.food.security.SecurityUtils;
+import ly.biadjo.food.service.CustomerService;
 import ly.biadjo.food.service.OrderQueryService;
 import ly.biadjo.food.service.OrderService;
 import ly.biadjo.food.service.criteria.OrderCriteria;
@@ -41,12 +44,15 @@ public class OrderResource {
 
     private final OrderService orderService;
 
+    private final CustomerService customerService;
+
     private final OrderRepository orderRepository;
 
     private final OrderQueryService orderQueryService;
 
-    public OrderResource(OrderService orderService, OrderRepository orderRepository, OrderQueryService orderQueryService) {
+    public OrderResource(OrderService orderService, CustomerService customerService, OrderRepository orderRepository, OrderQueryService orderQueryService) {
         this.orderService = orderService;
+        this.customerService = customerService;
         this.orderRepository = orderRepository;
         this.orderQueryService = orderQueryService;
     }
@@ -63,6 +69,9 @@ public class OrderResource {
         log.debug("REST request to save Order : {}", orderDTO);
         if (orderDTO.getId() != null) {
             throw new BadRequestAlertException("A new order cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            orderDTO.setCustomer(customerService.findOneDTOByUser());
         }
         OrderDTO result = orderService.save(orderDTO);
         return ResponseEntity

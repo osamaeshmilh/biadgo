@@ -7,6 +7,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ly.biadjo.food.repository.DriverReviewRepository;
+import ly.biadjo.food.security.AuthoritiesConstants;
+import ly.biadjo.food.security.SecurityUtils;
+import ly.biadjo.food.service.CustomerService;
 import ly.biadjo.food.service.DriverReviewQueryService;
 import ly.biadjo.food.service.DriverReviewService;
 import ly.biadjo.food.service.criteria.DriverReviewCriteria;
@@ -41,16 +44,19 @@ public class DriverReviewResource {
 
     private final DriverReviewService driverReviewService;
 
+    private final CustomerService customerService;
+
     private final DriverReviewRepository driverReviewRepository;
 
     private final DriverReviewQueryService driverReviewQueryService;
 
     public DriverReviewResource(
         DriverReviewService driverReviewService,
-        DriverReviewRepository driverReviewRepository,
+        CustomerService customerService, DriverReviewRepository driverReviewRepository,
         DriverReviewQueryService driverReviewQueryService
     ) {
         this.driverReviewService = driverReviewService;
+        this.customerService = customerService;
         this.driverReviewRepository = driverReviewRepository;
         this.driverReviewQueryService = driverReviewQueryService;
     }
@@ -67,6 +73,9 @@ public class DriverReviewResource {
         log.debug("REST request to save DriverReview : {}", driverReviewDTO);
         if (driverReviewDTO.getId() != null) {
             throw new BadRequestAlertException("A new driverReview cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            driverReviewDTO.setCustomer(customerService.findOneDTOByUser());
         }
         DriverReviewDTO result = driverReviewService.save(driverReviewDTO);
         return ResponseEntity

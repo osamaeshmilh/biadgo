@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import ly.biadjo.food.domain.enumeration.WalletAction;
 import ly.biadjo.food.repository.CustomerWalletRepository;
+import ly.biadjo.food.security.AuthoritiesConstants;
+import ly.biadjo.food.security.SecurityUtils;
+import ly.biadjo.food.service.CustomerService;
 import ly.biadjo.food.service.CustomerWalletQueryService;
 import ly.biadjo.food.service.CustomerWalletService;
 import ly.biadjo.food.service.criteria.CustomerWalletCriteria;
@@ -19,8 +23,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -45,69 +51,18 @@ public class CustomerWalletResource {
 
     private final CustomerWalletQueryService customerWalletQueryService;
 
+    private final CustomerService customerService;
+
     public CustomerWalletResource(
         CustomerWalletService customerWalletService,
         CustomerWalletRepository customerWalletRepository,
-        CustomerWalletQueryService customerWalletQueryService
+        CustomerWalletQueryService customerWalletQueryService,
+        CustomerService customerService
     ) {
         this.customerWalletService = customerWalletService;
         this.customerWalletRepository = customerWalletRepository;
         this.customerWalletQueryService = customerWalletQueryService;
-    }
-
-    /**
-     * {@code POST  /customer-wallets} : Create a new customerWallet.
-     *
-     * @param customerWalletDTO the customerWalletDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new customerWalletDTO, or with status {@code 400 (Bad Request)} if the customerWallet has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PostMapping("/customer-wallets")
-    public ResponseEntity<CustomerWalletDTO> createCustomerWallet(@RequestBody CustomerWalletDTO customerWalletDTO)
-        throws URISyntaxException {
-        log.debug("REST request to save CustomerWallet : {}", customerWalletDTO);
-        if (customerWalletDTO.getId() != null) {
-            throw new BadRequestAlertException("A new customerWallet cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        CustomerWalletDTO result = customerWalletService.save(customerWalletDTO);
-        return ResponseEntity
-            .created(new URI("/api/customer-wallets/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * {@code PUT  /customer-wallets/:id} : Updates an existing customerWallet.
-     *
-     * @param id                the id of the customerWalletDTO to save.
-     * @param customerWalletDTO the customerWalletDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated customerWalletDTO,
-     * or with status {@code 400 (Bad Request)} if the customerWalletDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the customerWalletDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PutMapping("/customer-wallets/{id}")
-    public ResponseEntity<CustomerWalletDTO> updateCustomerWallet(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody CustomerWalletDTO customerWalletDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update CustomerWallet : {}, {}", id, customerWalletDTO);
-        if (customerWalletDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, customerWalletDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!customerWalletRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        CustomerWalletDTO result = customerWalletService.update(customerWalletDTO);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, customerWalletDTO.getId().toString()))
-            .body(result);
+        this.customerService = customerService;
     }
 
     /**
@@ -154,13 +109,20 @@ public class CustomerWalletResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of customerWallets in body.
      */
     @GetMapping("/customer-wallets")
-    public ResponseEntity<List<CustomerWalletDTO>> getAllCustomerWallets(
-        CustomerWalletCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
+    public ResponseEntity<List<CustomerWalletDTO>> getAllCustomerWallets(CustomerWalletCriteria criteria, Pageable pageable) {
         log.debug("REST request to get CustomerWallets by criteria: {}", criteria);
+        Page<CustomerWalletDTO> page;
+        LongFilter longFilter = new LongFilter();
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            longFilter.setEquals(customerService.findOneByUser().getId());
+            criteria.setCustomerId(longFilter);
+            page = customerWalletQueryService.findByCriteria(criteria, pageable);
+        } else if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            page = customerWalletQueryService.findByCriteria(criteria, pageable);
+        } else {
+            page = Page.empty();
+        }
 
-        Page<CustomerWalletDTO> page = customerWalletQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -190,12 +152,6 @@ public class CustomerWalletResource {
         return ResponseUtil.wrapOrNotFound(customerWalletDTO);
     }
 
-    /**
-     * {@code DELETE  /customer-wallets/:id} : delete the "id" customerWallet.
-     *
-     * @param id the id of the customerWalletDTO to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
     @DeleteMapping("/customer-wallets/{id}")
     public ResponseEntity<Void> deleteCustomerWallet(@PathVariable Long id) {
         log.debug("REST request to delete CustomerWallet : {}", id);
@@ -205,4 +161,162 @@ public class CustomerWalletResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @GetMapping("/customer-wallets/balance")
+    public ResponseEntity<Double> getCustomerWalletBalance(CustomerWalletCriteria criteria) {
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            LongFilter longFilter = new LongFilter();
+            longFilter.setEquals(customerService.findOneByUser().getId());
+            criteria.setCustomerId(longFilter);
+        }
+        return ResponseEntity.ok().body(customerWalletQueryService.sumAmountByCriteria(criteria));
+    }
+
+//    @PostMapping("/customer-wallets/transfer")
+//    public ResponseEntity<CustomerWalletDTO> getCustomerWalletTransfer(
+//        @RequestParam String toCustomerPublicKey,
+//        @RequestParam Float amount,
+//        @RequestParam String otp
+//    ) throws URISyntaxException {
+//        System.out.println(customerService.findOneUser().getResetKey() + " " + otp);
+//
+//        CustomerWalletDTO result = null;
+//        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+//            if (!customerService.findOneByWalletPublicKey(toCustomerPublicKey).isPresent()) throw new BadRequestAlertException(
+//                "Wallet Key not found!",
+//                ENTITY_NAME,
+//                "CUSTOMER_NOT_FOUND"
+//            );
+//
+//            CustomerDTO fromCustomer = customerService.findOneDTOByUser();
+//            CustomerDTO toCustomer = customerService.findOneByWalletPublicKey(toCustomerPublicKey).get();
+//            if (fromCustomer.getVerifiedByMobileNo()) activationService.checkCodeWithMobileNo(fromCustomer.getMobileNo(), otp); else if (
+//                fromCustomer.getVerifiedByEmail()
+//            ) activationService.checkCodeWithEmail(fromCustomer.getEmail(), otp); else throw new BadRequestAlertException(
+//                    "No Verification Way !",
+//                    "",
+//                    "NO_VERIFICATION_WAY"
+//                );
+//
+//            if (fromCustomer.getIsBanned()) {
+//                throw new BadRequestAlertException("Customer Banned !", "", "CUSTOMER_BANNED");
+//            }
+//            if (!fromCustomer.getIsVerified()) {
+//                throw new BadRequestAlertException("Customer Not Verified !", "", "CUSTOMER_NOT_VERIFIED");
+//            }
+//
+//            if (fromCustomer.getId() == toCustomer.getId()) throw new BadRequestAlertException(
+//                "Can not transfer to yourself!",
+//                ENTITY_NAME,
+//                "TRANSFER_NOT_ALLOWED_TO_SAME_CUSTOMER"
+//            );
+//
+//            result = customerWalletService.transfer(fromCustomer, toCustomer, amount);
+//        }
+//        return ResponseEntity
+//            .created(new URI("/api/customer-wallets/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+//            .body(result);
+//    }
+
+//    @PostMapping("/customer-wallets/transfer-fees")
+//    public ResponseEntity<String> getCustomerWalletTransferFees(@RequestParam Float amount) throws URISyntaxException {
+//        String jsonResponse =
+//            "[" + "{ \"name\" : \"ETRAVEL_FEES\", \"total\" : " + customerWalletService.getTransferFees(amount).toString() + " }" + "]";
+//
+//        return ResponseEntity.ok(jsonResponse);
+//    }
+
+//    @PostMapping("/customer-wallets/transfer-mobile")
+//    public ResponseEntity<CustomerWalletDTO> customerWalletTransferMobile(
+//        @RequestParam String mobileNo,
+//        @RequestParam Float amount,
+//        @RequestParam String otp
+//    ) throws URISyntaxException {
+//        mobileNo = mobileNo.trim();
+//        mobileNo = mobileNo.replace("+", "");
+//        mobileNo = mobileNo.replace(" ", "");
+//
+//        System.out.println(customerService.findOneUser().getResetKey() + " " + otp + " " + mobileNo);
+//
+//        CustomerWalletDTO result = null;
+//        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+//            CustomerDTO fromCustomer = customerService.findOneDTOByUser();
+//            if (fromCustomer.getVerifiedByMobileNo()) activationService.checkCodeWithMobileNo(fromCustomer.getMobileNo(), otp); else if (
+//                fromCustomer.getVerifiedByEmail()
+//            ) activationService.checkCodeWithEmail(fromCustomer.getEmail(), otp); else throw new BadRequestAlertException(
+//                    "No Verification Way !",
+//                    "",
+//                    "NO_VERIFICATION_WAY"
+//                );
+//
+//            if (fromCustomer.getIsBanned()) {
+//                throw new BadRequestAlertException("Customer Banned !", "", "CUSTOMER_BANNED");
+//            }
+//            if (!fromCustomer.getIsVerified()) {
+//                throw new BadRequestAlertException("Customer Not Verified !", "", "CUSTOMER_NOT_VERIFIED");
+//            }
+//
+//            if (!customerService.findOneByMobileNo(mobileNo).isPresent()) throw new BadRequestAlertException(
+//                "Mobile not found!",
+//                ENTITY_NAME,
+//                "CUSTOMER_NOT_FOUND"
+//            );
+//
+//            CustomerDTO toCustomer = customerService.findOneByMobileNo(mobileNo).get();
+//
+//            if (fromCustomer.getId() == toCustomer.getId()) throw new BadRequestAlertException(
+//                "Can not transfer to yourself!",
+//                ENTITY_NAME,
+//                "TRANSFER_NOT_ALLOWED_TO_SAME_CUSTOMER"
+//            );
+//            result = customerWalletService.transfer(fromCustomer, toCustomer, amount);
+//        }
+//        return ResponseEntity
+//            .created(new URI("/api/customer-wallets/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+//            .body(result);
+//    }
+
+//    @Secured(AuthoritiesConstants.ADMIN)
+//    @PostMapping("/customer-wallets/add-credit")
+//    public ResponseEntity<CustomerWalletDTO> addCustomerWalletBalance(@RequestBody CustomerWalletDTO customerWalletDTO)
+//        throws URISyntaxException {
+//        if (customerWalletDTO.getId() != null) {
+//            throw new BadRequestAlertException("A new customerWallet cannot already have an ID", ENTITY_NAME, "idexists");
+//        }
+//        customerWalletDTO.setWalletAction(WalletAction.DEPOSIT);
+//        customerWalletDTO.setNotes("Add Credit From Admin " + customerWalletDTO.getNotes());
+//        CustomerWalletDTO result = customerWalletService.createFromAdmin(customerWalletDTO);
+//
+//        return ResponseEntity
+//            .created(new URI("/api/customer-wallets/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+//            .body(result);
+//    }
+
+//    @Secured(AuthoritiesConstants.ADMIN)
+//    @PostMapping("/customer-wallets/cash-withdrawal")
+//    public ResponseEntity<CustomerWalletDTO> cashWithdrawal(@RequestBody CustomerWalletDTO customerWalletDTO) throws URISyntaxException {
+//        if (customerWalletDTO.getId() != null) {
+//            throw new BadRequestAlertException("A new customerWallet cannot already have an ID", ENTITY_NAME, "idexists");
+//        }
+//
+//        CustomerWalletCriteria criteria = new CustomerWalletCriteria();
+//
+//        LongFilter longFilter = new LongFilter();
+//        longFilter.setEquals(customerWalletDTO.getCustomer().getId());
+//        criteria.setCustomerId(longFilter);
+//
+//        Float withdrawalFee = Float.valueOf(settingService.getSettingByKey("cash_withdrawal").get().getValue());
+//
+//        if (customerWalletQueryService.sumAmountByCriteria(criteria) < (customerWalletDTO.getAmount() + withdrawalFee)) {
+//            throw new BadRequestAlertException("No Credit in Wallet !", "", "NO_CREDIT");
+//        }
+//        CustomerWalletDTO result = customerWalletService.cashWithdrawalFromAdmin(customerWalletDTO);
+//        return ResponseEntity
+//            .created(new URI("/api/customer-wallets/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+//            .body(result);
+//    }
 }
