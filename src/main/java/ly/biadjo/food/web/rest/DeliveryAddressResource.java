@@ -24,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -213,5 +214,25 @@ public class DeliveryAddressResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/delivery-addresses/set-default/{id}")
+    public ResponseEntity<DeliveryAddressDTO> setAddressDefault(@PathVariable Long id) {
+        log.debug("REST request to get Address : {}", id);
+        DeliveryAddressCriteria criteria = new DeliveryAddressCriteria();
+        LongFilter longFilter = new LongFilter();
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            longFilter.setEquals(customerService.findOneByUser().getId());
+            criteria.setCustomerId(longFilter);
+            deliveryAddressQueryService.findByCriteria(criteria).forEach(addressDTO -> {
+                addressDTO.setIsDefault(false);
+                deliveryAddressService.save(addressDTO);
+            });
+        }
+
+        Optional<DeliveryAddressDTO> addressDTO = deliveryAddressService.findOne(id);
+        addressDTO.get().setIsDefault(true);
+        deliveryAddressService.save(addressDTO.get());
+        return ResponseUtil.wrapOrNotFound(addressDTO);
     }
 }

@@ -2,8 +2,12 @@ package ly.biadjo.food.service.dto;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import ly.biadjo.food.domain.FoodIngredient;
+import ly.biadjo.food.domain.FoodOrder;
 import ly.biadjo.food.domain.enumeration.OrderStatus;
 import ly.biadjo.food.domain.enumeration.OrderType;
 import ly.biadjo.food.domain.enumeration.PaymentType;
@@ -71,6 +75,8 @@ public class OrderDTO implements Serializable {
     private DeliveryAddressDTO deliveryAddress;
 
     private RestaurantDTO restaurant;
+
+    private Set<FoodOrder> foodOrders = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -359,5 +365,13 @@ public class OrderDTO implements Serializable {
             ", deliveryAddress=" + getDeliveryAddress() +
             ", restaurant=" + getRestaurant() +
             "}";
+    }
+
+    public Set<FoodOrder> getFoodOrders() {
+        return foodOrders;
+    }
+
+    public void setFoodOrders(Set<FoodOrder> foodOrders) {
+        this.foodOrders = foodOrders;
     }
 }

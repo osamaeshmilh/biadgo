@@ -27,5 +27,13 @@ public interface CartMapper extends EntityMapper<CartDTO, Cart> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "nameAr", source = "nameAr")
+    @Mapping(target = "nameEn", source = "nameEn")
+    @Mapping(target = "price", source = "price")
+    @Mapping(target = "discountPrice", source = "discountPrice")
+    @Mapping(target = "isAvailable", source = "isAvailable")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "descriptionEn", source = "descriptionEn")
+    @Mapping(target = "descriptionAr", source = "descriptionAr")
     FoodDTO toDtoFoodName(Food food);
 }
