@@ -24,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.service.filter.BooleanFilter;
 import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -235,4 +236,36 @@ public class DeliveryAddressResource {
         deliveryAddressService.save(addressDTO.get());
         return ResponseUtil.wrapOrNotFound(addressDTO);
     }
+
+    /**
+     * {@code GET /addresses/default} : get the default address of the customer.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the default addressDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/delivery-addresses/default")
+    public ResponseEntity<DeliveryAddressDTO> getDefaultAddress() {
+        log.debug("REST request to get default Address");
+
+        if (!SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            throw new BadRequestAlertException("Only customers can get their default address", ENTITY_NAME, "notcustomer");
+        }
+
+        Long customerId = customerService.findOneByUser().getId();
+        DeliveryAddressCriteria criteria = new DeliveryAddressCriteria();
+        LongFilter longFilter = new LongFilter();
+        longFilter.setEquals(customerId);
+        criteria.setCustomerId(longFilter);
+        BooleanFilter isDefaultFilter = new BooleanFilter();
+        isDefaultFilter.setEquals(true);
+        criteria.setIsDefault(isDefaultFilter);
+
+        List<DeliveryAddressDTO> addresses = deliveryAddressQueryService.findByCriteria(criteria);
+
+        if (addresses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(addresses.get(0));
+        }
+    }
+
 }
