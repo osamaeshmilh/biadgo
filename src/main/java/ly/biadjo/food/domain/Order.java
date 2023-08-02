@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import ly.biadjo.food.domain.enumeration.OrderStatus;
 import ly.biadjo.food.domain.enumeration.OrderType;
@@ -118,6 +120,13 @@ public class Order extends AbstractAuditingEntity<Long> implements Serializable 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"user", "cuisine", "categories"}, allowSetters = true)
     private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "order")
+    @JsonIgnoreProperties(
+        value = {"order", "foodOrders"},
+        allowSetters = true
+    )
+    private Set<FoodOrder> foodOrders = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -546,5 +555,13 @@ public class Order extends AbstractAuditingEntity<Long> implements Serializable 
             ", deliveredAt='" + getDeliveredAt() + "'" +
             ", notes='" + getNotes() + "'" +
             "}";
+    }
+
+    public Set<FoodOrder> getFoodOrders() {
+        return foodOrders;
+    }
+
+    public void setFoodOrders(Set<FoodOrder> foodOrders) {
+        this.foodOrders = foodOrders;
     }
 }
