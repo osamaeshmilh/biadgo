@@ -35,5 +35,10 @@ public interface CartMapper extends EntityMapper<CartDTO, Cart> {
     @Mapping(target = "description", source = "description")
     @Mapping(target = "descriptionEn", source = "descriptionEn")
     @Mapping(target = "descriptionAr", source = "descriptionAr")
+    @Mapping(target = "foodImages", source = "foodImages")
+    @Mapping(target = "restaurant", source = "restaurant")
+    @Mapping(target = "category", source = "category")
+    @Mapping(target = "foodExtras", source = "foodExtras")
+    @Mapping(target = "foodIngredients", source = "foodIngredients")
     FoodDTO toDtoFoodName(Food food);
 }
