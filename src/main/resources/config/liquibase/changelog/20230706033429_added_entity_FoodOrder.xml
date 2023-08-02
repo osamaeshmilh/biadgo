@@ -38,6 +38,10 @@
             <column name="order_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
+            <column name="food_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="created_by" type="varchar(50)" defaultValue="system">
                 <constraints nullable="false"/>
             </column>
