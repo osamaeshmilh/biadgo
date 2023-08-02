@@ -26,6 +26,7 @@ type FoodOrderFormGroupContent = {
   foodIngredientIds: FormControl<IFoodOrder['foodIngredientIds']>;
   foodIngredientRemovedIds: FormControl<IFoodOrder['foodIngredientRemovedIds']>;
   order: FormControl<IFoodOrder['order']>;
+  food: FormControl<IFoodOrder['food']>;
 };
 
 export type FoodOrderFormGroup = FormGroup<FoodOrderFormGroupContent>;
@@ -53,6 +54,7 @@ export class FoodOrderFormService {
       foodIngredientIds: new FormControl(foodOrderRawValue.foodIngredientIds),
       foodIngredientRemovedIds: new FormControl(foodOrderRawValue.foodIngredientRemovedIds),
       order: new FormControl(foodOrderRawValue.order),
+      food: new FormControl(foodOrderRawValue.food),
     });
   }
 

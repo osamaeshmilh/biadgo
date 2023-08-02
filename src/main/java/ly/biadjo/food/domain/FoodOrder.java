@@ -2,9 +2,7 @@ package ly.biadjo.food.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
 import java.io.Serializable;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -15,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "food_order")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class FoodOrder extends AbstractAuditingEntity<Long> implements Serializable {
+public class FoodOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -48,6 +46,10 @@ public class FoodOrder extends AbstractAuditingEntity<Long> implements Serializa
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"customer", "coupon", "driver", "deliveryAddress", "restaurant"}, allowSetters = true)
     private Order order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"restaurant", "category"}, allowSetters = true)
+    private Food food;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -165,6 +167,19 @@ public class FoodOrder extends AbstractAuditingEntity<Long> implements Serializa
 
     public FoodOrder order(Order order) {
         this.setOrder(order);
+        return this;
+    }
+
+    public Food getFood() {
+        return this.food;
+    }
+
+    public void setFood(Food food) {
+        this.food = food;
+    }
+
+    public FoodOrder food(Food food) {
+        this.setFood(food);
         return this;
     }
 

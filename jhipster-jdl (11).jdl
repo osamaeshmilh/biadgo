@@ -4,7 +4,7 @@ application {
   config {
     baseName biadjo
   }
-  
+
 	entities *
 }
 
@@ -138,7 +138,7 @@ entity CustomerWallet {
   	paymentReference String,
     orderId String,
   	notes String,
-    //Customer 
+    //Customer
 }
 entity Cart {
     quantity Integer
@@ -258,7 +258,7 @@ entity DriverWallet {
   	paymentReference String,
     orderId String,
   	notes String,
-    //Driver 
+    //Driver
 }
 
 entity FavoriteRestaurant {
@@ -456,7 +456,7 @@ entity RestaurantWallet {
   	paymentType PaymentType,
   	paymentReference String,
   	notes String,
-    //Restaurant 
+    //Restaurant
 }
 
 entity RestaurantReview {
@@ -522,27 +522,28 @@ relationship ManyToOne {
 
   Cart{customer(name)} to Customer,
   Cart{food(name)} to Food,
-  
+
   CustomerWallet{customer(name)} to Customer,
-  
+
   DeliveryAddress{customer(name)} to Customer,
   DeliveryAddress{zone(name)} to Zone,
-  
+
   Driver{zone(name)} to Zone,
   DriverLocation{driver(name)} to Driver,
   DriverReview{customer(name)} to Customer,
   DriverReview{driver(name)} to Driver,
   DriverWallet{driver(name)} to Driver,
-  
+
   FavoriteRestaurant{customer(name)} to Customer,
   FavoriteRestaurant{restaurant(name)} to Restaurant,
-  
+
   Food{restaurant(name)} to Restaurant,
   Food{category(name)} to Category,
   FoodExtra{food(name)} to Food,
   FoodImage{food(name)} to Food,
   FoodIngredient{food(name)} to Food,
   FoodOrder{order(orderNo)} to Order,
+  FoodOrder{food(name)} to Food,
 
   Order{customer(name)} to Customer
   Order{coupon(code)} to Coupon
@@ -550,10 +551,10 @@ relationship ManyToOne {
   Order{deliveryAddress(address)} to DeliveryAddress
   Order{restaurant(name)} to Restaurant,
   OrderHistory{order(orderNo)} to Order
-  
+
   Referral{referredCustomer} to Customer,
   Referral{referrerCustomer} to Customer,
-  
+
   Restaurant{cuisine(name)} to Cuisine,
   RestaurantDistancePrice{restaurant(name)} to Restaurant,
   RestaurantReview{customer(name)} to Customer,
@@ -562,7 +563,7 @@ relationship ManyToOne {
   RestaurantWallet{restaurant(name)} to Restaurant,
   RestaurantZonePrice{restaurant(name)} to Restaurant,
   RestaurantZonePrice{zone(name)} to Zone,
-  
+
   Transaction{customer(name)} to Customer,
   Zone{city(name)} to City,
 }

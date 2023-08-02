@@ -2,7 +2,6 @@ package ly.biadjo.food.service.criteria;
 
 import java.io.Serializable;
 import java.util.Objects;
-
 import org.springdoc.core.annotations.ParameterObject;
 import tech.jhipster.service.Criteria;
 import tech.jhipster.service.filter.*;
@@ -40,6 +39,8 @@ public class FoodOrderCriteria implements Serializable, Criteria {
 
     private LongFilter orderId;
 
+    private LongFilter foodId;
+
     private Boolean distinct;
 
     public FoodOrderCriteria() {
@@ -55,6 +56,7 @@ public class FoodOrderCriteria implements Serializable, Criteria {
         this.foodIngredientIds = other.foodIngredientIds == null ? null : other.foodIngredientIds.copy();
         this.foodIngredientRemovedIds = other.foodIngredientRemovedIds == null ? null : other.foodIngredientRemovedIds.copy();
         this.orderId = other.orderId == null ? null : other.orderId.copy();
+        this.foodId = other.foodId == null ? null : other.foodId.copy();
         this.distinct = other.distinct;
     }
 
@@ -198,6 +200,21 @@ public class FoodOrderCriteria implements Serializable, Criteria {
         this.orderId = orderId;
     }
 
+    public LongFilter getFoodId() {
+        return foodId;
+    }
+
+    public LongFilter foodId() {
+        if (foodId == null) {
+            foodId = new LongFilter();
+        }
+        return foodId;
+    }
+
+    public void setFoodId(LongFilter foodId) {
+        this.foodId = foodId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -225,6 +242,7 @@ public class FoodOrderCriteria implements Serializable, Criteria {
                 Objects.equals(foodIngredientIds, that.foodIngredientIds) &&
                 Objects.equals(foodIngredientRemovedIds, that.foodIngredientRemovedIds) &&
                 Objects.equals(orderId, that.orderId) &&
+                Objects.equals(foodId, that.foodId) &&
                 Objects.equals(distinct, that.distinct)
         );
     }
@@ -241,6 +259,7 @@ public class FoodOrderCriteria implements Serializable, Criteria {
             foodIngredientIds,
             foodIngredientRemovedIds,
             orderId,
+            foodId,
             distinct
         );
     }
@@ -258,6 +277,7 @@ public class FoodOrderCriteria implements Serializable, Criteria {
             (foodIngredientIds != null ? "foodIngredientIds=" + foodIngredientIds + ", " : "") +
             (foodIngredientRemovedIds != null ? "foodIngredientRemovedIds=" + foodIngredientRemovedIds + ", " : "") +
             (orderId != null ? "orderId=" + orderId + ", " : "") +
+            (foodId != null ? "foodId=" + foodId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

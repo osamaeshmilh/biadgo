@@ -1,5 +1,5 @@
-<div class="entity-container">
-  <div class="mat-elevation-z1 round-card white-bg p-4 mt-5">
+<div class="d-flex justify-content-center">
+  <div class="col-8">
     <div *ngIf="foodOrder">
       <h2 data-cy="foodOrderDetailsHeading"><span>Food Order</span></h2>
 
@@ -46,6 +46,12 @@
         <dd>
           <div *ngIf="foodOrder.order">
             <a [routerLink]="['/order', foodOrder.order.id, 'view']">{{ foodOrder.order.orderNo }}</a>
+          </div>
+        </dd>
+        <dt><span>Food</span></dt>
+        <dd>
+          <div *ngIf="foodOrder.food">
+            <a [routerLink]="['/food', foodOrder.food.id, 'view']">{{ foodOrder.food.name }}</a>
           </div>
         </dd>
       </dl>

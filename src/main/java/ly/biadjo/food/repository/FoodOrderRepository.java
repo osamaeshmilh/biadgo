@@ -2,7 +2,6 @@ package ly.biadjo.food.repository;
 
 import java.util.List;
 import java.util.Optional;
-
 import ly.biadjo.food.domain.FoodOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,14 +27,16 @@ public interface FoodOrderRepository extends JpaRepository<FoodOrder, Long>, Jpa
     }
 
     @Query(
-        value = "select foodOrder from FoodOrder foodOrder left join fetch foodOrder.order",
+        value = "select foodOrder from FoodOrder foodOrder left join fetch foodOrder.order left join fetch foodOrder.food",
         countQuery = "select count(foodOrder) from FoodOrder foodOrder"
     )
     Page<FoodOrder> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select foodOrder from FoodOrder foodOrder left join fetch foodOrder.order")
+    @Query("select foodOrder from FoodOrder foodOrder left join fetch foodOrder.order left join fetch foodOrder.food")
     List<FoodOrder> findAllWithToOneRelationships();
 
-    @Query("select foodOrder from FoodOrder foodOrder left join fetch foodOrder.order where foodOrder.id =:id")
+    @Query(
+        "select foodOrder from FoodOrder foodOrder left join fetch foodOrder.order left join fetch foodOrder.food where foodOrder.id =:id"
+    )
     Optional<FoodOrder> findOneWithToOneRelationships(@Param("id") Long id);
 }

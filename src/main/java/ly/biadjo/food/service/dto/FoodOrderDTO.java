@@ -27,6 +27,8 @@ public class FoodOrderDTO implements Serializable {
 
     private OrderDTO order;
 
+    private FoodDTO food;
+
     public Long getId() {
         return id;
     }
@@ -99,6 +101,14 @@ public class FoodOrderDTO implements Serializable {
         this.order = order;
     }
 
+    public FoodDTO getFood() {
+        return food;
+    }
+
+    public void setFood(FoodDTO food) {
+        this.food = food;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -133,6 +143,7 @@ public class FoodOrderDTO implements Serializable {
             ", foodIngredientIds='" + getFoodIngredientIds() + "'" +
             ", foodIngredientRemovedIds='" + getFoodIngredientRemovedIds() + "'" +
             ", order=" + getOrder() +
+            ", food=" + getFood() +
             "}";
     }
 }

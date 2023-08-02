@@ -28,6 +28,7 @@ describe('FoodOrder Form Service', () => {
             foodIngredientIds: expect.any(Object),
             foodIngredientRemovedIds: expect.any(Object),
             order: expect.any(Object),
+            food: expect.any(Object),
           })
         );
       });
@@ -46,6 +47,7 @@ describe('FoodOrder Form Service', () => {
             foodIngredientIds: expect.any(Object),
             foodIngredientRemovedIds: expect.any(Object),
             order: expect.any(Object),
+            food: expect.any(Object),
           })
         );
       });

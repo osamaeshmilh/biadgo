@@ -1,9 +1,7 @@
 package ly.biadjo.food.service;
 
 import jakarta.persistence.criteria.JoinType;
-
 import java.util.List;
-
 import ly.biadjo.food.domain.*; // for static metamodels
 import ly.biadjo.food.domain.FoodOrder;
 import ly.biadjo.food.repository.FoodOrderRepository;
@@ -42,7 +40,6 @@ public class FoodOrderQueryService extends QueryService<FoodOrder> {
 
     /**
      * Return a {@link List} of {@link FoodOrderDTO} which matches the criteria from the database.
-     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -69,7 +66,6 @@ public class FoodOrderQueryService extends QueryService<FoodOrder> {
 
     /**
      * Return the number of matching entities in the database.
-     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the number of matching entities.
      */
@@ -82,7 +78,6 @@ public class FoodOrderQueryService extends QueryService<FoodOrder> {
 
     /**
      * Function to convert {@link FoodOrderCriteria} to a {@link Specification}
-     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
      */
@@ -124,6 +119,12 @@ public class FoodOrderQueryService extends QueryService<FoodOrder> {
                 specification =
                     specification.and(
                         buildSpecification(criteria.getOrderId(), root -> root.join(FoodOrder_.order, JoinType.LEFT).get(Order_.id))
+                    );
+            }
+            if (criteria.getFoodId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getFoodId(), root -> root.join(FoodOrder_.food, JoinType.LEFT).get(Food_.id))
                     );
             }
         }

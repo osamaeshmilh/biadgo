@@ -12,6 +12,8 @@ import {IFoodOrder} from '../food-order.model';
 import {FoodOrderService} from '../service/food-order.service';
 import {IOrder} from 'app/entities/order/order.model';
 import {OrderService} from 'app/entities/order/service/order.service';
+import {IFood} from 'app/entities/food/food.model';
+import {FoodService} from 'app/entities/food/service/food.service';
 
 @Component({
   standalone: true,
@@ -24,6 +26,7 @@ export class FoodOrderUpdateComponent implements OnInit {
   foodOrder: IFoodOrder | null = null;
 
   ordersSharedCollection: IOrder[] = [];
+  foodsSharedCollection: IFood[] = [];
 
   editForm: FoodOrderFormGroup = this.foodOrderFormService.createFoodOrderFormGroup();
 
@@ -31,11 +34,14 @@ export class FoodOrderUpdateComponent implements OnInit {
     protected foodOrderService: FoodOrderService,
     protected foodOrderFormService: FoodOrderFormService,
     protected orderService: OrderService,
+    protected foodService: FoodService,
     protected activatedRoute: ActivatedRoute
   ) {
   }
 
   compareOrder = (o1: IOrder | null, o2: IOrder | null): boolean => this.orderService.compareOrder(o1, o2);
+
+  compareFood = (o1: IFood | null, o2: IFood | null): boolean => this.foodService.compareFood(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({foodOrder}) => {
@@ -86,6 +92,7 @@ export class FoodOrderUpdateComponent implements OnInit {
     this.foodOrderFormService.resetForm(this.editForm, foodOrder);
 
     this.ordersSharedCollection = this.orderService.addOrderToCollectionIfMissing<IOrder>(this.ordersSharedCollection, foodOrder.order);
+    this.foodsSharedCollection = this.foodService.addFoodToCollectionIfMissing<IFood>(this.foodsSharedCollection, foodOrder.food);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -94,5 +101,11 @@ export class FoodOrderUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IOrder[]>) => res.body ?? []))
       .pipe(map((orders: IOrder[]) => this.orderService.addOrderToCollectionIfMissing<IOrder>(orders, this.foodOrder?.order)))
       .subscribe((orders: IOrder[]) => (this.ordersSharedCollection = orders));
+
+    this.foodService
+      .query()
+      .pipe(map((res: HttpResponse<IFood[]>) => res.body ?? []))
+      .pipe(map((foods: IFood[]) => this.foodService.addFoodToCollectionIfMissing<IFood>(foods, this.foodOrder?.food)))
+      .subscribe((foods: IFood[]) => (this.foodsSharedCollection = foods));
   }
 }
