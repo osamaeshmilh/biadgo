@@ -153,7 +153,7 @@ public class OrderService {
             //TODO :: CALCULATE FOOD EXTRA
 
             double extrasPrice = 0.0;
-            if (cart.getFoodExtraIdsList() != null) {
+            if (!cart.getFoodExtraIdsList().equals("") && cart.getFoodExtraIdsList() != null) {
                 for (String extraId : cart.getFoodExtraIdsList().split(",")) {
                     extrasPrice += foodExtraService.findOne(Long.valueOf(extraId.trim())).get().getPrice();
                 }
