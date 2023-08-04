@@ -34,10 +34,13 @@ public class OrderService {
 
     private final CartService cartService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, CartService cartService) {
+    private final FoodExtraService foodExtraService;
+
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, CartService cartService, FoodExtraService foodExtraService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.cartService = cartService;
+        this.foodExtraService = foodExtraService;
     }
 
     /**
@@ -147,6 +150,19 @@ public class OrderService {
             //TODO:: Discount Price
             foodOrderDTO.setPrice(cart.getFood().getPrice());
             foodOrderDTO.setQuantity(cart.getQuantity());
+            //TODO :: CALCULATE FOOD EXTRA
+
+            double extrasPrice = 0.0;
+            if (cart.getFoodExtraIdsList() != null) {
+                for (String extraId : cart.getFoodExtraIdsList().split(",")) {
+                    extrasPrice += foodExtraService.findOne(Long.valueOf(extraId.trim())).get().getPrice();
+                }
+            }
+
+            // Set the total price including the extras
+            foodOrderDTO.setTotal(cart.getQuantity() * (cart.getFood().getPrice() + extrasPrice));
+
+
             foodOrderDTO.setTotal(cart.getQuantity() * cart.getFood().getPrice());
             foodOrderDTO.setSpecialNotes(cart.getCustomerNotes());
 
