@@ -1,9 +1,16 @@
 package ly.biadjo.food.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
+import ly.biadjo.food.domain.FoodOrder;
 import ly.biadjo.food.domain.Order;
+import ly.biadjo.food.domain.enumeration.OrderStatus;
 import ly.biadjo.food.repository.OrderRepository;
+import ly.biadjo.food.service.dto.CartDTO;
+import ly.biadjo.food.service.dto.FoodOrderDTO;
 import ly.biadjo.food.service.dto.OrderDTO;
 import ly.biadjo.food.service.mapper.OrderMapper;
 import org.slf4j.Logger;
@@ -118,5 +125,35 @@ public class OrderService {
     public void delete(Long id) {
         log.debug("Request to delete Order : {}", id);
         orderRepository.deleteById(id);
+    }
+
+    public OrderDTO createCustomerOrder(OrderDTO orderDTO, List<CartDTO> cartList) {
+
+        //TODO :: PRENDING search fro driver and resturant acceptance
+        orderDTO.setOrderStatus(OrderStatus.PENDING);
+        OrderDTO savedOrder = save(orderDTO);
+
+
+        double total = 0.0;
+        for (CartDTO cart : cartList) {
+            FoodOrderDTO foodOrderDTO = new FoodOrderDTO();
+            foodOrderDTO.setFood(cart.getFood());
+            foodOrderDTO.setOrder(savedOrder);
+            foodOrderDTO.setFoodExtraIdsList(cart.getFoodExtraIdsList());
+            foodOrderDTO.setFoodIngredientRemovedIds(cart.getFoodIngredientRemovedIds());
+            foodOrderDTO.setFoodIngredientIds(cart.getFoodIngredientIds());
+            //TODO:: Discount Price
+            foodOrderDTO.setPrice(cart.getFood().getPrice());
+            foodOrderDTO.setQuantity(cart.getQuantity());
+            foodOrderDTO.setTotal(cart.getQuantity() * cart.getFood().getPrice());
+            foodOrderDTO.setSpecialNotes(cart.getCustomerNotes());
+
+            total += cart.getQuantity() * cart.getFood().getPrice();
+        }
+        orderDTO.setTotal(total);
+        String orderNumber = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")) + "-" + String.format("%06d", savedOrder.getId());
+        savedOrder.setOrderNo(orderNumber);
+
+        return save(savedOrder);
     }
 }

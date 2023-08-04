@@ -6,13 +6,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import ly.biadjo.food.domain.Cart;
+import ly.biadjo.food.domain.Food;
+import ly.biadjo.food.domain.FoodOrder;
 import ly.biadjo.food.repository.OrderRepository;
 import ly.biadjo.food.security.AuthoritiesConstants;
 import ly.biadjo.food.security.SecurityUtils;
+import ly.biadjo.food.service.CartQueryService;
 import ly.biadjo.food.service.CustomerService;
 import ly.biadjo.food.service.OrderQueryService;
 import ly.biadjo.food.service.OrderService;
+import ly.biadjo.food.service.criteria.CartCriteria;
 import ly.biadjo.food.service.criteria.OrderCriteria;
+import ly.biadjo.food.service.dto.CartDTO;
+import ly.biadjo.food.service.dto.FoodOrderDTO;
 import ly.biadjo.food.service.dto.OrderDTO;
 import ly.biadjo.food.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -24,6 +31,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -50,11 +58,14 @@ public class OrderResource {
 
     private final OrderQueryService orderQueryService;
 
-    public OrderResource(OrderService orderService, CustomerService customerService, OrderRepository orderRepository, OrderQueryService orderQueryService) {
+    private final CartQueryService cartQueryService;
+
+    public OrderResource(OrderService orderService, CustomerService customerService, OrderRepository orderRepository, OrderQueryService orderQueryService, CartQueryService cartQueryService) {
         this.orderService = orderService;
         this.customerService = customerService;
         this.orderRepository = orderRepository;
         this.orderQueryService = orderQueryService;
+        this.cartQueryService = cartQueryService;
     }
 
     /**
@@ -70,15 +81,26 @@ public class OrderResource {
         if (orderDTO.getId() != null) {
             throw new BadRequestAlertException("A new order cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        OrderDTO result = null;
         if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
             orderDTO.setCustomer(customerService.findOneDTOByUser());
+
+            CartCriteria criteria = new CartCriteria();
+            LongFilter longFilter = new LongFilter();
+            longFilter.setEquals(customerService.findOneDTOByUser().getId());
+            criteria.setCustomerId(longFilter);
+            List<CartDTO> cartList = cartQueryService.findByCriteria(criteria);
+
+            result = orderService.createCustomerOrder(orderDTO, cartList);
+
+
         }
-        OrderDTO result = orderService.save(orderDTO);
         return ResponseEntity
             .created(new URI("/api/orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+
 
     /**
      * {@code PUT  /orders/:id} : Updates an existing order.
