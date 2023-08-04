@@ -54,5 +54,8 @@ public interface OrderMapper extends EntityMapper<OrderDTO, Order> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "nameAr", source = "nameAr")
+    @Mapping(target = "nameEn", source = "nameEn")
+    @Mapping(target = "restaurantImages", source = "restaurantImages")
     RestaurantDTO toDtoRestaurantName(Restaurant restaurant);
 }

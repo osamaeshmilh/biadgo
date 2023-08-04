@@ -125,4 +125,19 @@ public class CartQueryService extends QueryService<Cart> {
         }
         return specification;
     }
+
+    @Transactional(readOnly = true)
+    public Double sumAmountByCriteria(CartCriteria criteria) {
+        final Specification<Cart> specification = createSpecification(criteria);
+        List<Cart> cartItems = cartRepository.findAll(specification);
+        Double total = 0.0;
+        for (Cart cart : cartItems) {
+            if (cart.getFood().getIsDiscount()) {
+                total += cart.getFood().getDiscountPrice() * cart.getQuantity();
+            } else {
+                total += cart.getFood().getPrice() * cart.getQuantity();
+            }
+        }
+        return total;
+    }
 }

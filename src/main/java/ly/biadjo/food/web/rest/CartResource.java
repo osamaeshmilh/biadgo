@@ -12,8 +12,10 @@ import ly.biadjo.food.security.SecurityUtils;
 import ly.biadjo.food.service.CartQueryService;
 import ly.biadjo.food.service.CartService;
 import ly.biadjo.food.service.CustomerService;
+import ly.biadjo.food.service.RestaurantService;
 import ly.biadjo.food.service.criteria.CartCriteria;
 import ly.biadjo.food.service.dto.CartDTO;
+import ly.biadjo.food.service.dto.RestaurantDTO;
 import ly.biadjo.food.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -50,11 +53,14 @@ public class CartResource {
 
     private final CartQueryService cartQueryService;
 
-    public CartResource(CartService cartService, CustomerService customerService, CartRepository cartRepository, CartQueryService cartQueryService) {
+    private final RestaurantService restaurantService;
+
+    public CartResource(CartService cartService, CustomerService customerService, CartRepository cartRepository, CartQueryService cartQueryService, RestaurantService restaurantService) {
         this.cartService = cartService;
         this.customerService = customerService;
         this.cartRepository = cartRepository;
         this.cartQueryService = cartQueryService;
+        this.restaurantService = restaurantService;
     }
 
     /**
@@ -206,5 +212,51 @@ public class CartResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+
+    @GetMapping("/carts/total")
+    public ResponseEntity<Double> getCartTotal(CartCriteria criteria) {
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            LongFilter longFilter = new LongFilter();
+            longFilter.setEquals(customerService.findOneByUser().getId());
+            criteria.setCustomerId(longFilter);
+            return ResponseEntity.ok().body(cartQueryService.sumAmountByCriteria(criteria));
+        } else {
+            throw new BadRequestAlertException("Not Logged in can't get cart total", ENTITY_NAME, "idnull");
+        }
+    }
+
+    @GetMapping("/carts/current-restaurant")
+    public ResponseEntity<RestaurantDTO> getCartCurrentRestaurant(CartCriteria criteria) {
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            LongFilter longFilter = new LongFilter();
+            longFilter.setEquals(customerService.findOneByUser().getId());
+            criteria.setCustomerId(longFilter);
+
+            List<CartDTO> cartDTOS = cartQueryService.findByCriteria(criteria);
+
+            if (cartDTOS.isEmpty()) {
+                throw new BadRequestAlertException("Cart Is Empty", "CART_EMPTY", "emptycart");
+            }
+
+            RestaurantDTO restaurantDTO = restaurantService.findOne(cartDTOS.get(0).getFood().getRestaurant().getId()).get();
+            return ResponseEntity.ok().body(restaurantDTO);
+        } else {
+            throw new BadRequestAlertException("Not Logged in as customer can't get cart resturant", ENTITY_NAME, "idnull");
+        }
+    }
+
+
+    @GetMapping("/carts/count-for-customer")
+    public ResponseEntity<Long> getCartCountForCustomer(CartCriteria criteria) {
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            LongFilter longFilter = new LongFilter();
+            longFilter.setEquals(customerService.findOneByUser().getId());
+            criteria.setCustomerId(longFilter);
+            return ResponseEntity.ok().body(cartQueryService.countByCriteria(criteria));
+        } else {
+            throw new BadRequestAlertException("Not Logged in can't get cart count", ENTITY_NAME, "");
+        }
     }
 }
