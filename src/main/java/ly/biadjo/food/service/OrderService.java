@@ -36,11 +36,14 @@ public class OrderService {
 
     private final FoodExtraService foodExtraService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, CartService cartService, FoodExtraService foodExtraService) {
+    private final FoodOrderService foodOrderService;
+
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, CartService cartService, FoodExtraService foodExtraService, FoodOrderService foodOrderService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.cartService = cartService;
         this.foodExtraService = foodExtraService;
+        this.foodOrderService = foodOrderService;
     }
 
     /**
@@ -161,10 +164,8 @@ public class OrderService {
 
             // Set the total price including the extras
             foodOrderDTO.setTotal(cart.getQuantity() * (cart.getFood().getPrice() + extrasPrice));
-
-
-            foodOrderDTO.setTotal(cart.getQuantity() * cart.getFood().getPrice());
             foodOrderDTO.setSpecialNotes(cart.getCustomerNotes());
+            foodOrderService.save(foodOrderDTO);
 
             itemsPrice += cart.getQuantity() * cart.getFood().getPrice();
         }
