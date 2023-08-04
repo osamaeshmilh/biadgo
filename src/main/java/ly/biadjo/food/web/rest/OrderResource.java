@@ -6,20 +6,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import ly.biadjo.food.domain.Cart;
-import ly.biadjo.food.domain.Food;
-import ly.biadjo.food.domain.FoodOrder;
 import ly.biadjo.food.repository.OrderRepository;
 import ly.biadjo.food.security.AuthoritiesConstants;
 import ly.biadjo.food.security.SecurityUtils;
-import ly.biadjo.food.service.CartQueryService;
-import ly.biadjo.food.service.CustomerService;
-import ly.biadjo.food.service.OrderQueryService;
-import ly.biadjo.food.service.OrderService;
+import ly.biadjo.food.service.*;
 import ly.biadjo.food.service.criteria.CartCriteria;
 import ly.biadjo.food.service.criteria.OrderCriteria;
 import ly.biadjo.food.service.dto.CartDTO;
-import ly.biadjo.food.service.dto.FoodOrderDTO;
 import ly.biadjo.food.service.dto.OrderDTO;
 import ly.biadjo.food.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -60,7 +53,8 @@ public class OrderResource {
 
     private final CartQueryService cartQueryService;
 
-    public OrderResource(OrderService orderService, CustomerService customerService, OrderRepository orderRepository, OrderQueryService orderQueryService, CartQueryService cartQueryService) {
+
+    public OrderResource(OrderService orderService, CustomerService customerService, OrderRepository orderRepository, OrderQueryService orderQueryService, CartQueryService cartQueryService, CartService cartService) {
         this.orderService = orderService;
         this.customerService = customerService;
         this.orderRepository = orderRepository;

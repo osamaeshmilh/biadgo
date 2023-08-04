@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-import ly.biadjo.food.domain.FoodOrder;
 import ly.biadjo.food.domain.Order;
 import ly.biadjo.food.domain.enumeration.OrderStatus;
 import ly.biadjo.food.repository.OrderRepository;
@@ -33,9 +32,12 @@ public class OrderService {
 
     private final OrderMapper orderMapper;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper) {
+    private final CartService cartService;
+
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, CartService cartService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
+        this.cartService = cartService;
     }
 
     /**
@@ -134,7 +136,7 @@ public class OrderService {
         OrderDTO savedOrder = save(orderDTO);
 
 
-        double total = 0.0;
+        double itemsPrice = 0.0;
         for (CartDTO cart : cartList) {
             FoodOrderDTO foodOrderDTO = new FoodOrderDTO();
             foodOrderDTO.setFood(cart.getFood());
@@ -148,11 +150,16 @@ public class OrderService {
             foodOrderDTO.setTotal(cart.getQuantity() * cart.getFood().getPrice());
             foodOrderDTO.setSpecialNotes(cart.getCustomerNotes());
 
-            total += cart.getQuantity() * cart.getFood().getPrice();
+            itemsPrice += cart.getQuantity() * cart.getFood().getPrice();
         }
-        savedOrder.setTotal(total);
+        Double deliveryFees = 1.0;
+        savedOrder.setTotal(itemsPrice + deliveryFees);
+        savedOrder.setItemsPrice(itemsPrice);
+        savedOrder.setDeliveryFee(deliveryFees);
         String orderNumber = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")) + "-" + String.format("%06d", savedOrder.getId());
         savedOrder.setOrderNo(orderNumber);
+
+        cartService.deleteAllByCustomerId(savedOrder.getCustomer().getId());
 
         return save(savedOrder);
     }

@@ -119,4 +119,8 @@ public class CartService {
         log.debug("Request to delete Cart : {}", id);
         cartRepository.deleteById(id);
     }
+
+    public void deleteAllByCustomerId(Long customerId) {
+        cartRepository.deleteAllByCustomerId(customerId);
+    }
 }

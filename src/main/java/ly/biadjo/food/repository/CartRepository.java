@@ -38,4 +38,6 @@ public interface CartRepository extends JpaRepository<Cart, Long>, JpaSpecificat
 
     @Query("select cart from Cart cart left join fetch cart.customer left join fetch cart.food where cart.id =:id")
     Optional<Cart> findOneWithToOneRelationships(@Param("id") Long id);
+
+    void deleteAllByCustomerId(Long customerId);
 }
