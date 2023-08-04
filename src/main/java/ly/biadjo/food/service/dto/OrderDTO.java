@@ -16,7 +16,7 @@ import ly.biadjo.food.domain.enumeration.PaymentType;
  * A DTO for the {@link ly.biadjo.food.domain.Order} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class OrderDTO implements Serializable {
+public class OrderDTO extends AbstractAuditingDTO implements Serializable {
 
     private Long id;
 
