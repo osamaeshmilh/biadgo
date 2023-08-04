@@ -150,7 +150,7 @@ public class OrderService {
 
             total += cart.getQuantity() * cart.getFood().getPrice();
         }
-        orderDTO.setTotal(total);
+        savedOrder.setTotal(total);
         String orderNumber = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")) + "-" + String.format("%06d", savedOrder.getId());
         savedOrder.setOrderNo(orderNumber);
 
