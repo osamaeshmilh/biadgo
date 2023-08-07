@@ -195,10 +195,10 @@ public class OrderResource {
             FoodOrderCriteria foodOrderCriteria = new FoodOrderCriteria();
             foodOrderCriteria.setOrderId(longFilter);
 
-            List<FoodOrderDTO> foodOrders = foodOrderQueryService.findByCriteria(foodOrderCriteria);
-            orderDTO.setFoodOrders(foodOrders);
+            Long foodOrdersCount = foodOrderQueryService.countByCriteria(foodOrderCriteria);
+//            orderDTO.setFoodOrders(foodOrders);
 
-            orderDTO.setFoodCount(foodOrders.size());
+            orderDTO.setFoodCount(Math.toIntExact(foodOrdersCount));
         });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
