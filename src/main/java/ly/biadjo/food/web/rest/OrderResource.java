@@ -11,6 +11,7 @@ import ly.biadjo.food.security.AuthoritiesConstants;
 import ly.biadjo.food.security.SecurityUtils;
 import ly.biadjo.food.service.*;
 import ly.biadjo.food.service.criteria.CartCriteria;
+import ly.biadjo.food.service.criteria.FoodOrderCriteria;
 import ly.biadjo.food.service.criteria.OrderCriteria;
 import ly.biadjo.food.service.dto.CartDTO;
 import ly.biadjo.food.service.dto.OrderDTO;
@@ -53,13 +54,16 @@ public class OrderResource {
 
     private final CartQueryService cartQueryService;
 
+    private final FoodOrderQueryService foodOrderQueryService;
 
-    public OrderResource(OrderService orderService, CustomerService customerService, OrderRepository orderRepository, OrderQueryService orderQueryService, CartQueryService cartQueryService, CartService cartService) {
+
+    public OrderResource(OrderService orderService, CustomerService customerService, OrderRepository orderRepository, OrderQueryService orderQueryService, CartQueryService cartQueryService, CartService cartService, FoodOrderQueryService foodOrderQueryService) {
         this.orderService = orderService;
         this.customerService = customerService;
         this.orderRepository = orderRepository;
         this.orderQueryService = orderQueryService;
         this.cartQueryService = cartQueryService;
+        this.foodOrderQueryService = foodOrderQueryService;
     }
 
     /**
@@ -206,7 +210,17 @@ public class OrderResource {
     @GetMapping("/orders/{id}")
     public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
         log.debug("REST request to get Order : {}", id);
+
         Optional<OrderDTO> orderDTO = orderService.findOne(id);
+
+        LongFilter longFilter = new LongFilter();
+        longFilter.setEquals(orderDTO.get().getId());
+
+        FoodOrderCriteria foodOrderCriteria = new FoodOrderCriteria();
+        foodOrderCriteria.setOrderId(longFilter);
+
+        orderDTO.get().setFoodOrders(foodOrderQueryService.findByCriteria(foodOrderCriteria));
+
         return ResponseUtil.wrapOrNotFound(orderDTO);
     }
 

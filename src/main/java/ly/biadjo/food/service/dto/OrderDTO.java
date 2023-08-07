@@ -2,9 +2,11 @@ package ly.biadjo.food.service.dto;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.List;
 
 import ly.biadjo.food.domain.FoodIngredient;
 import ly.biadjo.food.domain.FoodOrder;
@@ -76,7 +78,7 @@ public class OrderDTO extends AbstractAuditingDTO implements Serializable {
 
     private RestaurantDTO restaurant;
 
-    private Set<FoodOrder> foodOrders = new HashSet<>();
+    private List<FoodOrderDTO> foodOrders = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -367,11 +369,11 @@ public class OrderDTO extends AbstractAuditingDTO implements Serializable {
             "}";
     }
 
-    public Set<FoodOrder> getFoodOrders() {
+    public List<FoodOrderDTO> getFoodOrders() {
         return foodOrders;
     }
 
-    public void setFoodOrders(Set<FoodOrder> foodOrders) {
+    public void setFoodOrders(List<FoodOrderDTO> foodOrders) {
         this.foodOrders = foodOrders;
     }
 }
