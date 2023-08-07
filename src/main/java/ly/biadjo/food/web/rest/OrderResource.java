@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import ly.biadjo.food.domain.FoodOrder;
 import ly.biadjo.food.repository.OrderRepository;
 import ly.biadjo.food.security.AuthoritiesConstants;
 import ly.biadjo.food.security.SecurityUtils;
@@ -14,6 +15,7 @@ import ly.biadjo.food.service.criteria.CartCriteria;
 import ly.biadjo.food.service.criteria.FoodOrderCriteria;
 import ly.biadjo.food.service.criteria.OrderCriteria;
 import ly.biadjo.food.service.dto.CartDTO;
+import ly.biadjo.food.service.dto.FoodOrderDTO;
 import ly.biadjo.food.service.dto.OrderDTO;
 import ly.biadjo.food.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -185,6 +187,19 @@ public class OrderResource {
         log.debug("REST request to get Orders by criteria: {}", criteria);
 
         Page<OrderDTO> page = orderQueryService.findByCriteria(criteria, pageable);
+
+        page.forEach(orderDTO -> {
+            LongFilter longFilter = new LongFilter();
+            longFilter.setEquals(orderDTO.getId());
+
+            FoodOrderCriteria foodOrderCriteria = new FoodOrderCriteria();
+            foodOrderCriteria.setOrderId(longFilter);
+
+            List<FoodOrderDTO> foodOrders = foodOrderQueryService.findByCriteria(foodOrderCriteria);
+            orderDTO.setFoodOrders(foodOrders);
+
+            orderDTO.setFoodCount(foodOrders.size());
+        });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -219,8 +234,9 @@ public class OrderResource {
         FoodOrderCriteria foodOrderCriteria = new FoodOrderCriteria();
         foodOrderCriteria.setOrderId(longFilter);
 
-        orderDTO.get().setFoodOrders(foodOrderQueryService.findByCriteria(foodOrderCriteria));
-
+        List<FoodOrderDTO> foodOrders = foodOrderQueryService.findByCriteria(foodOrderCriteria);
+        orderDTO.get().setFoodOrders(foodOrders);
+        orderDTO.get().setFoodCount(foodOrders.size());
         return ResponseUtil.wrapOrNotFound(orderDTO);
     }
 

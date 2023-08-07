@@ -68,6 +68,8 @@ public class OrderDTO extends AbstractAuditingDTO implements Serializable {
 
     private String notes;
 
+    private Integer foodCount;
+
     private CustomerDTO customer;
 
     private CouponDTO coupon;
@@ -375,5 +377,13 @@ public class OrderDTO extends AbstractAuditingDTO implements Serializable {
 
     public void setFoodOrders(List<FoodOrderDTO> foodOrders) {
         this.foodOrders = foodOrders;
+    }
+
+    public Integer getFoodCount() {
+        return foodCount;
+    }
+
+    public void setFoodCount(Integer foodCount) {
+        this.foodCount = foodCount;
     }
 }
