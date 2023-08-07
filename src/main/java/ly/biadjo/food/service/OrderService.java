@@ -167,7 +167,7 @@ public class OrderService {
             foodOrderDTO.setSpecialNotes(cart.getCustomerNotes());
             foodOrderService.save(foodOrderDTO);
 
-            itemsPrice += cart.getQuantity() * cart.getFood().getPrice();
+            itemsPrice += foodOrderDTO.getTotal();
         }
         Double deliveryFees = 1.0;
         savedOrder.setTotal(itemsPrice + deliveryFees);
