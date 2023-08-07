@@ -42,6 +42,16 @@ public interface OrderMapper extends EntityMapper<OrderDTO, Order> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "nameAr", source = "nameAr")
+    @Mapping(target = "nameEn", source = "nameEn")
+    @Mapping(target = "mobileNo", source = "mobileNo")
+    @Mapping(target = "imageUrl", source = "imageUrl")
+    @Mapping(target = "driverType", source = "driverType")
+    @Mapping(target = "vehicleType", source = "vehicleType")
+    @Mapping(target = "latitude", source = "latitude")
+    @Mapping(target = "longitude", source = "longitude")
+    @Mapping(target = "plusCode", source = "plusCode")
+    @Mapping(target = "lastLocationDateTime", source = "lastLocationDateTime")
     DriverDTO toDtoDriverName(Driver driver);
 
     @Named("deliveryAddressAddress")

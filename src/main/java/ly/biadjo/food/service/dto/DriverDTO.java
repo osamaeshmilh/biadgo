@@ -61,6 +61,10 @@ public class DriverDTO implements Serializable {
 
     private String notes;
 
+    private long reviewsCount;
+
+    private float rating;
+
     private UserDTO user;
 
     private ZoneDTO zone;
@@ -297,5 +301,21 @@ public class DriverDTO implements Serializable {
             ", user=" + getUser() +
             ", zone=" + getZone() +
             "}";
+    }
+
+    public long getReviewsCount() {
+        return reviewsCount;
+    }
+
+    public void setReviewsCount(long reviewsCount) {
+        this.reviewsCount = reviewsCount;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 }

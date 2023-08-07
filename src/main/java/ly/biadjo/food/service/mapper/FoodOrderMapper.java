@@ -27,5 +27,11 @@ public interface FoodOrderMapper extends EntityMapper<FoodOrderDTO, FoodOrder> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "nameAr", source = "nameAr")
+    @Mapping(target = "nameEn", source = "nameEn")
+    @Mapping(target = "price", source = "price")
+    @Mapping(target = "discountPrice", source = "discountPrice")
+    @Mapping(target = "isDiscount", source = "isDiscount")
+    @Mapping(target = "foodImages", source = "foodImages")
     FoodDTO toDtoFoodName(Food food);
 }
