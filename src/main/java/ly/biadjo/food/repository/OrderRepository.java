@@ -28,18 +28,18 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
     }
 
     @Query(
-        value = "select jhiOrder from Order jhiOrder left join fetch jhiOrder.customer left join fetch jhiOrder.coupon left join fetch jhiOrder.driver left join fetch jhiOrder.deliveryAddress left join fetch jhiOrder.restaurant",
+        value = "select jhiOrder from Order jhiOrder left join fetch jhiOrder.customer left join fetch jhiOrder.coupon left join fetch jhiOrder.driver left join fetch jhiOrder.deliveryAddress left join fetch jhiOrder.restaurant left join fetch jhiOrder.foodOrders",
         countQuery = "select count(jhiOrder) from Order jhiOrder"
     )
     Page<Order> findAllWithToOneRelationships(Pageable pageable);
 
     @Query(
-        "select jhiOrder from Order jhiOrder left join fetch jhiOrder.customer left join fetch jhiOrder.coupon left join fetch jhiOrder.driver left join fetch jhiOrder.deliveryAddress left join fetch jhiOrder.restaurant"
+        "select jhiOrder from Order jhiOrder left join fetch jhiOrder.customer left join fetch jhiOrder.coupon left join fetch jhiOrder.driver left join fetch jhiOrder.deliveryAddress left join fetch jhiOrder.restaurant left join fetch jhiOrder.foodOrders"
     )
     List<Order> findAllWithToOneRelationships();
 
     @Query(
-        "select jhiOrder from Order jhiOrder left join fetch jhiOrder.customer left join fetch jhiOrder.coupon left join fetch jhiOrder.driver left join fetch jhiOrder.deliveryAddress left join fetch jhiOrder.restaurant where jhiOrder.id =:id"
+        "select jhiOrder from Order jhiOrder left join fetch jhiOrder.customer left join fetch jhiOrder.coupon left join fetch jhiOrder.driver left join fetch jhiOrder.deliveryAddress left join fetch jhiOrder.restaurant left join fetch jhiOrder.foodOrders where jhiOrder.id =:id"
     )
     Optional<Order> findOneWithToOneRelationships(@Param("id") Long id);
 }
