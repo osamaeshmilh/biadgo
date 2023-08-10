@@ -186,20 +186,32 @@ public class OrderResource {
     ) {
         log.debug("REST request to get Orders by criteria: {}", criteria);
 
-        Page<OrderDTO> page = orderQueryService.findByCriteria(criteria, pageable);
+        Page<OrderDTO> page;
+        LongFilter longFilter = new LongFilter();
 
-        page.forEach(orderDTO -> {
-            LongFilter longFilter = new LongFilter();
-            longFilter.setEquals(orderDTO.getId());
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            longFilter.setEquals(customerService.findOneByUser().getId());
+            criteria.setCustomerId(longFilter);
+            page = orderQueryService.findByCriteria(criteria, pageable);
 
-            FoodOrderCriteria foodOrderCriteria = new FoodOrderCriteria();
-            foodOrderCriteria.setOrderId(longFilter);
+            page.forEach(orderDTO -> {
+                LongFilter longFilter2 = new LongFilter();
+                longFilter2.setEquals(orderDTO.getId());
 
-            Long foodOrdersCount = foodOrderQueryService.countByCriteria(foodOrderCriteria);
+                FoodOrderCriteria foodOrderCriteria = new FoodOrderCriteria();
+                foodOrderCriteria.setOrderId(longFilter2);
+
+                Long foodOrdersCount = foodOrderQueryService.countByCriteria(foodOrderCriteria);
 //            orderDTO.setFoodOrders(foodOrders);
 
-            orderDTO.setFoodCount(Math.toIntExact(foodOrdersCount));
-        });
+                orderDTO.setFoodCount(Math.toIntExact(foodOrdersCount));
+            });
+        } else {
+            page = orderQueryService.findByCriteria(criteria, pageable);
+
+        }
+
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

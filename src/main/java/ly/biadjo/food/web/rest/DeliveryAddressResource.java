@@ -170,8 +170,15 @@ public class DeliveryAddressResource {
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get DeliveryAddresses by criteria: {}", criteria);
-
-        Page<DeliveryAddressDTO> page = deliveryAddressQueryService.findByCriteria(criteria, pageable);
+        Page<DeliveryAddressDTO> page;
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.CUSTOMER)) {
+            LongFilter longFilter = new LongFilter();
+            longFilter.setEquals(customerService.findOneByUser().getId());
+            criteria.setCustomerId(longFilter);
+            page = deliveryAddressQueryService.findByCriteria(criteria, pageable);
+        } else {
+            page = deliveryAddressQueryService.findByCriteria(criteria, pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
